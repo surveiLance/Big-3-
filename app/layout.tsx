@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Big 3",
   description: "A visual dashboard comparing Federer, Nadal, and Djokovic.",
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
@@ -34,9 +35,7 @@ export default function RootLayout({
           <Suspense fallback={<div className="h-16" />}>
             <Navbar />
           </Suspense>
-          <Suspense fallback={null}>
-            {children}
-          </Suspense>
+          {children}
         </div>
       </body>
     </html>
