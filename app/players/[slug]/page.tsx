@@ -1,10 +1,12 @@
+export const unstable_instant = { prefetch: "static" };
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
-import novakDjokovic from "@/assets/Novak Djokovic.png";
-import rafaelNadal from "@/assets/Rafael Nadal.png";
-import rogerFederer from "@/assets/Roger Federer.png";
+import novakDjokovic from "@/assets/novak-djokovic.png";
+import rafaelNadal from "@/assets/rafael-nadal.png";
+import rogerFederer from "@/assets/roger-federer.png";
 
 const players = [
   {
@@ -50,9 +52,12 @@ export default async function PlayerPage({
   }
 
   return (
-    <main className="min-h-screen bg-[#030404] text-white">
-      <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-5 sm:px-6 sm:py-8">
+    <div className="flex flex-col">
+      <div className="fixed inset-0 -z-10 overflow-hidden bg-[#030404]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(255,255,255,0.12),transparent_30%)]" />
+      </div>
+
+      <div className="mt-8 flex-1">
         <Link
           href="/"
           className="relative z-10 mb-8 flex w-fit items-center gap-2 text-sm font-bold uppercase tracking-wide text-white/65 transition hover:text-white sm:mb-10"
@@ -105,6 +110,6 @@ export default async function PlayerPage({
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

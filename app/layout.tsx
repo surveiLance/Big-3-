@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { RouteTransition } from "@/components/RouteTransition";
+import { Suspense } from "react";
+import { Navbar } from "@/components/Navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,9 +29,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <RouteTransition />
-        {children}
+      <body className="min-h-full flex flex-col bg-[#030404] text-white">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1536px] flex-col px-4 py-5 sm:px-9 sm:py-6">
+          <Navbar />
+          <Suspense fallback={null}>
+            {children}
+          </Suspense>
+        </div>
       </body>
     </html>
   );
