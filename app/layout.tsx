@@ -31,7 +31,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#030404] text-white">
         <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1536px] flex-col px-4 py-5 sm:px-9 sm:py-6">
-          <Navbar />
+          <Suspense fallback={<div className="h-16" />}>
+            <Navbar />
+          </Suspense>
           <Suspense fallback={null}>
             {children}
           </Suspense>

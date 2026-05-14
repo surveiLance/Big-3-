@@ -1,5 +1,3 @@
-export const unstable_instant = { prefetch: "static" };
-
 import Link from "next/link";
 import { CalendarDays, Filter, Search, Trophy } from "lucide-react";
 
