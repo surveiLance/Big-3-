@@ -36,39 +36,21 @@ const statRows = [
 
 const surfaceCards = [
   {
-    first: "Rafael",
-    last: "Nadal",
-    nickname: "King of Clay",
-    color: "#ff6a21",
-    surface: "Clay",
-    winRate: "91.7%",
-    winRateLabel: "Clay Win Rate",
-    signature: "14",
-    signatureLabel: "Roland Garros Titles",
+    first: "Rafael", last: "Nadal", nickname: "King of Clay", color: "#ff6a21",
+    surface: "Clay", winRate: "92.4%", record: "450–37",
+    signature: "14", signatureLabel: "Roland Garros Titles",
     detail: "The most dominant surface record in tennis history.",
   },
   {
-    first: "Novak",
-    last: "Djokovic",
-    nickname: "The Djoker",
-    color: "#238ef8",
-    surface: "Hard",
-    winRate: "85.9%",
-    winRateLabel: "Hard Win Rate",
-    signature: "10",
-    signatureLabel: "Australian Open Titles",
+    first: "Novak", last: "Djokovic", nickname: "The Djoker", color: "#238ef8",
+    surface: "Hard", winRate: "84.3%", record: "596–111",
+    signature: "10", signatureLabel: "Australian Open Titles",
     detail: "Unmatched consistency across the world's fastest courts.",
   },
   {
-    first: "Roger",
-    last: "Federer",
-    nickname: "The Maestro",
-    color: "#6ac34a",
-    surface: "Grass",
-    winRate: "87.5%",
-    winRateLabel: "Grass Win Rate",
-    signature: "8",
-    signatureLabel: "Wimbledon Titles",
+    first: "Roger", last: "Federer", nickname: "The Maestro", color: "#6ac34a",
+    surface: "Grass", winRate: "87.4%", record: "187–27",
+    signature: "8", signatureLabel: "Wimbledon Titles",
     detail: "The most complete grass-court game the sport has ever seen.",
   },
 ];
@@ -169,43 +151,37 @@ export default function Home() {
       <section className="relative z-20 mt-3 grid grid-cols-1 gap-3 pb-3 sm:grid-cols-3">
         {surfaceCards.map((p, i) => (
           <FadeUp key={p.last} delay={i * 0.1}>
-          <div
-            className="relative overflow-hidden rounded border border-white/12 p-4 backdrop-blur-md sm:p-5 h-full"
-            style={{ background: `radial-gradient(ellipse 120% 60% at 50% 100%, ${p.color}0d, transparent 70%)` }}
-          >
-            <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: p.color }} />
+            <div
+              className="relative overflow-hidden rounded border border-white/12 p-5 backdrop-blur-md h-full"
+              style={{ background: `radial-gradient(ellipse 120% 60% at 50% 100%, ${p.color}0d, transparent 70%)` }}
+            >
+              <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: p.color }} />
 
-            <div className="mb-4 flex items-start justify-between">
-              <div>
-                <div className="text-[9px] font-black uppercase tracking-[0.28em]" style={{ color: p.color }}>
-                  {p.nickname}
+              <div className="mb-4 flex items-start justify-between">
+                <div>
+                  <div className="text-[9px] font-black uppercase tracking-[0.28em]" style={{ color: p.color }}>{p.nickname}</div>
+                  <div className="mt-0.5 text-sm font-black uppercase text-white">{p.first} {p.last}</div>
                 </div>
-                <div className="mt-0.5 text-sm font-black uppercase text-white">
-                  {p.first} {p.last}
+                <div className="rounded px-2 py-0.5 text-[9px] font-black uppercase tracking-wide" style={{ backgroundColor: `${p.color}1a`, color: p.color }}>
+                  {p.surface}
                 </div>
               </div>
-              <div
-                className="rounded px-2 py-0.5 text-[9px] font-black uppercase tracking-wide"
-                style={{ backgroundColor: `${p.color}1a`, color: p.color }}
-              >
-                {p.surface}
-              </div>
-            </div>
 
-            <div className="mb-3 flex items-end gap-4">
-              <div>
-                <div className="text-3xl font-black sm:text-4xl" style={{ color: p.color }}>{p.winRate}</div>
-                <div className="text-[9px] font-bold uppercase tracking-wide text-white/40">{p.winRateLabel}</div>
+              <div className="mb-3 flex items-end gap-4">
+                <div>
+                  <div className="text-3xl font-black sm:text-4xl" style={{ color: p.color }}>{p.winRate}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-wide text-white/40">{p.surface} Win Rate</div>
+                </div>
+                <div className="mb-0.5 h-px flex-1 bg-white/8" />
+                <div className="text-right">
+                  <div className="text-2xl font-black text-white sm:text-3xl">{p.signature}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-wide text-white/40">{p.signatureLabel}</div>
+                </div>
               </div>
-              <div className="mb-0.5 h-px flex-1 bg-white/8" />
-              <div className="text-right">
-                <div className="text-2xl font-black text-white sm:text-3xl">{p.signature}</div>
-                <div className="text-[9px] font-bold uppercase tracking-wide text-white/40">{p.signatureLabel}</div>
-              </div>
-            </div>
 
-            <p className="text-[11px] leading-5 text-white/45">{p.detail}</p>
-          </div>
+              <div className="mb-3 text-[10px] font-bold text-white/30">{p.record} W–L on {p.surface}</div>
+              <p className="text-[11px] leading-5 text-white/45">{p.detail}</p>
+            </div>
           </FadeUp>
         ))}
       </section>

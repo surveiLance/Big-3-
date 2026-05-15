@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -71,6 +72,11 @@ const BASE_BG = `radial-gradient(circle at 20% 32%,rgba(255,111,28,0.22),transpa
 export function HeroSection() {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const active = activeIdx !== null ? players[activeIdx] : null;
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setActiveIdx(null);
+  }, [pathname]);
 
   const select = (idx: number) => setActiveIdx(idx);
 
