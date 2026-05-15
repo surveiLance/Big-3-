@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 
 const PLAYER_META = {
   nadal: { name: "Rafael Nadal", short: "Nadal", color: "#ff6a21", bg: "rgba(255,106,33,0.10)", glow: "rgba(255,106,33,0.18)" },
@@ -16,6 +17,7 @@ interface Milestone {
   title: string;
   detail: string;
   tag: string;
+  img?: string; // e.g. "/assets/timeline/2008-nadal.jpg" — add when ready
 }
 
 const milestones: Milestone[] = [
@@ -147,51 +149,96 @@ export default function TimelinePage() {
         <div className="absolute bottom-0 left-[5px] top-0 w-px bg-white/8" />
 
         <div className="space-y-12">
-          {grouped.map(([year, events]) => (
-            <div key={year} className="relative pl-9 sm:pl-12">
-              {/* Spine dot */}
-              <div className="absolute left-0 top-[3px] h-[11px] w-[11px] rounded-full border border-white/25 bg-[#030404]" />
+          {grouped.map(([year, events]) => {
+            const primaryPlayer = PLAYER_META[events[0].player];
+            const featuredImg = events.find((e) => e.img)?.img ?? null;
 
-              {/* Year label */}
-              <div className="mb-4 flex items-center gap-4">
-                <span className="text-2xl font-black italic text-white/90 sm:text-3xl">{year}</span>
-                <div className="h-px flex-1 max-w-[60px] bg-white/8" />
-              </div>
+            return (
+              <div key={year} className="lg:grid lg:grid-cols-[1fr_280px] lg:gap-8">
+                {/* ── Left: spine + events ── */}
+                <div className="relative pl-9 sm:pl-12">
+                  {/* Spine dot */}
+                  <div className="absolute left-0 top-[3px] h-[11px] w-[11px] rounded-full border border-white/25 bg-[#030404]" />
 
-              {/* Events */}
-              <div className="space-y-3">
-                {events.map((event, i) => {
-                  const p = PLAYER_META[event.player];
-                  return (
-                    <div
-                      key={i}
-                      className="group relative rounded-r border border-white/8 bg-white/[0.025] p-4 transition-all hover:bg-white/[0.04] sm:p-5"
-                      style={{ borderLeftColor: p.color + "70", borderLeftWidth: "2px" }}
-                    >
-                      <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-                        <span
-                          className="text-[10px] font-black uppercase tracking-[0.2em]"
-                          style={{ color: p.color }}
+                  {/* Year label */}
+                  <div className="mb-4 flex items-center gap-4">
+                    <span className="text-2xl font-black italic text-white/90 sm:text-3xl">{year}</span>
+                    <div className="h-px max-w-[60px] flex-1 bg-white/8" />
+                  </div>
+
+                  {/* Events */}
+                  <div className="space-y-3">
+                    {events.map((event, i) => {
+                      const p = PLAYER_META[event.player];
+                      return (
+                        <div
+                          key={i}
+                          className="group relative rounded-r border border-white/8 bg-white/[0.025] p-4 transition-all hover:bg-white/[0.04] sm:p-5"
+                          style={{ borderLeftColor: p.color + "70", borderLeftWidth: "2px" }}
                         >
-                          {p.short}
-                        </span>
-                        <span className="text-white/15">·</span>
-                        <span className={`text-[10px] font-bold uppercase tracking-wide ${TAG_STYLE[event.tag] ?? "text-white/30"}`}>
-                          {event.tag}
-                        </span>
+                          <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <span
+                              className="text-[10px] font-black uppercase tracking-[0.2em]"
+                              style={{ color: p.color }}
+                            >
+                              {p.short}
+                            </span>
+                            <span className="text-white/15">·</span>
+                            <span className={`text-[10px] font-bold uppercase tracking-wide ${TAG_STYLE[event.tag] ?? "text-white/30"}`}>
+                              {event.tag}
+                            </span>
+                          </div>
+                          <div className="text-sm font-black uppercase tracking-wide text-white sm:text-[15px]">
+                            {event.title}
+                          </div>
+                          <p className="mt-1.5 text-[13px] leading-[1.65] text-white/42">
+                            {event.detail}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* ── Right: image slot (desktop only) ── */}
+                <div className="hidden lg:flex lg:flex-col lg:pt-[42px]">
+                  <div
+                    className="relative w-full overflow-hidden rounded-xl border"
+                    style={{
+                      aspectRatio: "4/3",
+                      borderColor: primaryPlayer.color + "28",
+                      backgroundColor: primaryPlayer.color + "06",
+                    }}
+                  >
+                    {featuredImg ? (
+                      <Image
+                        src={featuredImg}
+                        alt={`${year}`}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      /* Placeholder shown until a real photo is added */
+                      <div className="flex h-full flex-col items-center justify-center gap-3 p-4 text-center">
+                        <div
+                          className="text-6xl font-black italic opacity-[0.07]"
+                          style={{ color: primaryPlayer.color }}
+                        >
+                          {year}
+                        </div>
+                        <div
+                          className="text-[9px] font-black uppercase tracking-[0.35em] opacity-30"
+                          style={{ color: primaryPlayer.color }}
+                        >
+                          Photo
+                        </div>
                       </div>
-                      <div className="text-sm font-black uppercase tracking-wide text-white sm:text-[15px]">
-                        {event.title}
-                      </div>
-                      <p className="mt-1.5 text-[13px] leading-[1.65] text-white/42">
-                        {event.detail}
-                      </p>
-                    </div>
-                  );
-                })}
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* End marker */}

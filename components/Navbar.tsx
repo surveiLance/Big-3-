@@ -17,8 +17,8 @@ export function Navbar() {
   return (
     <header className="relative z-50 border-b border-white/12 pb-4 sm:pb-5">
       <div className="flex items-center justify-between">
-        <div className="flex min-w-0 items-center gap-3 text-[#e4bd73]">
-          <Crown className="h-6 w-6 shrink-0" strokeWidth={1.6} />
+        <Link href="/" className="flex min-w-0 items-center gap-3 text-[#e4bd73] transition-opacity hover:opacity-80">
+          <Crown className="h-7 w-7 shrink-0" strokeWidth={1.4} />
           <div className="min-w-0">
             <div className="truncate text-xl font-semibold uppercase tracking-[0.18em]">
               Big 3
@@ -27,7 +27,7 @@ export function Navbar() {
               Dominance. Grit. Elegance.
             </div>
           </div>
-        </div>
+        </Link>
 
         <nav className="hidden flex-1 items-center justify-center gap-20 text-sm font-bold uppercase tracking-wide text-white/88 lg:flex xl:gap-28">
           {navItems.map((item) => {

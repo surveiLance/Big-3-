@@ -106,9 +106,9 @@ export function HeroSection() {
         <div className="absolute inset-0 opacity-[0.11] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
       </div>
 
-      <section className="grid flex-1 grid-cols-1 gap-8 pt-9 sm:pt-14 lg:grid-cols-[0.78fr_1.22fr] lg:pt-20">
+      <section className="grid flex-1 grid-cols-1 gap-3 pt-4 sm:gap-8 sm:pt-14 lg:grid-cols-[0.78fr_1.22fr] lg:pt-20">
         {/* Left panel */}
-        <div className="relative z-20 flex max-w-[460px] flex-col">
+        <div className="relative z-20 order-2 flex max-w-[460px] flex-col sm:order-none">
           {/* Dots — only visible when a player is active */}
           <div className={`mb-5 flex items-center gap-2 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`}>
             {players.map((p, i) => (
@@ -220,7 +220,7 @@ export function HeroSection() {
         </div>
 
         {/* Right: player images */}
-        <div className="relative min-h-[430px] sm:min-h-[500px] lg:min-h-0">
+        <div className="relative order-1 min-h-[370px] sm:order-none sm:min-h-[500px] lg:min-h-0">
           <div className="absolute inset-x-0 bottom-[96px] top-0 grid grid-cols-3 sm:bottom-[116px]">
             {players.map((player, index) => (
               <button

@@ -72,12 +72,12 @@ export default function PlayersPage() {
       </div>
 
       {/* Player cards */}
-      <div className="grid flex-1 grid-cols-1 gap-3 pb-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 pb-4 sm:grid-cols-3">
         {players.map((player) => (
           <Link
             key={player.slug}
             href={`/players/${player.slug}`}
-            className="group relative flex min-h-[460px] flex-col overflow-hidden rounded-xl border border-white/10 sm:min-h-[560px]"
+            className="group relative flex min-h-[75vh] flex-col overflow-hidden rounded-xl border border-white/10 sm:min-h-[560px]"
             style={{ background: player.cardBg }}
           >
             {/* Body glow */}
