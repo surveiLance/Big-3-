@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Players", href: "/players/rafael-nadal", activeMatch: "/players" },
+  { label: "Players", href: "/players", activeMatch: "/players" },
   { label: "H2H", href: "/h2h" },
   { label: "Timeline", href: "/timeline" },
 ];
@@ -58,21 +58,21 @@ export function Navbar() {
         <div className="hidden min-w-[170px] lg:block" />
       </div>
 
-      <nav className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 text-[11px] font-black uppercase tracking-wide text-white/75 lg:hidden">
+      <nav className="mt-4 grid grid-cols-4 gap-2 text-[11px] font-black uppercase tracking-wide lg:hidden">
         {navItems.map((item) => {
           const isActive =
             item.href === "/"
               ? pathname === "/"
-              : pathname.startsWith(item.href) && item.href !== "#";
+              : pathname.startsWith(item.activeMatch ?? item.href) && item.href !== "#";
 
           return (
             <Link
               key={item.label}
               href={item.href}
-              className={`shrink-0 rounded border px-3 py-2 transition-colors ${
+              className={`flex items-center justify-center rounded border py-2.5 text-center transition-colors ${
                 isActive
                   ? "border-[#d9ae64]/50 bg-[#d9ae64]/12 text-[#e4bd73]"
-                  : "border-white/12 bg-white/[0.04] text-white/75 hover:border-[#d9ae64]/30 hover:text-[#e4bd73]"
+                  : "border-white/12 bg-white/[0.04] text-white/65 hover:border-[#d9ae64]/30 hover:text-[#e4bd73]"
               }`}
             >
               {item.label}
