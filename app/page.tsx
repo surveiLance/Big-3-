@@ -1,6 +1,6 @@
 export const unstable_instant = { prefetch: "static" };
 
-import { BarChart3, Crown, GitCompare, Route, Trophy, ArrowRight } from "lucide-react";
+import { GitCompare } from "lucide-react";
 import Link from "next/link";
 import { HeroSection } from "@/components/HeroSection";
 
@@ -33,30 +33,42 @@ const statRows = [
   "Masters 1000 Titles",
 ];
 
-const featureCards = [
+const surfaceCards = [
   {
-    icon: Crown,
-    title: "H2H Comparison",
-    text: "Deep dive into their epic head to head battles.",
-    href: "/h2h",
+    first: "Rafael",
+    last: "Nadal",
+    nickname: "King of Clay",
+    color: "#ff6a21",
+    surface: "Clay",
+    winRate: "91.7%",
+    winRateLabel: "Clay Win Rate",
+    signature: "14",
+    signatureLabel: "Roland Garros Titles",
+    detail: "The most dominant surface record in tennis history.",
   },
   {
-    icon: BarChart3,
-    title: "Surface Dominance",
-    text: "See how each legend conquered their surface.",
-    href: "#",
+    first: "Novak",
+    last: "Djokovic",
+    nickname: "The Djoker",
+    color: "#238ef8",
+    surface: "Hard",
+    winRate: "85.9%",
+    winRateLabel: "Hard Win Rate",
+    signature: "10",
+    signatureLabel: "Australian Open Titles",
+    detail: "Unmatched consistency across the world's fastest courts.",
   },
   {
-    icon: Trophy,
-    title: "Grand Slam Journey",
-    text: "Relive their greatest moments in Slams.",
-    href: "#",
-  },
-  {
-    icon: Route,
-    title: "Career Timeline",
-    text: "Explore their incredible careers year by year.",
-    href: "/timeline",
+    first: "Roger",
+    last: "Federer",
+    nickname: "The Maestro",
+    color: "#6ac34a",
+    surface: "Grass",
+    winRate: "87.5%",
+    winRateLabel: "Grass Win Rate",
+    signature: "8",
+    signatureLabel: "Wimbledon Titles",
+    detail: "The most complete grass-court game the sport has ever seen.",
   },
 ];
 
@@ -65,53 +77,37 @@ export default function Home() {
     <div className="flex flex-col">
       <HeroSection />
 
+      {/* Stats + Grand Slam section */}
       <section className="relative z-20 mt-4 grid gap-3 lg:grid-cols-[1fr_340px]">
-
-        {/* Stats box */}
         <div className="rounded border border-white/18 bg-black/58 p-4 backdrop-blur-md sm:p-6">
-
-          {/* ── Mobile layout (< sm) ── */}
+          {/* Mobile layout */}
           <div className="sm:hidden">
-            <h2 className="mb-4 text-base font-black uppercase tracking-wide">
-              Big 3 In Numbers
-            </h2>
-            {/* Player name headers */}
+            <h2 className="mb-4 text-base font-black uppercase tracking-wide">Big 3 In Numbers</h2>
             <div className="mb-1 grid grid-cols-4 items-center">
               <div />
               {players.map((p) => (
-                <div
-                  key={p.last}
-                  className="text-center text-[10px] font-black uppercase tracking-wide"
-                  style={{ color: p.color }}
-                >
+                <div key={p.last} className="text-center text-[10px] font-black uppercase tracking-wide" style={{ color: p.color }}>
                   {p.last}
                 </div>
               ))}
             </div>
-            {/* Stat rows */}
             <div className="divide-y divide-white/6">
               {statRows.map((row, ri) => (
                 <div key={row} className="grid grid-cols-4 items-center py-3">
-                  <div className="pr-2 text-[10px] font-bold uppercase leading-tight tracking-wide text-white/50">
-                    {row}
-                  </div>
+                  <div className="pr-2 text-[10px] font-bold uppercase leading-tight tracking-wide text-white/50">{row}</div>
                   {players.map((p, pi) => (
-                    <div key={pi} className="text-center text-base font-black">
-                      {p.stats[ri]}
-                    </div>
+                    <div key={pi} className="text-center text-base font-black">{p.stats[ri]}</div>
                   ))}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── sm+ layout (existing, untouched) ── */}
+          {/* sm+ layout */}
           <div className="hidden overflow-x-auto sm:block">
             <div className="grid min-w-[680px] gap-6 lg:min-w-0 lg:grid-cols-[300px_repeat(3,minmax(0,1fr))]">
               <div>
-                <h2 className="mb-5 text-lg font-black uppercase tracking-wide">
-                  The Big 3 In Numbers
-                </h2>
+                <h2 className="mb-5 text-lg font-black uppercase tracking-wide">The Big 3 In Numbers</h2>
                 <div className="grid grid-rows-5 gap-4 text-sm uppercase tracking-wide text-white/82">
                   {statRows.map((row) => (
                     <div key={row} className="flex min-h-6 items-center gap-3">
@@ -123,18 +119,12 @@ export default function Home() {
               </div>
               {players.map((player) => (
                 <div key={player.last} className="border-white/10 text-center lg:border-l">
-                  <div
-                    className="mb-5 text-sm font-black uppercase tracking-wide"
-                    style={{ color: player.color }}
-                  >
+                  <div className="mb-5 text-sm font-black uppercase tracking-wide" style={{ color: player.color }}>
                     {player.first} {player.last}
                   </div>
                   <div className="grid grid-rows-5 gap-4 text-xl font-black text-white">
                     {player.stats.map((stat, index) => (
-                      <div
-                        key={`${player.last}-${stat}-${index}`}
-                        className="flex min-h-6 items-center justify-center"
-                      >
+                      <div key={`${player.last}-${stat}-${index}`} className="flex min-h-6 items-center justify-center">
                         {stat}
                       </div>
                     ))}
@@ -145,14 +135,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Grand Slam donut — unchanged */}
         <div className="rounded border border-white/18 bg-black/58 p-4 backdrop-blur-md sm:p-6">
-          <h2 className="mb-5 text-lg font-black uppercase tracking-wide">
-            Grand Slam Titles
-          </h2>
+          <h2 className="mb-5 text-lg font-black uppercase tracking-wide">Grand Slam Titles</h2>
           <p className="mb-6 text-sm leading-6 text-white/62">
-            The Big Three won 66 out of the 82 Grand Slam tournaments held
-            between Wimbledon 2003 and the 2023 U.S. Open.
+            The Big Three won 66 out of the 82 Grand Slam tournaments held between Wimbledon 2003 and the 2023 U.S. Open.
           </p>
           <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-7">
             <div className="relative grid h-32 w-32 shrink-0 place-items-center rounded-full bg-[conic-gradient(#ff6a21_0_33.33%,#238ef8_33.33%_69.69%,#6ac34a_69.69%_100%)] sm:h-36 sm:w-36">
@@ -166,10 +152,7 @@ export default function Home() {
             <div className="space-y-4 text-base">
               {players.map((player) => (
                 <div key={player.last} className="grid grid-cols-[10px_28px_1fr] items-center gap-3">
-                  <span
-                    className="h-2.5 w-2.5 rounded-full"
-                    style={{ backgroundColor: player.color }}
-                  />
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: player.color }} />
                   <span className="font-black">{player.stats[0]}</span>
                   <span>{player.last}</span>
                 </div>
@@ -179,29 +162,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Feature cards */}
-      <section className="relative z-20 mt-3 grid grid-cols-2 gap-3 pb-3 lg:grid-cols-4">
-        {featureCards.map((card) => {
-          const Icon = card.icon;
-          return (
-            <Link
-              href={card.href}
-              key={card.title}
-              className="group flex flex-col gap-3 rounded border border-white/15 bg-black/52 p-4 backdrop-blur-md transition hover:border-[#d6b276]/55 sm:flex-row sm:min-h-24 sm:items-center sm:gap-5 sm:px-7 sm:py-5"
-            >
-              <Icon className="h-8 w-8 shrink-0 text-[#d6b276] sm:h-11 sm:w-11" strokeWidth={1.3} />
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-black uppercase tracking-wide text-white sm:text-sm">
-                  {card.title}
+      {/* Surface dominance */}
+      <section className="relative z-20 mt-3 grid grid-cols-1 gap-3 pb-3 sm:grid-cols-3">
+        {surfaceCards.map((p) => (
+          <div
+            key={p.last}
+            className="relative overflow-hidden rounded border border-white/12 p-4 backdrop-blur-md sm:p-5"
+            style={{ background: `radial-gradient(ellipse 120% 60% at 50% 100%, ${p.color}0d, transparent 70%)` }}
+          >
+            <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: p.color }} />
+
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <div className="text-[9px] font-black uppercase tracking-[0.28em]" style={{ color: p.color }}>
+                  {p.nickname}
                 </div>
-                <div className="mt-1 text-xs leading-5 text-white/58 sm:mt-2 sm:text-sm">
-                  {card.text}
+                <div className="mt-0.5 text-sm font-black uppercase text-white">
+                  {p.first} {p.last}
                 </div>
               </div>
-              <ArrowRight className="hidden h-5 w-5 shrink-0 text-white transition group-hover:translate-x-1 sm:block" />
-            </Link>
-          );
-        })}
+              <div
+                className="rounded px-2 py-0.5 text-[9px] font-black uppercase tracking-wide"
+                style={{ backgroundColor: `${p.color}1a`, color: p.color }}
+              >
+                {p.surface}
+              </div>
+            </div>
+
+            <div className="mb-3 flex items-end gap-4">
+              <div>
+                <div className="text-3xl font-black sm:text-4xl" style={{ color: p.color }}>{p.winRate}</div>
+                <div className="text-[9px] font-bold uppercase tracking-wide text-white/40">{p.winRateLabel}</div>
+              </div>
+              <div className="mb-0.5 h-px flex-1 bg-white/8" />
+              <div className="text-right">
+                <div className="text-2xl font-black text-white sm:text-3xl">{p.signature}</div>
+                <div className="text-[9px] font-bold uppercase tracking-wide text-white/40">{p.signatureLabel}</div>
+              </div>
+            </div>
+
+            <p className="text-[11px] leading-5 text-white/45">{p.detail}</p>
+          </div>
+        ))}
       </section>
     </div>
   );
