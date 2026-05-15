@@ -1,6 +1,5 @@
 "use client";
 
-import { Crown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -18,7 +17,6 @@ export function Navbar() {
     <header className="relative z-50 border-b border-white/12 pb-4 sm:pb-5">
       <div className="flex items-center justify-between">
         <Link href="/" className="flex min-w-0 items-center gap-3 text-[#e4bd73] transition-opacity hover:opacity-80">
-          <Crown className="h-7 w-7 shrink-0" strokeWidth={1.4} />
           <div className="min-w-0">
             <div className="truncate text-xl font-semibold uppercase tracking-[0.18em]">
               Big 3

@@ -266,7 +266,7 @@ export function HeroSection() {
               <button
                 key={player.slug}
                 onClick={() => select(idx)}
-                className={`relative flex min-h-[96px] items-center justify-center overflow-hidden border-r border-white/12 px-2 py-3 transition last:border-r-0 sm:min-h-[116px] sm:gap-4 sm:px-5 sm:py-4 ${
+                className={`group relative flex min-h-[96px] items-center justify-center overflow-hidden border-r border-white/12 px-2 py-3 transition last:border-r-0 sm:min-h-[116px] sm:px-5 sm:py-4 ${
                   activeIdx === idx ? "bg-white/[0.07]" : "hover:bg-white/[0.04]"
                 }`}
               >
@@ -276,22 +276,24 @@ export function HeroSection() {
                     style={{ backgroundColor: player.color }}
                   />
                 )}
-                <div className="flex flex-col items-center justify-center gap-2 text-center sm:flex-row sm:gap-4 sm:text-left">
-                  <div className="min-w-0">
+                <div className="relative flex min-w-0 flex-col items-center justify-center text-center">
+                  <div
+                    className="transition-opacity duration-200 group-hover:opacity-0"
+                    style={{ color: player.color }}
+                  >
+                    <div className="text-[10px] font-black uppercase tracking-wide sm:text-sm">
+                      {player.first}
+                    </div>
+                    <div className="text-[10px] font-black uppercase tracking-wide sm:text-sm">
+                      {player.last}
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     <div
-                      className="mb-1 text-[10px] font-black uppercase tracking-wide transition-colors sm:text-sm"
+                      className="text-[9px] font-black uppercase tracking-[0.2em] sm:text-[11px]"
                       style={{ color: player.color }}
                     >
-                      {player.first} {player.last}
-                    </div>
-                    <div className="text-[9px] font-black uppercase text-white sm:text-[11px]">
-                      Ideal Surface
-                    </div>
-                    <div
-                      className="mt-1 text-base font-black uppercase sm:text-xl"
-                      style={{ color: player.color }}
-                    >
-                      {player.surface}
+                      {player.nickname}
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { FadeUp } from "@/components/FadeUp";
 import rafaelNadal from "@/assets/rafael-nadal.png";
 import novakDjokovic from "@/assets/novak-djokovic.png";
 import rogerFederer from "@/assets/roger-federer.png";
@@ -73,9 +74,9 @@ export default function PlayersPage() {
 
       {/* Player cards */}
       <div className="grid grid-cols-1 gap-3 pb-4 sm:grid-cols-3">
-        {players.map((player) => (
+        {players.map((player, i) => (
+          <FadeUp key={player.slug} delay={i * 0.15}>
           <Link
-            key={player.slug}
             href={`/players/${player.slug}`}
             className="group relative flex min-h-[75vh] flex-col overflow-hidden rounded-xl border border-white/10 sm:min-h-[560px]"
             style={{ background: player.cardBg }}
@@ -182,6 +183,7 @@ export default function PlayersPage() {
               style={{ backgroundColor: player.color }}
             />
           </Link>
+          </FadeUp>
         ))}
       </div>
     </div>

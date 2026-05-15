@@ -3,6 +3,7 @@ export const unstable_instant = { prefetch: "static" };
 import { GitCompare } from "lucide-react";
 import Link from "next/link";
 import { HeroSection } from "@/components/HeroSection";
+import { FadeUp } from "@/components/FadeUp";
 
 const players = [
   {
@@ -78,6 +79,7 @@ export default function Home() {
       <HeroSection />
 
       {/* Stats + Grand Slam section */}
+      <FadeUp>
       <section className="relative z-20 mt-4 grid gap-3 lg:grid-cols-[1fr_340px]">
         <div className="rounded border border-white/18 bg-black/58 p-4 backdrop-blur-md sm:p-6">
           {/* Mobile layout */}
@@ -161,13 +163,14 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </FadeUp>
 
       {/* Surface dominance */}
       <section className="relative z-20 mt-3 grid grid-cols-1 gap-3 pb-3 sm:grid-cols-3">
-        {surfaceCards.map((p) => (
+        {surfaceCards.map((p, i) => (
+          <FadeUp key={p.last} delay={i * 0.1}>
           <div
-            key={p.last}
-            className="relative overflow-hidden rounded border border-white/12 p-4 backdrop-blur-md sm:p-5"
+            className="relative overflow-hidden rounded border border-white/12 p-4 backdrop-blur-md sm:p-5 h-full"
             style={{ background: `radial-gradient(ellipse 120% 60% at 50% 100%, ${p.color}0d, transparent 70%)` }}
           >
             <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: p.color }} />
@@ -203,6 +206,7 @@ export default function Home() {
 
             <p className="text-[11px] leading-5 text-white/45">{p.detail}</p>
           </div>
+          </FadeUp>
         ))}
       </section>
     </div>

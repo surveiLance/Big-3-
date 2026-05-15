@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import { Navbar } from "@/components/Navbar";
+import { SplashScreen } from "@/components/SplashScreen";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,6 +32,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#030404] text-white">
+        <SplashScreen />
         <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1536px] flex-col px-4 py-5 sm:px-9 sm:py-6">
           <Suspense fallback={<div className="h-16" />}>
             <Navbar />

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Trophy, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
+import { FadeUp } from "@/components/FadeUp";
 
 const players = {
   nadal: { name: "Rafael Nadal", short: "Nadal", color: "#ff6a21" },
@@ -142,6 +143,7 @@ export default function H2HPage() {
 
       {/* ── Header + Summary Cards ── */}
       <section className="grid gap-7 py-8 sm:py-10 lg:grid-cols-[0.78fr_1.22fr]">
+        <FadeUp>
         <div>
           <div className="mb-4 flex items-center gap-3 text-[#d6b276]">
             <Trophy className="h-6 w-6" />
@@ -156,10 +158,12 @@ export default function H2HPage() {
             Every match. Every surface. Three rivalries that defined an era of tennis and produced some of the greatest moments the sport has ever seen.
           </p>
         </div>
+        </FadeUp>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          {matchups.map((matchup) => (
-            <article key={matchup.label} className="rounded border border-white/15 bg-black/45 p-5 backdrop-blur-md">
+          {matchups.map((matchup, i) => (
+            <FadeUp key={matchup.label} delay={i * 0.1}>
+            <article className="rounded border border-white/15 bg-black/45 p-5 backdrop-blur-md">
               <div className="text-xs font-black uppercase tracking-wide text-white/52">{matchup.label}</div>
               <div className="mt-4 text-4xl font-black sm:mt-5 sm:text-5xl">{matchup.record}</div>
               <div className="mt-2 text-sm font-black uppercase" style={{ color: matchup.left.color }}>
@@ -179,6 +183,7 @@ export default function H2HPage() {
                 <span>{matchup.right.short}</span>
               </div>
             </article>
+            </FadeUp>
           ))}
         </div>
       </section>
