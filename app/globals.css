@@ -27,23 +27,23 @@ a {
   text-decoration: none;
 }
 
-/* Fast Fade View Transition */
+/* Page transition — native View Transitions API */
 ::view-transition-old(root) {
-  animation: 120ms ease-out both fade-out;
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both page-out;
 }
 
 ::view-transition-new(root) {
-  animation: 120ms ease-in both fade-in;
+  animation: 220ms cubic-bezier(0, 0, 0.2, 1) both page-in;
 }
 
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
+@keyframes page-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Custom scrollbar for dark theme */

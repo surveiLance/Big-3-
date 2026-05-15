@@ -1,268 +1,204 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Calendar, Trophy, MapPin } from "lucide-react";
 
-// Comprehensive match list parsed from user input
-const matchEvents = [
-  // FEDERER VS NADAL
-  { id: 1, year: "2004", event: "Miami Masters", matchup: "Nadal vs Federer", rivalry: "federer-nadal", description: "The first meeting. 17-year-old Nadal stuns world No. 1 Federer in straight sets.", surface: "Hard", location: "Miami, USA", color: "#238ef8" },
-  { id: 2, year: "2005", event: "Miami Masters Final", matchup: "Federer vs Nadal", rivalry: "federer-nadal", description: "Federer claws back from two sets down to win a nearly 4-hour epic.", surface: "Hard", location: "Miami, USA", color: "#238ef8" },
-  { id: 3, year: "2006", event: "Rome Masters Final", matchup: "Nadal vs Federer", rivalry: "federer-nadal", description: "A 5-hour marathon. Federer holds match points but Nadal prevails in a final-set tiebreak.", surface: "Clay", location: "Rome, Italy", color: "#ff6a21" },
-  { id: 4, year: "2006", event: "Wimbledon Final", matchup: "Federer vs Nadal", rivalry: "federer-nadal", description: "Their first meeting on grass. Federer defends his turf to win his 4th straight Wimbledon.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
-  { id: 5, year: "2007", event: "Wimbledon Final", matchup: "Federer vs Nadal", rivalry: "federer-nadal", description: "Federer equals Borg's record of 5 consecutive titles in another five-set thriller.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
-  { id: 6, year: "2008", event: "Wimbledon Final", matchup: "Nadal vs Federer", rivalry: "federer-nadal", description: "The Greatest Match. Nadal ends Federer's reign in near-darkness after 4h 48m of play.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
-  { id: 7, year: "2009", event: "Australian Open Final", matchup: "Nadal vs Federer", rivalry: "federer-nadal", description: "Nadal wins his first hard-court Slam. An emotional Federer famously breaks down during the ceremony.", surface: "Hard", location: "Melbourne, AUS", color: "#238ef8" },
-  { id: 8, year: "2011", event: "French Open Final", matchup: "Nadal vs Federer", rivalry: "federer-nadal", description: "Nadal's 6th Roland Garros title, overcoming a resurgent Federer who ended Djokovic's streak in the SF.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
-  { id: 9, year: "2017", event: "Australian Open Final", matchup: "Federer vs Nadal", rivalry: "federer-nadal", description: "The Vintage Final. Federer returns from injury to win his 18th Slam after being down a break in the 5th.", surface: "Hard", location: "Melbourne, AUS", color: "#238ef8" },
-  { id: 10, year: "2019", event: "Wimbledon SF", matchup: "Federer vs Nadal", rivalry: "federer-nadal", description: "Their final Slam meeting. Federer wins in 4 sets to reach his last Wimbledon final.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
+const PLAYER_META = {
+  nadal: { name: "Rafael Nadal", short: "Nadal", color: "#ff6a21", bg: "rgba(255,106,33,0.10)", glow: "rgba(255,106,33,0.18)" },
+  djokovic: { name: "Novak Djokovic", short: "Djokovic", color: "#238ef8", bg: "rgba(35,142,248,0.10)", glow: "rgba(35,142,248,0.18)" },
+  federer: { name: "Roger Federer", short: "Federer", color: "#6ac34a", bg: "rgba(106,195,74,0.10)", glow: "rgba(106,195,74,0.18)" },
+} as const;
 
-  // NADAL VS DJOKOVIC
-  { id: 11, year: "2006", event: "French Open QF", matchup: "Nadal vs Djokovic", rivalry: "nadal-djokovic", description: "The start of the most prolific rivalry in Open Era history.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
-  { id: 12, year: "2010", event: "US Open Final", matchup: "Nadal vs Djokovic", rivalry: "nadal-djokovic", description: "Nadal completes the Career Grand Slam, defeating Djokovic in 4 sets.", surface: "Hard", location: "New York, USA", color: "#238ef8" },
-  { id: 13, year: "2011", event: "Wimbledon Final", matchup: "Djokovic vs Nadal", rivalry: "nadal-djokovic", description: "Djokovic defeats Nadal to claim world No. 1 and his first Wimbledon title.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
-  { id: 14, year: "2012", event: "Australian Open Final", matchup: "Djokovic vs Nadal", rivalry: "nadal-djokovic", description: "The Iron Man Match. 5 hours and 53 minutes of brutal baseline warfare.", surface: "Hard", location: "Melbourne, AUS", color: "#238ef8" },
-  { id: 15, year: "2013", event: "French Open SF", matchup: "Nadal vs Djokovic", rivalry: "nadal-djokovic", description: "A clay-court masterpiece. Nadal wins 9-7 in the 5th set of a high-tension SF.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
-  { id: 16, year: "2013", event: "US Open Final", matchup: "Nadal vs Djokovic", rivalry: "nadal-djokovic", description: "Nadal prevails in a physical 4-set final to win his 13th Grand Slam.", surface: "Hard", location: "New York, USA", color: "#238ef8" },
-  { id: 17, year: "2018", event: "Wimbledon SF", matchup: "Djokovic vs Nadal", rivalry: "nadal-djokovic", description: "A two-day epic under the roof. Djokovic wins 10-8 in the 5th set to signal his comeback.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
-  { id: 18, year: "2020", event: "French Open Final", matchup: "Nadal vs Djokovic", rivalry: "nadal-djokovic", description: "Nadal's masterclass. He demolishes Djokovic in straight sets to win his 20th Slam.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
-  { id: 19, year: "2021", event: "French Open SF", matchup: "Djokovic vs Nadal", rivalry: "nadal-djokovic", description: "Djokovic becomes the only man to beat Nadal twice at Roland Garros in a 4-hour war.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
-  { id: 20, year: "2024", event: "Paris Olympics", matchup: "Djokovic vs Nadal", rivalry: "nadal-djokovic", description: "The 60th meeting. Djokovic wins on his way to Golden Slam glory.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
+type Player = keyof typeof PLAYER_META;
 
-  // DJOKOVIC VS FEDERER
-  { id: 21, year: "2007", event: "US Open Final", matchup: "Federer vs Djokovic", rivalry: "federer-djokovic", description: "Federer fends off the young challenger in straight sets to win his 4th straight US Open.", surface: "Hard", location: "New York, USA", color: "#238ef8" },
-  { id: 22, year: "2008", event: "Australian Open SF", matchup: "Djokovic vs Federer", rivalry: "federer-djokovic", description: "Djokovic stuns the defending champion to reach the final and win his 1st Slam.", surface: "Hard", location: "Melbourne, AUS", color: "#238ef8" },
-  { id: 23, year: "2011", event: "French Open SF", matchup: "Federer vs Djokovic", rivalry: "federer-djokovic", description: "The Streak Breaker. Federer ends Djokovic's 43-match win streak in a night-session epic.", surface: "Clay", location: "Paris, FRA", color: "#ff6a21" },
-  { id: 24, year: "2011", event: "US Open SF", matchup: "Djokovic vs Federer", rivalry: "federer-djokovic", description: "The Return. Djokovic saves two match points with a famous cross-court forehand winner.", surface: "Hard", location: "New York, USA", color: "#238ef8" },
-  { id: 25, year: "2014", event: "Wimbledon Final", matchup: "Djokovic vs Federer", rivalry: "federer-djokovic", description: "Djokovic holds off a vintage Federer charge in 5 sets for his 7th Slam.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
-  { id: 26, year: "2015", event: "US Open Final", matchup: "Djokovic vs Federer", rivalry: "federer-djokovic", description: "Djokovic overcomes a pro-Federer crowd and 23 break points to win in 4 sets.", surface: "Hard", location: "New York, USA", color: "#238ef8" },
-  { id: 27, year: "2018", event: "Cincinnati Final", matchup: "Djokovic vs Federer", rivalry: "federer-djokovic", description: "Djokovic completes the 'Golden Masters' by finally winning Cincinnati against Federer.", surface: "Hard", location: "Cincinnati, USA", color: "#238ef8" },
-  { id: 28, year: "2019", event: "Wimbledon Final", matchup: "Djokovic vs Federer", rivalry: "federer-djokovic", description: "The Heartbreaker. Djokovic saves two match points at 8-7 in the 5th to win the longest Wimbledon final.", surface: "Grass", location: "London, UK", color: "#6ac34a" },
+interface Milestone {
+  year: number;
+  player: Player;
+  title: string;
+  detail: string;
+  tag: string;
+}
+
+const milestones: Milestone[] = [
+  { year: 2003, player: "federer", title: "First Wimbledon Title", detail: "At 21, Federer wins his debut Wimbledon without dropping a set — the start of an unprecedented grass-court dynasty.", tag: "Grand Slam" },
+  { year: 2003, player: "federer", title: "Year-End World No. 1", detail: "Claims the top ranking for the first time, beginning a run he would hold for a record 237 consecutive weeks.", tag: "Milestone" },
+  { year: 2004, player: "federer", title: "Australian Open", detail: "Wins in Melbourne, holding three of the four Slams in his sights and cementing himself as the dominant force in tennis.", tag: "Grand Slam" },
+  { year: 2004, player: "nadal", title: "First Win Over World No. 1", detail: "A 17-year-old Nadal shocks Federer in Miami — the first shot fired in what becomes tennis's greatest rivalry.", tag: "Debut" },
+  { year: 2005, player: "nadal", title: "First Roland Garros", detail: "Wins the French Open at 19, dropping just one set all tournament. An era of clay dominance begins.", tag: "Grand Slam" },
+  { year: 2005, player: "federer", title: "Three Slams in a Year", detail: "Australian Open, Wimbledon, and US Open — one of the most dominant single-season performances in Open Era history.", tag: "Milestone" },
+  { year: 2006, player: "nadal", title: "Roland Garros Defense", detail: "Dominant title defense on clay, asserting himself as the undisputed king of the surface.", tag: "Grand Slam" },
+  { year: 2006, player: "djokovic", title: "Top 20 Breakthrough", detail: "The young Serbian breaks into the top 20, signaling a future contender has arrived on tour.", tag: "Debut" },
+  { year: 2007, player: "federer", title: "Five Consecutive Wimbledons", detail: "Equals Björn Borg's record of five straight Wimbledon titles — widely regarded as the pinnacle of his grass dominance.", tag: "Record" },
+  { year: 2007, player: "djokovic", title: "First Grand Slam Final", detail: "Djokovic reaches the US Open final, losing to Federer but announcing himself as a future Slam contender.", tag: "Milestone" },
+  { year: 2008, player: "nadal", title: "Wimbledon — The Greatest Match Ever", detail: "Ending Federer's reign in near-darkness after 4h 48m, Nadal wins what many call the greatest tennis match ever played.", tag: "Grand Slam" },
+  { year: 2008, player: "nadal", title: "Olympic Gold — Beijing", detail: "Wins singles gold in Beijing, completing one leg of the Career Golden Slam.", tag: "Olympic" },
+  { year: 2008, player: "djokovic", title: "First Grand Slam — Australian Open", detail: "Beats Federer in the SF and Tsonga in the final to claim his first Major title at just 20 years old.", tag: "Grand Slam" },
+  { year: 2009, player: "federer", title: "Roland Garros — Career Grand Slam", detail: "Defeating Robin Söderling — who had just beaten Nadal — Federer completes the Career Grand Slam and wins his 14th Major.", tag: "Grand Slam" },
+  { year: 2009, player: "nadal", title: "Australian Open", detail: "Wins his first hard-court Slam. An emotional Federer breaks down during the runner-up speech in one of tennis's most human moments.", tag: "Grand Slam" },
+  { year: 2010, player: "nadal", title: "Career Grand Slam Complete", detail: "A US Open title makes Nadal only the seventh man in history to complete the Career Grand Slam.", tag: "Record" },
+  { year: 2011, player: "djokovic", title: "Historic Season — 43-Match Win Streak", detail: "Three Slams, a 43-0 start to the year, and victories over both rivals multiple times. The greatest single season in Open Era history.", tag: "Record" },
+  { year: 2011, player: "nadal", title: "Roland Garros (6th Title)", detail: "A sixth French Open, defeating Federer who had just ended Djokovic's legendary win streak in the semifinal.", tag: "Grand Slam" },
+  { year: 2012, player: "djokovic", title: "Australian Open — The Iron Man Final", detail: "A 5-hour 53-minute war against Nadal — the longest Grand Slam final in history — goes to Djokovic in five brutal sets.", tag: "Grand Slam" },
+  { year: 2012, player: "federer", title: "Wimbledon — Record 7th Title", detail: "At 30, Federer wins his 7th Wimbledon and 17th Slam, briefly reclaiming the World No. 1 ranking.", tag: "Record" },
+  { year: 2013, player: "nadal", title: "Roland Garros & US Open — The Comeback", detail: "Returning from a career-threatening knee injury, Nadal wins two Slams and reclaims World No. 1 in one of sport's great comebacks.", tag: "Grand Slam" },
+  { year: 2014, player: "nadal", title: "Roland Garros (9th Title)", detail: "A ninth French Open cements his status as the greatest clay court player the sport has ever seen.", tag: "Grand Slam" },
+  { year: 2014, player: "djokovic", title: "Wimbledon Title", detail: "Defeats Federer in a five-set Centre Court final for his second Wimbledon championship.", tag: "Grand Slam" },
+  { year: 2015, player: "djokovic", title: "Three Slams — Dominance Peak", detail: "Australian Open, Wimbledon, and US Open in a single year — the peak of two years of near-total dominance over the tour.", tag: "Grand Slam" },
+  { year: 2016, player: "djokovic", title: "Roland Garros — Career Grand Slam & 'Djokovic Slam'", detail: "Completes the Career Grand Slam and holds all four Slam trophies simultaneously — the first man to do so since Rod Laver.", tag: "Record" },
+  { year: 2017, player: "federer", title: "Australian Open & Wimbledon — The Vintage Return", detail: "After six months off with a knee injury, Federer returns at 35 to win two more Slams with breathtaking artistry.", tag: "Grand Slam" },
+  { year: 2017, player: "nadal", title: "La Decima & US Open", detail: "A record 10th French Open (La Decima) and a US Open title. Nadal reclaims World No. 1 in a stunning resurgence.", tag: "Record" },
+  { year: 2018, player: "federer", title: "Australian Open — 20th Grand Slam", detail: "Wins in Melbourne for his 20th Major — a record that seemed untouchable, set at 36 years of age.", tag: "Record" },
+  { year: 2018, player: "djokovic", title: "Wimbledon & US Open Comeback", detail: "Returning from elbow surgery, Djokovic wins two Slams in the second half of the season in one of tennis's great recoveries.", tag: "Grand Slam" },
+  { year: 2019, player: "djokovic", title: "Wimbledon — The Heartbreaker", detail: "Saves two match points at 8-7 in the 5th to defeat Federer in the longest Wimbledon final ever played. An unforgettable night.", tag: "Grand Slam" },
+  { year: 2019, player: "nadal", title: "Roland Garros (12th) & US Open", detail: "A 12th French Open and US Open double — his 19th Slam, closing in on Federer's then-record.", tag: "Grand Slam" },
+  { year: 2020, player: "nadal", title: "Roland Garros — 20th Slam Equals Federer's Record", detail: "A dominant 13th French Open in straight sets over Djokovic — his 20th Major, matching Federer at the top of the all-time list.", tag: "Record" },
+  { year: 2021, player: "djokovic", title: "Three Slams — Matches The Record at 20", detail: "Wins three Slams to match the then-record of 20 held by both Federer and Nadal, within touching distance of the summit.", tag: "Grand Slam" },
+  { year: 2022, player: "nadal", title: "Australian Open & Roland Garros — 22 Slams, New Record", detail: "Wins the Australian Open from two sets down in the final, then a 14th French Open — 22 Slams and a new all-time record.", tag: "Record" },
+  { year: 2022, player: "federer", title: "Farewell", detail: "Roger Federer announces his retirement from professional tennis. He bows out at the Laver Cup, with Nadal in tears by his side — a fitting end to a shared era.", tag: "Farewell" },
+  { year: 2023, player: "djokovic", title: "US Open — 24th Slam, All-Time Record", detail: "Wins the US Open for his 24th Grand Slam title, standing alone as the most decorated Slam champion in the history of the sport.", tag: "Record" },
+  { year: 2024, player: "djokovic", title: "Olympic Gold — Career Golden Slam Complete", detail: "Wins singles gold in Paris on clay at 37 years old, completing the Career Golden Slam — the final piece of an unmatched résumé.", tag: "Olympic" },
+  { year: 2024, player: "nadal", title: "Farewell", detail: "Rafael Nadal retires from professional tennis at 38. His 14 Roland Garros titles and relentless spirit will never be forgotten.", tag: "Farewell" },
 ];
 
-const filters = [
-  { label: "All Matches", value: "all" },
-  { label: "Federer vs Nadal", value: "federer-nadal" },
-  { label: "Nadal vs Djokovic", value: "nadal-djokovic" },
-  { label: "Federer vs Djokovic", value: "federer-djokovic" },
-];
+const TAG_STYLE: Record<string, string> = {
+  "Grand Slam": "text-[#d9ae64]/80",
+  "Record": "text-red-400/70",
+  "Olympic": "text-blue-300/70",
+  "Farewell": "text-white/35",
+  "Milestone": "text-white/35",
+  "Debut": "text-white/35",
+};
 
 export default function TimelinePage() {
-  const [activeFilter, setFilter] = useState("all");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [filter, setFilter] = useState<"all" | Player>("all");
 
-  const filteredMatches = useMemo(() => {
-    return activeFilter === "all" 
-      ? matchEvents 
-      : matchEvents.filter(m => m.rivalry === activeFilter);
-  }, [activeFilter]);
+  const grouped = useMemo(() => {
+    const filtered = filter === "all" ? milestones : milestones.filter((m) => m.player === filter);
+    const map = new Map<number, Milestone[]>();
+    for (const m of filtered) {
+      if (!map.has(m.year)) map.set(m.year, []);
+      map.get(m.year)!.push(m);
+    }
+    return Array.from(map.entries()).sort(([a], [b]) => a - b);
+  }, [filter]);
 
-  const handleFilterChange = (newFilter: string) => {
-    setFilter(newFilter);
-    setCurrentIndex(0);
-    setDirection(0);
-  };
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 500 : -500,
-      opacity: 0,
-      scale: 0.5,
-      rotateY: direction > 0 ? 45 : -45,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 500 : -500,
-      opacity: 0,
-      scale: 0.5,
-      rotateY: direction < 0 ? 45 : -45,
-    }),
-  };
-
-  const paginate = (newDirection: number) => {
-    if (filteredMatches.length <= 1) return;
-    setDirection(newDirection);
-    setCurrentIndex((prevIndex) => (prevIndex + newDirection + filteredMatches.length) % filteredMatches.length);
-  };
-
-  const currentMatch = filteredMatches[currentIndex] || filteredMatches[0];
+  const activePlayer = filter !== "all" ? PLAYER_META[filter] : null;
 
   return (
-    <div className="relative flex flex-1 flex-col items-center overflow-hidden py-6 lg:py-10">
-      {/* Background Decorative Text */}
-      {currentMatch && (
-        <div className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 select-none opacity-[0.03] transition-all duration-700">
-          <h1 className="text-[20vw] font-black uppercase italic leading-none">
-            {currentMatch.year}
-          </h1>
-        </div>
-      )}
+    <div className="flex flex-col">
+      {/* Background */}
+      <div className="fixed inset-0 -z-10 bg-[#030404]">
+        <div
+          className="absolute inset-0 transition-all duration-700"
+          style={{
+            background: activePlayer
+              ? `radial-gradient(ellipse 80% 55% at 50% 0%, ${activePlayer.glow}, transparent 60%), linear-gradient(180deg,#050606 0%,#030404 100%)`
+              : `radial-gradient(ellipse 80% 40% at 50% 0%, rgba(217,174,100,0.07), transparent 55%), linear-gradient(180deg,#050606 0%,#030404 100%)`,
+          }}
+        />
+        <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:48px_48px]" />
+      </div>
 
-      {/* Filter Bar */}
-      <div className="relative z-30 mb-8 flex flex-wrap justify-center gap-2 px-4">
-        {filters.map((f) => (
+      {/* Page header */}
+      <div className="mb-8 pt-1 sm:mb-10">
+        <div className="text-[10px] font-black uppercase tracking-[0.45em] text-[#d9ae64]/60">
+          2003 — 2024
+        </div>
+        <h1 className="mt-2 text-4xl font-black uppercase italic leading-none sm:text-6xl lg:text-7xl">
+          Career
+          <br />
+          Timeline
+        </h1>
+        <p className="mt-4 max-w-lg text-sm leading-7 text-white/45">
+          Two decades of dominance. The defining moments that shaped three legendary careers and an entire era of tennis.
+        </p>
+      </div>
+
+      {/* Filter bar */}
+      <div className="mb-10 flex flex-wrap gap-2">
+        <button
+          onClick={() => setFilter("all")}
+          className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
+            filter === "all"
+              ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
+              : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
+          }`}
+        >
+          All Players
+        </button>
+        {(Object.entries(PLAYER_META) as [Player, (typeof PLAYER_META)[Player]][]).map(([key, p]) => (
           <button
-            key={f.value}
-            onClick={() => handleFilterChange(f.value)}
-            className={`px-5 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
-              activeFilter === f.value
-                ? "border-[#d9ae64] bg-[#d9ae64] text-black shadow-[0_0_20px_rgba(217,174,100,0.3)]"
-                : "border-white/10 bg-white/5 text-white/50 hover:border-white/30 hover:text-white"
-            }`}
+            key={key}
+            onClick={() => setFilter(key)}
+            className="rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all"
+            style={
+              filter === key
+                ? { color: p.color, borderColor: p.color + "55", backgroundColor: p.color + "14" }
+                : { color: "rgba(255,255,255,0.45)", borderColor: "rgba(255,255,255,0.10)", backgroundColor: "rgba(255,255,255,0.03)" }
+            }
           >
-            {f.label}
+            {p.short}
           </button>
         ))}
       </div>
 
-      <div className="relative z-10 flex w-full max-w-6xl flex-1 items-center justify-between px-4 sm:px-12">
-        {/* Left Arrow */}
-        <button
-          onClick={() => paginate(-1)}
-          disabled={filteredMatches.length <= 1}
-          className={`group relative z-20 hidden h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-black/40 backdrop-blur-md transition-all lg:flex ${
-            filteredMatches.length <= 1 ? "opacity-20 cursor-not-allowed" : "hover:border-[#d9ae64]/50 hover:bg-[#d9ae64]/10"
-          }`}
-        >
-          <ChevronLeft className="h-10 w-10 text-white transition-transform group-hover:-translate-x-1" />
-        </button>
+      {/* Timeline */}
+      <div className="relative pb-20">
+        {/* Vertical spine */}
+        <div className="absolute bottom-0 left-[5px] top-0 w-px bg-white/8" />
 
-        {/* Main Card Container */}
-        <div className="relative h-[480px] w-full max-w-[760px] [perspective:1000px]">
-          <AnimatePresence initial={false} custom={direction} mode="popLayout">
-            {currentMatch ? (
-              <motion.div
-                key={`${activeFilter}-${currentIndex}`}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 },
-                  scale: { duration: 0.4 },
-                  rotateY: { duration: 0.4 },
-                }}
-                className="absolute inset-0 flex flex-col items-center"
-              >
-                <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/15 bg-black/60 shadow-2xl backdrop-blur-xl">
-                  {/* Match Image Placeholder / Gradient */}
-                  <div 
-                    className="absolute inset-0 opacity-40 transition-colors duration-700"
-                    style={{ 
-                      background: `radial-gradient(circle at center, ${currentMatch.color}44, transparent 70%)`,
-                    }}
-                  />
-                  
-                  {/* Content */}
-                  <div className="relative flex h-full flex-col p-8 sm:p-10">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 border border-white/10">
-                          <Calendar className="h-5 w-5 text-[#d9ae64]" />
-                        </div>
-                        <span className="text-xl font-black italic text-[#d9ae64]">
-                          {currentMatch.year}
+        <div className="space-y-12">
+          {grouped.map(([year, events]) => (
+            <div key={year} className="relative pl-9 sm:pl-12">
+              {/* Spine dot */}
+              <div className="absolute left-0 top-[3px] h-[11px] w-[11px] rounded-full border border-white/25 bg-[#030404]" />
+
+              {/* Year label */}
+              <div className="mb-4 flex items-center gap-4">
+                <span className="text-2xl font-black italic text-white/90 sm:text-3xl">{year}</span>
+                <div className="h-px flex-1 max-w-[60px] bg-white/8" />
+              </div>
+
+              {/* Events */}
+              <div className="space-y-3">
+                {events.map((event, i) => {
+                  const p = PLAYER_META[event.player];
+                  return (
+                    <div
+                      key={i}
+                      className="group relative rounded-r border border-white/8 bg-white/[0.025] p-4 transition-all hover:bg-white/[0.04] sm:p-5"
+                      style={{ borderLeftColor: p.color + "70", borderLeftWidth: "2px" }}
+                    >
+                      <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span
+                          className="text-[10px] font-black uppercase tracking-[0.2em]"
+                          style={{ color: p.color }}
+                        >
+                          {p.short}
+                        </span>
+                        <span className="text-white/15">·</span>
+                        <span className={`text-[10px] font-bold uppercase tracking-wide ${TAG_STYLE[event.tag] ?? "text-white/30"}`}>
+                          {event.tag}
                         </span>
                       </div>
-                      <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/60">
-                        Legendary Match
+                      <div className="text-sm font-black uppercase tracking-wide text-white sm:text-[15px]">
+                        {event.title}
                       </div>
+                      <p className="mt-1.5 text-[13px] leading-[1.65] text-white/42">
+                        {event.detail}
+                      </p>
                     </div>
-
-                    <div className="mt-10">
-                      <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">
-                        {currentMatch.event}
-                      </h2>
-                      <h1 className="mt-2 text-3xl font-black uppercase italic leading-none sm:text-5xl">
-                        {currentMatch.matchup}
-                      </h1>
-                    </div>
-
-                    <p className="mt-5 max-w-xl text-base leading-relaxed text-white/60">
-                      {currentMatch.description}
-                    </p>
-
-                    <div className="mt-auto grid grid-cols-2 gap-3">
-                      <div className="flex items-center gap-3 rounded-xl bg-white/5 p-4 border border-white/10">
-                        <Trophy className="h-4 w-4 text-white/30" />
-                        <div>
-                          <div className="text-[9px] font-bold uppercase text-white/25">Surface</div>
-                          <div className="text-xs font-bold uppercase tracking-tight">{currentMatch.surface}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 rounded-xl bg-white/5 p-4 border border-white/10">
-                        <MapPin className="h-4 w-4 text-white/30" />
-                        <div>
-                          <div className="text-[9px] font-bold uppercase text-white/25">Location</div>
-                          <div className="text-xs font-bold uppercase tracking-tight">{currentMatch.location}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Scanlines Effect */}
-                  <div className="pointer-events-none absolute inset-0 opacity-10 [background:repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(255,255,255,0.1)_2px,rgba(255,255,255,0.1)_4px)]" />
-                </div>
-              </motion.div>
-            ) : (
-              <div className="flex h-full items-center justify-center text-white/30 uppercase tracking-widest font-black">
-                No matches found
+                  );
+                })}
               </div>
-            )}
-          </AnimatePresence>
+            </div>
+          ))}
         </div>
 
-        {/* Right Arrow */}
-        <button
-          onClick={() => paginate(1)}
-          disabled={filteredMatches.length <= 1}
-          className={`group relative z-20 hidden h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-black/40 backdrop-blur-md transition-all lg:flex ${
-            filteredMatches.length <= 1 ? "opacity-20 cursor-not-allowed" : "hover:border-[#d9ae64]/50 hover:bg-[#d9ae64]/10"
-          }`}
-        >
-          <ChevronRight className="h-10 w-10 text-white transition-transform group-hover:translate-x-1" />
-        </button>
-      </div>
-
-      {/* Mobile Controls */}
-      <div className="mt-8 flex gap-6 lg:hidden">
-        <button
-          onClick={() => paginate(-1)}
-          disabled={filteredMatches.length <= 1}
-          className="flex h-14 w-16 items-center justify-center rounded-full border border-white/10 bg-black/40 disabled:opacity-20"
-        >
-          <ChevronLeft className="h-6 w-6 text-white" />
-        </button>
-        <button
-          onClick={() => paginate(1)}
-          disabled={filteredMatches.length <= 1}
-          className="flex h-14 w-16 items-center justify-center rounded-full border border-white/10 bg-black/40 disabled:opacity-20"
-        >
-          <ChevronRight className="h-6 w-6 text-white" />
-        </button>
-      </div>
-
-      {/* Pagination Indicators */}
-      <div className="mt-8 flex gap-2">
-        {filteredMatches.map((_, index) => (
-          <div
-            key={index}
-            className={`h-1 transition-all duration-300 rounded-full ${
-              index === currentIndex ? "w-10 bg-[#d9ae64]" : "w-1.5 bg-white/10"
-            }`}
-          />
-        ))}
+        {/* End marker */}
+        <div className="relative mt-12 pl-9 sm:pl-12">
+          <div className="absolute left-0 top-[3px] h-[11px] w-[11px] rounded-full border border-white/15 bg-[#030404]" />
+          <span className="text-[10px] font-black uppercase tracking-[0.35em] text-white/20">End of an Era</span>
+        </div>
       </div>
     </div>
   );

@@ -6,10 +6,8 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Players", href: "/players/rafael-nadal" },
+  { label: "Players", href: "/players/rafael-nadal", activeMatch: "/players" },
   { label: "H2H", href: "/h2h" },
-  { label: "Surfaces", href: "#" },
-  { label: "Grand Slams", href: "#" },
   { label: "Timeline", href: "/timeline" },
 ];
 
@@ -31,12 +29,12 @@ export function Navbar() {
           </div>
         </div>
 
-        <nav className="hidden flex-1 items-center justify-center gap-12 text-sm font-bold uppercase tracking-wide text-white/88 lg:flex xl:gap-16">
+        <nav className="hidden flex-1 items-center justify-center gap-20 text-sm font-bold uppercase tracking-wide text-white/88 lg:flex xl:gap-28">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
                 ? pathname === "/"
-                : pathname.startsWith(item.href) && item.href !== "#";
+                : pathname.startsWith(item.activeMatch ?? item.href) && item.href !== "#";
 
             return (
               <Link
