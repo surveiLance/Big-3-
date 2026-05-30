@@ -39,12 +39,6 @@ const matchups = [
   },
 ];
 
-const SURFACE_GLOW: Record<string, string> = {
-  Clay: "rgba(255,106,33,0.28)",
-  Grass: "rgba(106,195,74,0.28)",
-  Hard: "rgba(35,142,248,0.28)",
-};
-
 interface Match {
   id: number;
   year: string;
@@ -100,24 +94,224 @@ const matches: Match[] = [
   { id: 32, year: "2019", event: "Wimbledon", round: "F", rivalry: "federer-djokovic", p1: "djokovic", p2: "federer", winner: "djokovic", surface: "Grass", location: "London, UK", score: "7-6, 1-6, 7-6, 4-6, 13-12", description: "The Heartbreaker. Djokovic saves two match points at 8-7 in the fifth to win the longest Wimbledon final ever played — Federer's last great shot at a 21st Slam." },
 ];
 
-const FILTERS = [
-  { label: "All Matches", value: "all" },
+const RIVALRY_FILTERS = [
+  { label: "All Rivalries", value: "all" },
   { label: "Federer vs Nadal", value: "federer-nadal" },
   { label: "Nadal vs Djokovic", value: "nadal-djokovic" },
   { label: "Federer vs Djokovic", value: "federer-djokovic" },
 ];
 
+const TOURNAMENT_FILTERS = [
+  { label: "All Tournaments", value: "all", emoji: "🎾", accent: "#d9ae64", border: "rgba(217,174,100,0.35)", activeBg: "rgba(217,174,100,0.12)" },
+  { label: "Wimbledon", value: "Wimbledon", emoji: "🍓", accent: "#a87cd4", border: "rgba(90,50,140,0.60)", activeBg: "rgba(90,50,140,0.18)" },
+  { label: "Roland Garros", value: "Roland Garros", emoji: "⚜️", accent: "#ec7a30", border: "rgba(215,88,28,0.60)", activeBg: "rgba(215,88,28,0.15)" },
+  { label: "Australian Open", value: "Australian Open", emoji: "🇦🇺", accent: "#1e86e2", border: "rgba(0,105,215,0.55)", activeBg: "rgba(0,105,215,0.14)" },
+  { label: "US Open", value: "US Open", emoji: "🗽", accent: "#4468d0", border: "rgba(32,72,185,0.55)", activeBg: "rgba(32,72,185,0.14)" },
+  { label: "Miami Masters", value: "Miami Masters", emoji: "🌴", accent: "#00cce0", border: "rgba(0,178,205,0.55)", activeBg: "rgba(0,178,205,0.12)" },
+  { label: "Paris Olympics", value: "Paris Olympics", emoji: "🥇", accent: "#2268c0", border: "rgba(0,65,158,0.55)", activeBg: "rgba(0,65,158,0.14)" },
+  { label: "Cincinnati Masters", value: "Cincinnati Masters", emoji: "🎾", accent: "#7878dc", border: "rgba(85,65,205,0.45)", activeBg: "rgba(85,65,205,0.12)" },
+];
+
+// ── Tournament visual themes ──────────────────────────────────────────────────
+
+interface Deco {
+  char: string;
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  opacity: number;
+  size: number;
+  rotate: number;
+}
+
+interface TournamentTheme {
+  cardBg: string;
+  texture: string;
+  topGlow: string;
+  border: string;
+  headerBg: string;
+  accentColor: string;
+  venueName: string;
+  venueColor: string;
+  badgeBg: string;
+  badgeText: string;
+  decos: Deco[];
+}
+
+function getTournamentTheme(event: string): TournamentTheme {
+  if (event === "Wimbledon") {
+    return {
+      cardBg: "linear-gradient(160deg, #040f06 0%, #071509 55%, #030a04 100%)",
+      texture:
+        "repeating-linear-gradient(to right, rgba(20,115,35,0.20) 0px, rgba(20,115,35,0.20) 24px, rgba(8,58,14,0.11) 24px, rgba(8,58,14,0.11) 48px)",
+      topGlow: "rgba(90,50,140,0.40)",
+      border: "rgba(90,50,140,0.70)",
+      headerBg: "rgba(90,50,140,0.18)",
+      accentColor: "#a87cd4",
+      venueName: "ALL ENGLAND CLUB · LONDON SW19",
+      venueColor: "#c0a0e4",
+      badgeBg: "rgba(90,50,140,0.28)",
+      badgeText: "#d0b8f0",
+      decos: [
+        { char: "🍓", top: "9%", right: "5%", opacity: 0.75, size: 28, rotate: -14 },
+        { char: "🍓", top: "24%", right: "13%", opacity: 0.32, size: 18, rotate: 20 },
+        { char: "🍓", top: "66%", right: "4%", opacity: 0.42, size: 22, rotate: 9 },
+        { char: "🍓", top: "80%", right: "14%", opacity: 0.20, size: 14, rotate: -6 },
+        { char: "🍓", top: "12%", left: "4%", opacity: 0.18, size: 15, rotate: 28 },
+      ],
+    };
+  }
+
+  if (event === "Roland Garros" || event.startsWith("Roland")) {
+    return {
+      cardBg: "linear-gradient(160deg, #140703 0%, #1d0d05 55%, #0f0402 100%)",
+      texture:
+        "repeating-linear-gradient(152deg, rgba(195,72,20,0.13) 0px, rgba(195,72,20,0.13) 2px, transparent 2px, transparent 14px), repeating-linear-gradient(62deg, rgba(155,52,12,0.07) 0px, rgba(155,52,12,0.07) 2px, transparent 2px, transparent 14px)",
+      topGlow: "rgba(215,88,28,0.36)",
+      border: "rgba(215,88,28,0.65)",
+      headerBg: "rgba(215,88,28,0.14)",
+      accentColor: "#ec7a30",
+      venueName: "STADE ROLAND GARROS · PARIS",
+      venueColor: "#f0a070",
+      badgeBg: "rgba(215,88,28,0.22)",
+      badgeText: "#f5a878",
+      decos: [
+        { char: "⚜️", top: "8%", right: "5%", opacity: 0.50, size: 28, rotate: 0 },
+        { char: "⚜️", top: "72%", right: "5%", opacity: 0.18, size: 18, rotate: 8 },
+        { char: "🏆", bottom: "10%", left: "4%", opacity: 0.14, size: 20, rotate: -5 },
+      ],
+    };
+  }
+
+  if (event.includes("Miami")) {
+    return {
+      cardBg: "linear-gradient(150deg, #011318 0%, #021920 55%, #010d11 100%)",
+      texture:
+        "radial-gradient(ellipse 160% 80% at 50% 115%, rgba(0,178,205,0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 50% at 88% 2%, rgba(255,105,55,0.13) 0%, transparent 48%)",
+      topGlow: "rgba(0,178,205,0.30)",
+      border: "rgba(0,178,205,0.58)",
+      headerBg: "rgba(0,178,205,0.11)",
+      accentColor: "#00cce0",
+      venueName: "MIAMI OPEN · CRANDON PARK TENNIS CENTER",
+      venueColor: "#48dced",
+      badgeBg: "rgba(0,178,205,0.16)",
+      badgeText: "#85ecf8",
+      decos: [
+        { char: "🌴", top: "4%", right: "5%", opacity: 0.42, size: 32, rotate: 6 },
+        { char: "🌴", top: "62%", right: "4%", opacity: 0.20, size: 22, rotate: -7 },
+        { char: "🌊", bottom: "10%", left: "3%", opacity: 0.14, size: 18, rotate: 0 },
+      ],
+    };
+  }
+
+  if (event.includes("Australian Open")) {
+    return {
+      cardBg: "linear-gradient(150deg, #030c1a 0%, #040e22 55%, #020810 100%)",
+      texture:
+        "radial-gradient(ellipse 130% 65% at 50% 112%, rgba(0,105,215,0.18) 0%, transparent 55%)",
+      topGlow: "rgba(0,105,215,0.30)",
+      border: "rgba(0,105,215,0.58)",
+      headerBg: "rgba(0,105,215,0.12)",
+      accentColor: "#1e86e2",
+      venueName: "MELBOURNE PARK · AUSTRALIA",
+      venueColor: "#64aef0",
+      badgeBg: "rgba(0,105,215,0.20)",
+      badgeText: "#88c4ff",
+      decos: [
+        { char: "🇦🇺", top: "8%", right: "5%", opacity: 0.35, size: 28, rotate: 0 },
+        { char: "☀️", top: "68%", right: "5%", opacity: 0.16, size: 20, rotate: 0 },
+      ],
+    };
+  }
+
+  if (event.includes("US Open")) {
+    return {
+      cardBg: "linear-gradient(150deg, #020410 0%, #030616 55%, #01030c 100%)",
+      texture:
+        "radial-gradient(ellipse 155% 85% at 50% 118%, rgba(32,72,185,0.20) 0%, transparent 55%), radial-gradient(ellipse 70% 42% at 92% 4%, rgba(205,162,0,0.13) 0%, transparent 48%)",
+      topGlow: "rgba(32,72,185,0.30)",
+      border: "rgba(32,72,185,0.58)",
+      headerBg: "rgba(32,72,185,0.12)",
+      accentColor: "#4468d0",
+      venueName: "USTA BILLIE JEAN KING NTC · NEW YORK",
+      venueColor: "#8898dc",
+      badgeBg: "rgba(32,72,185,0.20)",
+      badgeText: "#a4b4f2",
+      decos: [
+        { char: "🗽", top: "8%", right: "5%", opacity: 0.28, size: 30, rotate: 0 },
+        { char: "🌃", bottom: "10%", right: "5%", opacity: 0.14, size: 22, rotate: 0 },
+      ],
+    };
+  }
+
+  if (event.includes("Paris Olympics")) {
+    return {
+      cardBg: "linear-gradient(150deg, #140902 0%, #1c0e04 55%, #0f0601 100%)",
+      texture:
+        "repeating-linear-gradient(152deg, rgba(190,68,18,0.11) 0px, rgba(190,68,18,0.11) 2px, transparent 2px, transparent 14px)",
+      topGlow: "rgba(0,65,158,0.32)",
+      border: "rgba(0,65,158,0.58)",
+      headerBg: "rgba(0,65,158,0.12)",
+      accentColor: "#2268c0",
+      venueName: "STADE ROLAND GARROS · PARIS OLYMPICS 2024",
+      venueColor: "#5495dc",
+      badgeBg: "rgba(0,65,158,0.20)",
+      badgeText: "#82b4f2",
+      decos: [
+        { char: "🥇", top: "8%", right: "5%", opacity: 0.55, size: 30, rotate: 0 },
+        { char: "🏅", top: "72%", right: "5%", opacity: 0.20, size: 20, rotate: 8 },
+      ],
+    };
+  }
+
+  if (event.includes("Cincinnati")) {
+    return {
+      cardBg: "linear-gradient(150deg, #060512 0%, #090718 55%, #040410 100%)",
+      texture: "",
+      topGlow: "rgba(85,65,205,0.24)",
+      border: "rgba(85,65,205,0.48)",
+      headerBg: "rgba(85,65,205,0.10)",
+      accentColor: "#7878dc",
+      venueName: "WESTERN & SOUTHERN OPEN · CINCINNATI",
+      venueColor: "#9898e8",
+      badgeBg: "rgba(85,65,205,0.16)",
+      badgeText: "#b4b4f8",
+      decos: [
+        { char: "🎾", top: "8%", right: "5%", opacity: 0.30, size: 26, rotate: 22 },
+      ],
+    };
+  }
+
+  return {
+    cardBg: "linear-gradient(150deg, #080808 0%, #0d0d0d 55%, #050505 100%)",
+    texture: "",
+    topGlow: "rgba(217,174,100,0.22)",
+    border: "rgba(255,255,255,0.12)",
+    headerBg: "rgba(217,174,100,0.07)",
+    accentColor: "#d9ae64",
+    venueName: event.toUpperCase(),
+    venueColor: "#d9ae64",
+    badgeBg: "rgba(217,174,100,0.10)",
+    badgeText: "#e4bd73",
+    decos: [],
+  };
+}
+
 export default function H2HPage() {
   const [rivalry, setRivalry] = useState("all");
+  const [tournament, setTournament] = useState("all");
   const [idx, setIdx] = useState(0);
   const [visible, setVisible] = useState(true);
 
   const filtered = useMemo(() => {
-    const list = rivalry === "all" ? matches : matches.filter((m) => m.rivalry === rivalry);
+    let list = rivalry === "all" ? matches : matches.filter((m) => m.rivalry === rivalry);
+    if (tournament !== "all") list = list.filter((m) => m.event === tournament);
     return list.sort((a, b) => Number(a.year) - Number(b.year));
-  }, [rivalry]);
+  }, [rivalry, tournament]);
 
   const current = filtered[idx] ?? filtered[0];
+  const theme = getTournamentTheme(current?.event ?? "");
 
   const navigate = (dir: number) => {
     if (filtered.length <= 1) return;
@@ -128,8 +322,14 @@ export default function H2HPage() {
     }, 130);
   };
 
-  const handleFilter = (val: string) => {
+  const handleRivalryFilter = (val: string) => {
     setRivalry(val);
+    setIdx(0);
+    setVisible(true);
+  };
+
+  const handleTournamentFilter = (val: string) => {
+    setTournament(val);
     setIdx(0);
     setVisible(true);
   };
@@ -144,45 +344,45 @@ export default function H2HPage() {
       {/* ── Header + Summary Cards ── */}
       <section className="grid gap-7 py-8 sm:py-10 lg:grid-cols-[0.78fr_1.22fr]">
         <FadeUp>
-        <div>
-          <div className="mb-4 flex items-center gap-3 text-[#d6b276]">
-            <Trophy className="h-6 w-6" />
-            <span className="text-xs font-black uppercase tracking-[0.32em]">Rivalry Map</span>
+          <div>
+            <div className="mb-4 flex items-center gap-3 text-[#d6b276]">
+              <Trophy className="h-6 w-6" />
+              <span className="text-xs font-black uppercase tracking-[0.32em]">Rivalry Map</span>
+            </div>
+            <h1 className="text-4xl font-black uppercase italic leading-none sm:text-7xl">
+              Head To
+              <br />
+              Head.
+            </h1>
+            <p className="mt-5 max-w-md text-sm leading-7 text-white/62 sm:mt-6 sm:text-base sm:leading-8">
+              Every match. Every surface. Three rivalries that defined an era of tennis and produced some of the greatest moments the sport has ever seen.
+            </p>
           </div>
-          <h1 className="text-4xl font-black uppercase italic leading-none sm:text-7xl">
-            Head To
-            <br />
-            Head.
-          </h1>
-          <p className="mt-5 max-w-md text-sm leading-7 text-white/62 sm:mt-6 sm:text-base sm:leading-8">
-            Every match. Every surface. Three rivalries that defined an era of tennis and produced some of the greatest moments the sport has ever seen.
-          </p>
-        </div>
         </FadeUp>
 
         <div className="grid gap-3 sm:grid-cols-3">
           {matchups.map((matchup, i) => (
             <FadeUp key={matchup.label} delay={i * 0.1}>
-            <article className="rounded border border-white/15 bg-black/45 p-5 backdrop-blur-md">
-              <div className="text-xs font-black uppercase tracking-wide text-white/52">{matchup.label}</div>
-              <div className="mt-4 text-4xl font-black sm:mt-5 sm:text-5xl">{matchup.record}</div>
-              <div className="mt-2 text-sm font-black uppercase" style={{ color: matchup.left.color }}>
-                {matchup.leader}
-              </div>
-              <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${(Number(matchup.record.split("-")[0]) / matchup.total) * 100}%`,
-                    backgroundColor: matchup.left.color,
-                  }}
-                />
-              </div>
-              <div className="mt-3 flex justify-between text-xs font-bold uppercase text-white/45">
-                <span>{matchup.left.short}</span>
-                <span>{matchup.right.short}</span>
-              </div>
-            </article>
+              <article className="rounded border border-white/15 bg-black/45 p-5 backdrop-blur-md">
+                <div className="text-xs font-black uppercase tracking-wide text-white/52">{matchup.label}</div>
+                <div className="mt-4 text-4xl font-black sm:mt-5 sm:text-5xl">{matchup.record}</div>
+                <div className="mt-2 text-sm font-black uppercase" style={{ color: matchup.left.color }}>
+                  {matchup.leader}
+                </div>
+                <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${(Number(matchup.record.split("-")[0]) / matchup.total) * 100}%`,
+                      backgroundColor: matchup.left.color,
+                    }}
+                  />
+                </div>
+                <div className="mt-3 flex justify-between text-xs font-bold uppercase text-white/45">
+                  <span>{matchup.left.short}</span>
+                  <span>{matchup.right.short}</span>
+                </div>
+              </article>
             </FadeUp>
           ))}
         </div>
@@ -197,21 +397,49 @@ export default function H2HPage() {
           </p>
         </div>
 
-        {/* Filter */}
-        <div className="mb-7 flex flex-wrap gap-2">
-          {FILTERS.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => handleFilter(f.value)}
-              className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
-                rivalry === f.value
-                  ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
-                  : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        {/* Tournament filter */}
+        <div className="mb-5">
+          <div className="mb-2 text-[9px] font-black uppercase tracking-[0.3em] text-white/25">Tournament</div>
+          <div className="flex flex-wrap gap-2">
+            {TOURNAMENT_FILTERS.map((f) => {
+              const active = tournament === f.value;
+              return (
+                <button
+                  key={f.value}
+                  onClick={() => handleTournamentFilter(f.value)}
+                  className="flex items-center gap-1.5 rounded border px-3.5 py-2 text-[11px] font-black uppercase tracking-wide transition-all"
+                  style={{
+                    borderColor: active ? f.border : "rgba(255,255,255,0.08)",
+                    background: active ? f.activeBg : "rgba(255,255,255,0.02)",
+                    color: active ? f.accent : "rgba(255,255,255,0.38)",
+                  }}
+                >
+                  <span>{f.emoji}</span>
+                  <span>{f.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Rivalry filter */}
+        <div className="mb-7">
+          <div className="mb-2 text-[9px] font-black uppercase tracking-[0.3em] text-white/25">Rivalry</div>
+          <div className="flex flex-wrap gap-2">
+            {RIVALRY_FILTERS.map((f) => (
+              <button
+                key={f.value}
+                onClick={() => handleRivalryFilter(f.value)}
+                className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
+                  rivalry === f.value
+                    ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
+                    : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Carousel */}
@@ -228,42 +456,96 @@ export default function H2HPage() {
           {/* Card */}
           {current && (
             <div
-              className={`relative min-h-[380px] flex-1 overflow-hidden rounded-xl border border-white/12 bg-black/58 backdrop-blur-xl transition-opacity duration-[130ms] sm:min-h-[360px] ${
+              className={`relative min-h-[440px] flex-1 overflow-hidden rounded-xl transition-opacity duration-[130ms] sm:min-h-[420px] ${
                 visible ? "opacity-100" : "opacity-0"
               }`}
+              style={{
+                background: theme.cardBg,
+                border: `1px solid ${theme.border}`,
+              }}
             >
-              {/* Surface glow */}
+              {/* Court texture overlay */}
+              {theme.texture && (
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{ background: theme.texture }}
+                />
+              )}
+
+              {/* Top radial glow */}
               <div
-                className="pointer-events-none absolute inset-0 transition-all duration-500"
+                className="pointer-events-none absolute inset-x-0 top-0 h-56"
                 style={{
-                  background: `radial-gradient(ellipse 80% 55% at 50% -5%, ${SURFACE_GLOW[current.surface]}, transparent 60%)`,
+                  background: `radial-gradient(ellipse 85% 60% at 50% -10%, ${theme.topGlow}, transparent 75%)`,
                 }}
               />
 
-              <div className="relative flex h-full flex-col p-6 sm:p-8">
-                {/* Top row */}
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.35em] text-white/35">
-                      {current.event} · {current.round}
-                    </div>
-                    <div className="mt-1 text-3xl font-black italic text-[#d9ae64] sm:text-4xl">
-                      {current.year}
-                    </div>
+              {/* Scattered decorative elements */}
+              {theme.decos.map((d, i) => (
+                <div
+                  key={i}
+                  className="pointer-events-none absolute select-none leading-none"
+                  style={{
+                    top: d.top,
+                    bottom: d.bottom,
+                    left: d.left,
+                    right: d.right,
+                    opacity: d.opacity,
+                    fontSize: d.size,
+                    transform: `rotate(${d.rotate}deg)`,
+                    filter: "drop-shadow(0 0 8px rgba(0,0,0,0.6))",
+                  }}
+                >
+                  {d.char}
+                </div>
+              ))}
+
+              {/* Tournament venue header strip */}
+              <div
+                className="relative flex items-center justify-between gap-4 border-b px-6 py-3.5 sm:px-8"
+                style={{ borderColor: theme.border, background: theme.headerBg }}
+              >
+                <div className="min-w-0 flex-1">
+                  <div
+                    className="truncate text-[9px] font-black uppercase tracking-[0.42em]"
+                    style={{ color: theme.venueColor }}
+                  >
+                    {theme.venueName}
                   </div>
-                  <div className="shrink-0 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-white/45">
-                    {current.surface}
+                  <div className="mt-0.5 text-[10px] font-black uppercase tracking-wide text-white/28">
+                    {current.event} · {current.round}
                   </div>
+                </div>
+                <div
+                  className="shrink-0 rounded border px-2.5 py-1 text-[9px] font-black uppercase tracking-widest"
+                  style={{
+                    borderColor: theme.border,
+                    background: theme.badgeBg,
+                    color: theme.badgeText,
+                  }}
+                >
+                  {current.surface}
+                </div>
+              </div>
+
+              {/* Main content */}
+              <div className="relative flex flex-col p-6 sm:p-8">
+                {/* Year */}
+                <div
+                  className="text-4xl font-black italic sm:text-5xl"
+                  style={{ color: theme.accentColor }}
+                >
+                  {current.year}
                 </div>
 
                 {/* Matchup */}
-                <div className="mt-5 text-3xl font-black uppercase italic leading-none sm:text-5xl">
+                <div className="mt-4 text-3xl font-black uppercase italic leading-none sm:text-5xl">
                   <span style={{ color: players[current.p1].color }}>{players[current.p1].short}</span>
                   <span className="text-white/20"> vs </span>
                   <span style={{ color: players[current.p2].color }}>{players[current.p2].short}</span>
                 </div>
 
-                {/* Score */}
+                {/* Score + winner */}
                 <div className="mt-3 text-sm font-black text-white/55 sm:text-base">
                   {current.score}
                   <span
@@ -275,26 +557,19 @@ export default function H2HPage() {
                 </div>
 
                 {/* Description */}
-                <p className="mt-4 flex-1 text-sm leading-[1.7] text-white/48 sm:text-[15px]">
+                <p className="mt-4 flex-1 text-sm leading-[1.75] text-white/48 sm:text-[15px]">
                   {current.description}
                 </p>
 
-                {/* Bottom info */}
-                <div className="mt-5 grid grid-cols-2 gap-2.5">
-                  <div className="flex items-center gap-3 rounded-lg border border-white/8 bg-white/[0.03] px-4 py-3">
-                    <Trophy className="h-3.5 w-3.5 shrink-0 text-white/25" />
-                    <div>
-                      <div className="text-[9px] font-bold uppercase tracking-wide text-white/25">Surface</div>
-                      <div className="text-[11px] font-black uppercase">{current.surface}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 rounded-lg border border-white/8 bg-white/[0.03] px-4 py-3">
-                    <MapPin className="h-3.5 w-3.5 shrink-0 text-white/25" />
-                    <div>
-                      <div className="text-[9px] font-bold uppercase tracking-wide text-white/25">Location</div>
-                      <div className="text-[11px] font-black uppercase">{current.location}</div>
-                    </div>
-                  </div>
+                {/* Location footer */}
+                <div className="mt-5 flex items-center gap-2.5">
+                  <MapPin className="h-3.5 w-3.5 shrink-0" style={{ color: theme.accentColor, opacity: 0.7 }} />
+                  <span
+                    className="text-[11px] font-black uppercase tracking-wide"
+                    style={{ color: theme.accentColor, opacity: 0.7 }}
+                  >
+                    {current.location}
+                  </span>
                 </div>
               </div>
             </div>
@@ -316,7 +591,10 @@ export default function H2HPage() {
             {filtered.map((_, i) => (
               <button
                 key={i}
-                onClick={() => { setVisible(false); setTimeout(() => { setIdx(i); setVisible(true); }, 130); }}
+                onClick={() => {
+                  setVisible(false);
+                  setTimeout(() => { setIdx(i); setVisible(true); }, 130);
+                }}
                 className="h-1 rounded-full transition-all duration-300"
                 style={{
                   width: i === idx ? 28 : 6,
