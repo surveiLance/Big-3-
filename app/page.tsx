@@ -10,19 +10,19 @@ const players = [
     first: "Rafael",
     last: "Nadal",
     color: "#ff6a21",
-    stats: ["22", "92", "209", "83.1%", "36"],
+    stats: ["22", "92", "209", "82.6%", "36"],
   },
   {
     first: "Novak",
     last: "Djokovic",
     color: "#238ef8",
-    stats: ["24", "98", "428", "83.7%", "40"],
+    stats: ["24", "101", "428", "83.2%", "40"],
   },
   {
     first: "Roger",
     last: "Federer",
     color: "#6ac34a",
-    stats: ["20", "103", "310", "81.9%", "28"],
+    stats: ["20", "103", "310", "82.0%", "28"],
   },
 ];
 
@@ -43,7 +43,7 @@ const surfaceCards = [
   },
   {
     first: "Novak", last: "Djokovic", nickname: "The Djoker", color: "#238ef8",
-    surface: "Hard", winRate: "84.3%", record: "734–136",
+    surface: "Hard", winRate: "84.4%", record: "734–136",
     signature: "10", signatureLabel: "Australian Open Titles",
     detail: "Unmatched consistency across the world's fastest courts.",
   },
@@ -122,7 +122,7 @@ export default function Home() {
         <div className="rounded border border-white/18 bg-black/58 p-4 backdrop-blur-md sm:p-6">
           <h2 className="mb-5 text-lg font-black uppercase tracking-wide">Grand Slam Titles</h2>
           <p className="mb-6 text-sm leading-6 text-white/62">
-            The Big Three won 66 out of the 82 Grand Slam tournaments held between Wimbledon 2003 and the 2023 U.S. Open.
+            The Big Three won 66 of the 81 Grand Slam tournaments held from Wimbledon 2003 through the 2023 U.S. Open.
           </p>
           <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-7">
             <div className="relative grid h-32 w-32 shrink-0 place-items-center rounded-full bg-[conic-gradient(#ff6a21_0_33.33%,#238ef8_33.33%_69.69%,#6ac34a_69.69%_100%)] sm:h-36 sm:w-36">
@@ -146,6 +146,11 @@ export default function Home() {
         </div>
       </section>
       </FadeUp>
+
+      {/* Source attribution */}
+      <p className="mt-1 text-right text-[10px] text-white/22 tracking-wide">
+        Stats source: ATP Tour and official tournament records, updated June 2026.
+      </p>
 
       {/* Surface dominance */}
       <section className="relative z-20 mt-3 grid grid-cols-1 gap-3 pb-3 sm:grid-cols-3">

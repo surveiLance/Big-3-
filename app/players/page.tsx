@@ -40,7 +40,7 @@ const players = [
     `,
     stat: "24 Grand Slams",
     slams: "24",
-    titles: "98",
+    titles: "101",
     avatar: novakDjokovic,
   },
   {

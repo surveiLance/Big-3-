@@ -34,8 +34,8 @@ const players = [
       { label: "Grand Slam Titles", value: "22" },
       { label: "ATP Titles", value: "92" },
       { label: "Weeks at No. 1", value: "209" },
-      { label: "Career Win %", value: "83.1%" },
-      { label: "Matches Won", value: "1,044" },
+      { label: "Career Win %", value: "82.6%" },
+      { label: "Matches Won", value: "1,080" },
     ],
     slams: [
       { event: "Australian Open", count: 2, max: 10 },
@@ -82,10 +82,10 @@ const players = [
       "The most decorated Grand Slam champion in history. Djokovic's iron will and complete technical mastery allowed him to dominate every surface and every era he competed in.",
     stats: [
       { label: "Grand Slam Titles", value: "24" },
-      { label: "ATP Titles", value: "98" },
+      { label: "ATP Titles", value: "101" },
       { label: "Weeks at No. 1", value: "428" },
-      { label: "Career Win %", value: "83.7%" },
-      { label: "Matches Won", value: "1,096" },
+      { label: "Career Win %", value: "83.2%" },
+      { label: "Matches Won", value: "1,172" },
     ],
     slams: [
       { event: "Australian Open", count: 10, max: 10 },
@@ -95,7 +95,7 @@ const players = [
     ],
     surfaces: [
       { name: "Clay", winRate: "75.7%", record: "311–100", pct: 76 },
-      { name: "Hard", winRate: "84.3%", record: "734–136", pct: 84 },
+      { name: "Hard", winRate: "84.4%", record: "734–136", pct: 84 },
       { name: "Grass", winRate: "78.3%", record: "119–33", pct: 78 },
     ],
     h2h: [
@@ -134,7 +134,7 @@ const players = [
       { label: "Grand Slam Titles", value: "20" },
       { label: "ATP Titles", value: "103" },
       { label: "Weeks at No. 1", value: "310" },
-      { label: "Career Win %", value: "81.9%" },
+      { label: "Career Win %", value: "82.0%" },
       { label: "Matches Won", value: "1,251" },
     ],
     slams: [
@@ -145,7 +145,7 @@ const players = [
     ],
     surfaces: [
       { name: "Clay", winRate: "73.9%", record: "295–104", pct: 74 },
-      { name: "Hard", winRate: "78.8%", record: "634–170", pct: 79 },
+      { name: "Hard", winRate: "78.9%", record: "634–170", pct: 79 },
       { name: "Grass", winRate: "86.9%", record: "192–29", pct: 87 },
     ],
     h2h: [

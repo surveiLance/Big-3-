@@ -26,7 +26,7 @@ const players = [
       { label: "Grand Slams", value: "22" },
       { label: "ATP Titles", value: "92" },
       { label: "Weeks #1", value: "209" },
-      { label: "Win Rate", value: "83.1%" },
+      { label: "Win Rate", value: "82.6%" },
     ],
   },
   {
@@ -42,9 +42,9 @@ const players = [
     avatar: novakDjokovic,
     stats: [
       { label: "Grand Slams", value: "24" },
-      { label: "ATP Titles", value: "98" },
+      { label: "ATP Titles", value: "101" },
       { label: "Weeks #1", value: "428" },
-      { label: "Win Rate", value: "83.7%" },
+      { label: "Win Rate", value: "83.2%" },
     ],
   },
   {
@@ -62,7 +62,7 @@ const players = [
       { label: "Grand Slams", value: "20" },
       { label: "ATP Titles", value: "103" },
       { label: "Weeks #1", value: "310" },
-      { label: "Win Rate", value: "81.9%" },
+      { label: "Win Rate", value: "82.0%" },
     ],
   },
 ];
