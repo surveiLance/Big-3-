@@ -44,7 +44,7 @@ const players = [
       { event: "US Open", count: 4, max: 5 },
     ],
     surfaces: [
-      { name: "Clay", winRate: "92.4%", record: "450–37", pct: 92 },
+      { name: "Clay", winRate: "90.5%", record: "484–51", pct: 91 },
       { name: "Hard", winRate: "77.2%", record: "370–109", pct: 77 },
       { name: "Grass", winRate: "73.3%", record: "85–31", pct: 73 },
     ],
@@ -95,7 +95,7 @@ const players = [
     ],
     surfaces: [
       { name: "Clay", winRate: "75.7%", record: "311–100", pct: 76 },
-      { name: "Hard", winRate: "84.3%", record: "596–111", pct: 84 },
+      { name: "Hard", winRate: "84.3%", record: "734–136", pct: 84 },
       { name: "Grass", winRate: "78.3%", record: "119–33", pct: 78 },
     ],
     h2h: [
@@ -146,7 +146,7 @@ const players = [
     surfaces: [
       { name: "Clay", winRate: "73.9%", record: "295–104", pct: 74 },
       { name: "Hard", winRate: "78.8%", record: "634–170", pct: 79 },
-      { name: "Grass", winRate: "87.4%", record: "187–27", pct: 87 },
+      { name: "Grass", winRate: "86.9%", record: "192–29", pct: 87 },
     ],
     h2h: [
       { vs: "Nadal", wins: 16, losses: 24, leads: false, color: "#ff6a21" },

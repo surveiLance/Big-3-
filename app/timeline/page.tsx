@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const PLAYER_META = {
   nadal: { name: "Rafael Nadal", short: "Nadal", color: "#ff6a21", bg: "rgba(255,106,33,0.10)", glow: "rgba(255,106,33,0.18)" },
@@ -70,8 +71,15 @@ const TAG_STYLE: Record<string, string> = {
   "Debut": "text-white/35",
 };
 
+const ALL_YEARS = [...new Set(milestones.map((m) => m.year))].sort((a, b) => a - b);
+
 export default function TimelinePage() {
   const [filter, setFilter] = useState<"all" | Player>("all");
+
+  const activeYears = useMemo(() => {
+    const filtered = filter === "all" ? milestones : milestones.filter((m) => m.player === filter);
+    return new Set(filtered.map((m) => m.year));
+  }, [filter]);
 
   const grouped = useMemo(() => {
     const filtered = filter === "all" ? milestones : milestones.filter((m) => m.player === filter);
@@ -143,6 +151,40 @@ export default function TimelinePage() {
         ))}
       </div>
 
+      {/* Year navigator */}
+      <div className="mb-10 overflow-x-auto">
+        <div className="flex min-w-max items-start pb-6 pt-1">
+          {ALL_YEARS.map((year, i) => {
+            const isActive = activeYears.has(year);
+            return (
+              <div key={year} className="flex items-start">
+                {i > 0 && (
+                  <div className="mt-[4px] h-px w-7 shrink-0 bg-white/10" />
+                )}
+                <button
+                  onClick={() => document.getElementById(`year-${year}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  className="group flex flex-col items-center gap-2.5 px-0.5"
+                >
+                  <div
+                    className="h-[9px] w-[9px] rounded-full transition-all duration-300 group-hover:scale-125"
+                    style={{
+                      backgroundColor: isActive ? "#d9ae64" : "rgba(255,255,255,0.12)",
+                      boxShadow: isActive ? "0 0 7px rgba(217,174,100,0.5)" : "none",
+                    }}
+                  />
+                  <span
+                    className="font-mono text-[9px] leading-none transition-colors duration-300"
+                    style={{ color: isActive ? "rgba(217,174,100,0.55)" : "rgba(255,255,255,0.18)" }}
+                  >
+                    {year}
+                  </span>
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Timeline */}
       <div className="relative pb-20">
         {/* Vertical spine */}
@@ -154,7 +196,7 @@ export default function TimelinePage() {
             const featuredImg = events.find((e) => e.img)?.img ?? null;
 
             return (
-              <div key={year} className="lg:grid lg:grid-cols-[1fr_280px] lg:gap-8">
+              <div key={year} id={`year-${year}`} style={{ scrollMarginTop: "90px" }} className="lg:grid lg:grid-cols-[1fr_300px] lg:gap-10">
                 {/* ── Left: spine + events ── */}
                 <div className="relative pl-9 sm:pl-12">
                   {/* Spine dot */}
@@ -200,42 +242,48 @@ export default function TimelinePage() {
                   </div>
                 </div>
 
-                {/* ── Right: image slot (desktop only) ── */}
-                <div className="hidden lg:flex lg:flex-col lg:pt-[42px]">
-                  <div
-                    className="relative w-full overflow-hidden rounded-xl border"
-                    style={{
-                      aspectRatio: "4/3",
-                      borderColor: primaryPlayer.color + "28",
-                      backgroundColor: primaryPlayer.color + "06",
-                    }}
-                  >
-                    {featuredImg ? (
-                      <Image
-                        src={featuredImg}
-                        alt={`${year}`}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      /* Placeholder shown until a real photo is added */
-                      <div className="flex h-full flex-col items-center justify-center gap-3 p-4 text-center">
-                        <div
-                          className="text-6xl font-black italic opacity-[0.07]"
-                          style={{ color: primaryPlayer.color }}
-                        >
-                          {year}
-                        </div>
-                        <div
-                          className="text-[9px] font-black uppercase tracking-[0.35em] opacity-30"
-                          style={{ color: primaryPlayer.color }}
-                        >
-                          Photo
-                        </div>
+                {/* ── Right: one image slot per event (desktop only) ── */}
+                <motion.div
+                  className="hidden lg:flex lg:flex-col lg:gap-3 lg:pt-[42px]"
+                  initial={{ opacity: 0, x: 28 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.5, ease: [0, 0, 0.2, 1] }}
+                >
+                  {events.map((event, ei) => {
+                    const p = PLAYER_META[event.player];
+                    return (
+                      <div
+                        key={ei}
+                        className="relative w-full overflow-hidden rounded-xl border"
+                        style={{
+                          aspectRatio: events.length === 1 ? "3/4" : "16/9",
+                          borderColor: p.color + "28",
+                          backgroundColor: p.color + "06",
+                        }}
+                      >
+                        {event.img ? (
+                          <Image src={event.img} alt={event.title} fill className="object-cover" />
+                        ) : (
+                          <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center">
+                            <div
+                              className="text-5xl font-black italic opacity-[0.07]"
+                              style={{ color: p.color }}
+                            >
+                              {year}
+                            </div>
+                            <div
+                              className="text-[9px] font-black uppercase tracking-[0.35em] opacity-25"
+                              style={{ color: p.color }}
+                            >
+                              {p.short}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </div>
+                    );
+                  })}
+                </motion.div>
               </div>
             );
           })}

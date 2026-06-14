@@ -37,19 +37,19 @@ const statRows = [
 const surfaceCards = [
   {
     first: "Rafael", last: "Nadal", nickname: "King of Clay", color: "#ff6a21",
-    surface: "Clay", winRate: "92.4%", record: "450–37",
+    surface: "Clay", winRate: "90.5%", record: "484–51",
     signature: "14", signatureLabel: "Roland Garros Titles",
     detail: "The most dominant surface record in tennis history.",
   },
   {
     first: "Novak", last: "Djokovic", nickname: "The Djoker", color: "#238ef8",
-    surface: "Hard", winRate: "84.3%", record: "596–111",
+    surface: "Hard", winRate: "84.3%", record: "734–136",
     signature: "10", signatureLabel: "Australian Open Titles",
     detail: "Unmatched consistency across the world's fastest courts.",
   },
   {
     first: "Roger", last: "Federer", nickname: "The Maestro", color: "#6ac34a",
-    surface: "Grass", winRate: "87.4%", record: "187–27",
+    surface: "Grass", winRate: "86.9%", record: "192–29",
     signature: "8", signatureLabel: "Wimbledon Titles",
     detail: "The most complete grass-court game the sport has ever seen.",
   },
