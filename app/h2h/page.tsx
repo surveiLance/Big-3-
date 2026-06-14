@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Trophy, ChevronLeft, ChevronRight } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 import { FadeUp } from "@/components/FadeUp";
 
 const players = {
@@ -261,41 +262,84 @@ function matchCategory(event: string): { label: string; color: string } {
   return { label: "ATP Tour", color: "rgba(255,255,255,0.38)" };
 }
 
-const FILTERS = [
-  { label: "All Matches", value: "all" },
+const RIVALRY_FILTERS = [
+  { label: "All Rivalries", value: "all" },
   { label: "Federer vs Nadal", value: "federer-nadal" },
   { label: "Nadal vs Djokovic", value: "nadal-djokovic" },
   { label: "Federer vs Djokovic", value: "federer-djokovic" },
 ];
 
+const TOURNAMENT_FILTERS = [
+  { label: "All", value: "all" },
+  { label: "Grand Slams", value: "Grand Slam" },
+  { label: "Masters 1000", value: "Masters 1000" },
+  { label: "ATP Finals", value: "ATP Finals" },
+  { label: "Olympics", value: "Olympics" },
+];
+
+function shortEvent(event: string): string {
+  return event
+    .replace(/^ATP Masters 1000 /, "")
+    .replace("Tennis Masters Cup", "YEC")
+    .replace("Nitto ATP Finals", "ATP Finals");
+}
+
+function buildFiltered(rivalryVal: string, tournamentVal: string) {
+  let list = matches;
+  if (rivalryVal !== "all") list = list.filter((m) => m.rivalry === rivalryVal);
+  if (tournamentVal !== "all") list = list.filter((m) => matchCategory(m.event).label === tournamentVal);
+  return [...list].sort((a, b) => Number(a.year) - Number(b.year));
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function H2HPage() {
   const [rivalry, setRivalry] = useState("all");
-  const [idx, setIdx] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [tournament, setTournament] = useState("all");
+  const [selectedId, setSelectedId] = useState<number>(matches[0]?.id ?? 1);
+  const activeItemRef = useRef<HTMLButtonElement | null>(null);
 
-  const filtered = useMemo(() => {
-    const list = rivalry === "all" ? matches : matches.filter((m) => m.rivalry === rivalry);
-    return list.sort((a, b) => Number(a.year) - Number(b.year));
-  }, [rivalry]);
+  const filtered = useMemo(() => buildFiltered(rivalry, tournament), [rivalry, tournament]);
 
-  const current = filtered[idx] ?? filtered[0];
+  const currentIdx = useMemo(() => {
+    const i = filtered.findIndex((m) => m.id === selectedId);
+    return i >= 0 ? i : 0;
+  }, [filtered, selectedId]);
+
+  const current = filtered[currentIdx] ?? null;
+
+  // Auto-scroll the list so the active row stays in view
+  useEffect(() => {
+    activeItemRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [selectedId]);
+
+  // When a filter changes, land on the match closest to the current year
+  const applyFilter = (newRivalry: string, newTournament: string) => {
+    const targetYear = current?.year ?? "2004";
+    const newList = buildFiltered(newRivalry, newTournament);
+    const idx = newList.findIndex((m) => m.year >= targetYear);
+    const best = newList[idx >= 0 ? idx : Math.max(0, newList.length - 1)];
+    setRivalry(newRivalry);
+    setTournament(newTournament);
+    if (best) setSelectedId(best.id);
+  };
 
   const navigate = (dir: number) => {
     if (filtered.length <= 1) return;
-    setVisible(false);
-    setTimeout(() => {
-      setIdx((prev) => (prev + dir + filtered.length) % filtered.length);
-      setVisible(true);
-    }, 130);
+    const newIdx = (currentIdx + dir + filtered.length) % filtered.length;
+    setSelectedId(filtered[newIdx].id);
   };
 
-  const handleFilter = (val: string) => {
-    setRivalry(val);
-    setIdx(0);
-    setVisible(true);
-  };
+  const groupedByYear = useMemo(() => {
+    const map = new Map<string, Match[]>();
+    for (const m of filtered) {
+      if (!map.has(m.year)) map.set(m.year, []);
+      map.get(m.year)!.push(m);
+    }
+    return Array.from(map.entries());
+  }, [filtered]);
+
+  const uniqueYears = useMemo(() => [...new Set(filtered.map((m) => m.year))], [filtered]);
 
   return (
     <div className="flex flex-col">
@@ -351,21 +395,22 @@ export default function H2HPage() {
         </div>
       </section>
 
-      {/* ── Match History Carousel ── */}
-      <section className="pb-10">
-        <div className="mb-6">
+      {/* ── Match History ── */}
+      <section className="pb-16">
+        <div className="mb-5">
           <h2 className="text-xl font-black uppercase tracking-wide">Match History</h2>
           <p className="mt-1 text-sm text-white/42">
-            {filtered.length} encounters · navigate with the arrows or filter by rivalry
+            {filtered.length} {filtered.length === 1 ? "encounter" : "encounters"}
+            {current ? ` · currently viewing ${current.year}` : ""}
           </p>
         </div>
 
-        {/* Filter */}
-        <div className="mb-7 flex flex-wrap gap-2">
-          {FILTERS.map((f) => (
+        {/* Rivalry filter */}
+        <div className="mb-2 flex flex-wrap gap-2">
+          {RIVALRY_FILTERS.map((f) => (
             <button
               key={f.value}
-              onClick={() => handleFilter(f.value)}
+              onClick={() => applyFilter(f.value, tournament)}
               className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
                 rivalry === f.value
                   ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
@@ -377,128 +422,208 @@ export default function H2HPage() {
           ))}
         </div>
 
-        {/* Carousel */}
-        <div className="flex items-center gap-3 sm:gap-5">
-          {/* Prev */}
-          <button
-            onClick={() => navigate(-1)}
-            disabled={filtered.length <= 1}
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
+        {/* Tournament filter */}
+        <div className="mb-7 flex flex-wrap gap-2">
+          {TOURNAMENT_FILTERS.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => applyFilter(rivalry, f.value)}
+              className={`rounded border px-3 py-1.5 text-[10px] font-black uppercase tracking-wide transition-all ${
+                tournament === f.value
+                  ? "border-white/30 bg-white/[0.08] text-white/85"
+                  : "border-white/8 bg-white/[0.02] text-white/32 hover:text-white/55"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
 
-          {/* Card */}
-          {current && (() => {
-            const cat = matchCategory(current.event);
-            return (
-              <div
-                className={`relative flex-1 overflow-hidden rounded-xl border border-white/12 bg-black/58 backdrop-blur-xl transition-opacity duration-[130ms] ${
-                  visible ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                {/* Surface glow */}
-                <div
-                  className="pointer-events-none absolute inset-0 transition-all duration-500"
-                  style={{
-                    background: `radial-gradient(ellipse 80% 55% at 50% -5%, ${SURFACE_GLOW[current.surface]}, transparent 60%)`,
-                  }}
-                />
-                {/* Top accent line */}
-                <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: players[current.winner].color }} />
+        {filtered.length === 0 ? (
+          <div className="rounded-xl border border-white/8 p-12 text-center text-sm text-white/28">
+            No matches for this filter combination.
+          </div>
+        ) : (
+          <div className="grid gap-5 lg:grid-cols-[260px_1fr]">
 
-                <div className="relative flex flex-col p-6 sm:p-8">
-                  {/* Row 1: category + surface pill */}
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2.5">
-                      <span className="text-[9px] font-black uppercase tracking-[0.38em]" style={{ color: cat.color }}>
-                        {cat.label}
-                      </span>
-                      <span className="text-white/15">·</span>
-                      <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-white/32">{current.round}</span>
+            {/* ── Left: scrollable match list (desktop only) ── */}
+            <div className="hidden overflow-hidden rounded-xl border border-white/8 lg:flex lg:flex-col" style={{ maxHeight: "520px" }}>
+              <div className="shrink-0 border-b border-white/8 px-4 py-2.5 text-[9px] font-black uppercase tracking-[0.4em] text-white/25">
+                {filtered.length} matches
+              </div>
+              <div className="overflow-y-auto">
+                {groupedByYear.map(([year, yearMatches]) => (
+                  <div key={year}>
+                    <div className="sticky top-0 z-10 border-b border-white/[0.05] bg-[#030404]/95 px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.35em] text-white/22 backdrop-blur-sm">
+                      {year}
                     </div>
-                    <div className="shrink-0 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[9px] font-black uppercase tracking-widest text-white/45">
-                      {current.surface}
-                    </div>
+                    {yearMatches.map((match) => {
+                      const isActive = match.id === selectedId;
+                      return (
+                        <button
+                          key={match.id}
+                          ref={isActive ? (el) => { activeItemRef.current = el; } : undefined}
+                          onClick={() => setSelectedId(match.id)}
+                          className={`w-full border-b border-white/[0.04] px-4 py-2.5 text-left transition-colors ${
+                            isActive ? "bg-white/[0.07]" : "hover:bg-white/[0.04]"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: players[match.winner].color }} />
+                            <span className="truncate text-[11px] font-bold text-white/65">{shortEvent(match.event)}</span>
+                          </div>
+                          <div className="mt-0.5 pl-3.5 text-[9px] text-white/28">
+                            {players[match.p1].short} vs {players[match.p2].short} · {match.round}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
+                ))}
+              </div>
+            </div>
 
-                  {/* Row 2: year + event name */}
-                  <div className="mt-3">
-                    <div className="text-4xl font-black italic text-[#d9ae64] sm:text-5xl">{current.year}</div>
-                    <div className="mt-1 text-[11px] font-bold uppercase tracking-wide text-white/28">{current.event}</div>
-                  </div>
+            {/* ── Right: year scrubber (mobile) + slider + card + arrows ── */}
+            <div className="flex flex-col gap-4">
 
-                  {/* Row 3: matchup */}
-                  <div className="mt-5 text-3xl font-black uppercase italic leading-none sm:text-5xl">
-                    <span style={{ color: players[current.p1].color }}>{players[current.p1].short}</span>
-                    <span className="text-white/18"> vs </span>
-                    <span style={{ color: players[current.p2].color }}>{players[current.p2].short}</span>
-                  </div>
-
-                  {/* Row 4: score */}
-                  <div className="mt-3 flex items-baseline gap-3">
-                    <span className="text-lg font-black text-white/60 sm:text-xl">{current.score}</span>
-                    <span
-                      className="text-[10px] font-black uppercase tracking-wide"
-                      style={{ color: players[current.winner].color }}
-                    >
-                      {players[current.winner].short} wins
-                    </span>
-                  </div>
-
-                  {/* Row 5: 3-chip stat bar */}
-                  <div className="mt-5 grid grid-cols-3 gap-2">
-                    <div className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2.5 text-center">
-                      <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Surface</div>
-                      <div className="mt-0.5 text-[10px] font-black uppercase">{current.surface}</div>
-                    </div>
-                    <div className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2.5 text-center">
-                      <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Round</div>
-                      <div className="mt-0.5 text-[10px] font-black uppercase leading-tight">{current.round}</div>
-                    </div>
-                    <div
-                      className="rounded-lg border px-3 py-2.5 text-center"
-                      style={{
-                        borderColor: players[current.winner].color + "35",
-                        backgroundColor: players[current.winner].color + "0a",
-                      }}
-                    >
-                      <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Winner</div>
-                      <div
-                        className="mt-0.5 text-[10px] font-black uppercase"
-                        style={{ color: players[current.winner].color }}
+              {/* Year scrubber — mobile only */}
+              <div className="overflow-x-auto lg:hidden">
+                <div className="flex min-w-max items-start pb-2">
+                  {uniqueYears.map((year, i) => (
+                    <div key={year} className="flex items-start">
+                      {i > 0 && <div className="mt-[3px] h-px w-5 shrink-0 bg-white/10" />}
+                      <button
+                        onClick={() => {
+                          const first = filtered.find((m) => m.year === year);
+                          if (first) setSelectedId(first.id);
+                        }}
+                        className="flex flex-col items-center gap-1.5 px-0.5"
                       >
-                        {players[current.winner].short}
-                      </div>
+                        <div
+                          className="h-2 w-2 rounded-full transition-all"
+                          style={{
+                            backgroundColor: current?.year === year ? "#d9ae64" : "rgba(255,255,255,0.14)",
+                            boxShadow: current?.year === year ? "0 0 5px rgba(217,174,100,0.5)" : "none",
+                          }}
+                        />
+                        <span
+                          className="font-mono text-[8px] leading-none"
+                          style={{ color: current?.year === year ? "rgba(217,174,100,0.7)" : "rgba(255,255,255,0.2)" }}
+                        >
+                          {year}
+                        </span>
+                      </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
-            );
-          })()}
 
-          {/* Next */}
-          <button
-            onClick={() => navigate(1)}
-            disabled={filtered.length <= 1}
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
+              {/* Slider */}
+              <div className="px-1">
+                <Slider
+                  value={[currentIdx]}
+                  min={0}
+                  max={Math.max(0, filtered.length - 1)}
+                  step={1}
+                  showTooltip
+                  tooltipContent={(val) => {
+                    const m = filtered[val];
+                    return m ? `${m.year} · ${shortEvent(m.event)}` : "";
+                  }}
+                  onValueChange={([val]) => setSelectedId(filtered[val].id)}
+                />
+                <div className="mt-2 flex justify-between text-[9px] font-mono text-white/22">
+                  <span>{filtered[0]?.year}</span>
+                  <span className="font-black text-white/35">{currentIdx + 1} / {filtered.length}</span>
+                  <span>{filtered[filtered.length - 1]?.year}</span>
+                </div>
+              </div>
 
-        {/* Progress */}
-        <div className="mt-5 flex items-center justify-center gap-4">
-          <div className="h-px w-32 overflow-hidden rounded-full bg-white/10 sm:w-48">
-            <div
-              className="h-full rounded-full bg-[#d9ae64]/60 transition-all duration-200"
-              style={{ width: `${((idx + 1) / filtered.length) * 100}%` }}
-            />
+              {/* Card + prev/next arrows */}
+              <div className="flex items-center gap-3 sm:gap-5">
+                <button
+                  onClick={() => navigate(-1)}
+                  disabled={filtered.length <= 1}
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+
+                {current && (() => {
+                  const cat = matchCategory(current.event);
+                  return (
+                    <div className="relative flex-1 overflow-hidden rounded-xl border border-white/12 bg-black/58 backdrop-blur-xl">
+                      <div
+                        className="pointer-events-none absolute inset-0"
+                        style={{ background: `radial-gradient(ellipse 80% 55% at 50% -5%, ${SURFACE_GLOW[current.surface]}, transparent 60%)` }}
+                      />
+                      <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: players[current.winner].color }} />
+
+                      <div className="relative flex flex-col p-5 sm:p-7">
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-2.5">
+                            <span className="text-[9px] font-black uppercase tracking-[0.35em]" style={{ color: cat.color }}>{cat.label}</span>
+                            <span className="text-white/15">·</span>
+                            <span className="text-[9px] font-bold uppercase tracking-wide text-white/30">{current.round}</span>
+                          </div>
+                          <div className="shrink-0 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[9px] font-black uppercase tracking-widest text-white/42">
+                            {current.surface}
+                          </div>
+                        </div>
+
+                        <div className="mt-3">
+                          <div className="text-4xl font-black italic text-[#d9ae64] sm:text-5xl">{current.year}</div>
+                          <div className="mt-0.5 text-[11px] font-bold uppercase tracking-wide text-white/28">{current.event}</div>
+                        </div>
+
+                        <div className="mt-4 text-3xl font-black uppercase italic leading-none sm:text-5xl">
+                          <span style={{ color: players[current.p1].color }}>{players[current.p1].short}</span>
+                          <span className="text-white/18"> vs </span>
+                          <span style={{ color: players[current.p2].color }}>{players[current.p2].short}</span>
+                        </div>
+
+                        <div className="mt-3 flex items-baseline gap-3">
+                          <span className="text-base font-black text-white/58 sm:text-lg">{current.score}</span>
+                          <span className="text-[10px] font-black uppercase tracking-wide" style={{ color: players[current.winner].color }}>
+                            {players[current.winner].short} wins
+                          </span>
+                        </div>
+
+                        <div className="mt-4 grid grid-cols-3 gap-2">
+                          <div className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2.5 text-center">
+                            <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Surface</div>
+                            <div className="mt-0.5 text-[10px] font-black uppercase">{current.surface}</div>
+                          </div>
+                          <div className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2.5 text-center">
+                            <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Round</div>
+                            <div className="mt-0.5 text-[10px] font-black uppercase leading-tight">{current.round}</div>
+                          </div>
+                          <div
+                            className="rounded-lg border px-3 py-2.5 text-center"
+                            style={{ borderColor: players[current.winner].color + "35", backgroundColor: players[current.winner].color + "0a" }}
+                          >
+                            <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Winner</div>
+                            <div className="mt-0.5 text-[10px] font-black uppercase" style={{ color: players[current.winner].color }}>
+                              {players[current.winner].short}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <button
+                  onClick={() => navigate(1)}
+                  disabled={filtered.length <= 1}
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
           </div>
-          <span className="text-[11px] font-black tabular-nums text-white/28">
-            {idx + 1} / {filtered.length}
-          </span>
-        </div>
+        )}
       </section>
     </div>
   );
