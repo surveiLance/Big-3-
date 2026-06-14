@@ -19,8 +19,8 @@ const players = [
     color: "#ff6a21",
     softColor: "rgba(255, 106, 33, 0.5)",
     glow: "rgba(255, 111, 28, 0.22)",
-    // horizontal center of this player's column on the full page (for the page-bg glow)
     bgX: "50%",
+    active: false,
     avatar: rafaelNadal,
     stats: [
       { label: "Grand Slams", value: "22" },
@@ -39,6 +39,7 @@ const players = [
     softColor: "rgba(35, 142, 248, 0.5)",
     glow: "rgba(27, 129, 238, 0.22)",
     bgX: "70%",
+    active: true,
     avatar: novakDjokovic,
     stats: [
       { label: "Grand Slams", value: "24" },
@@ -57,6 +58,7 @@ const players = [
     softColor: "rgba(106, 195, 74, 0.5)",
     glow: "rgba(64, 154, 66, 0.22)",
     bgX: "88%",
+    active: false,
     avatar: rogerFederer,
     stats: [
       { label: "Grand Slams", value: "20" },
@@ -156,11 +158,19 @@ export function HeroSection() {
           <div
             className={`transition-all duration-500 ${active ? "relative opacity-100" : "absolute opacity-0 pointer-events-none"}`}
           >
-            <div
-              className="text-xs font-black uppercase tracking-[0.32em]"
-              style={{ color: active?.color }}
-            >
-              {active?.nickname}
+            <div className="flex items-center gap-2.5">
+              <div
+                className="text-xs font-black uppercase tracking-[0.32em]"
+                style={{ color: active?.color }}
+              >
+                {active?.nickname}
+              </div>
+              {active?.active && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/12 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-emerald-400">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                  Active
+                </span>
+              )}
             </div>
             <h1 className="mt-2 text-4xl font-black uppercase italic leading-[0.98] tracking-wide sm:text-7xl lg:text-[4.9rem]">
               {active?.first}

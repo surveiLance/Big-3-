@@ -234,6 +234,11 @@ export default async function PlayerPage({
                 </div>
               ))}
             </div>
+            {player.retired === "Active" && (
+              <p className="mt-2 text-right text-[10px] text-white/30 tracking-wide">
+                Stats as of June 2026 · Still competing
+              </p>
+            )}
 
             {/* Grand Slam breakdown */}
             <div className="mt-5 rounded border border-white/12 bg-black/45 p-5 backdrop-blur-md sm:mt-6">

@@ -23,6 +23,7 @@ const players = [
     stat: "22 Grand Slams",
     slams: "22",
     titles: "92",
+    active: false,
     avatar: rafaelNadal,
   },
   {
@@ -41,6 +42,7 @@ const players = [
     stat: "24 Grand Slams",
     slams: "24",
     titles: "101",
+    active: true,
     avatar: novakDjokovic,
   },
   {
@@ -59,6 +61,7 @@ const players = [
     stat: "103 ATP Titles",
     slams: "20",
     titles: "103",
+    active: false,
     avatar: rogerFederer,
   },
 ];
@@ -115,11 +118,19 @@ export default function PlayersPage() {
             {/* Bottom content */}
             <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
               {/* Nickname */}
-              <div
-                className="mb-2 text-[10px] font-black uppercase tracking-[0.35em]"
-                style={{ color: player.color }}
-              >
-                {player.nickname}
+              <div className="mb-2 flex items-center gap-2">
+                <div
+                  className="text-[10px] font-black uppercase tracking-[0.35em]"
+                  style={{ color: player.color }}
+                >
+                  {player.nickname}
+                </div>
+                {player.active && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-emerald-400">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                    Active
+                  </span>
+                )}
               </div>
 
               {/* Name */}

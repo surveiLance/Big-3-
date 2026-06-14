@@ -11,18 +11,21 @@ const players = [
     last: "Nadal",
     color: "#ff6a21",
     stats: ["22", "92", "209", "82.6%", "36"],
+    active: false,
   },
   {
     first: "Novak",
     last: "Djokovic",
     color: "#238ef8",
     stats: ["24", "101", "428", "83.2%", "40"],
+    active: true,
   },
   {
     first: "Roger",
     last: "Federer",
     color: "#6ac34a",
     stats: ["20", "103", "310", "82.0%", "28"],
+    active: false,
   },
 ];
 
@@ -103,8 +106,16 @@ export default function Home() {
               </div>
               {players.map((player) => (
                 <div key={player.last} className="border-white/10 text-center lg:border-l">
-                  <div className="mb-5 text-sm font-black uppercase tracking-wide" style={{ color: player.color }}>
-                    {player.first} {player.last}
+                  <div className="mb-5 flex flex-col items-center gap-1.5">
+                    <span className="text-sm font-black uppercase tracking-wide" style={{ color: player.color }}>
+                      {player.first} {player.last}
+                    </span>
+                    {player.active && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/12 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-emerald-400">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                        Active
+                      </span>
+                    )}
                   </div>
                   <div className="grid grid-rows-5 gap-4 text-xl font-black text-white">
                     {player.stats.map((stat, index) => (
@@ -149,7 +160,7 @@ export default function Home() {
 
       {/* Source attribution */}
       <p className="mt-1 text-right text-[10px] text-white/22 tracking-wide">
-        Stats source: ATP Tour and official tournament records, updated June 2026.
+        Stats source: ATP Tour and official tournament records. Federer (ret. 2022) and Nadal (ret. 2024) stats are final. Djokovic stats as of June 2026.
       </p>
 
       {/* Surface dominance */}
