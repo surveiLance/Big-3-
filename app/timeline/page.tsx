@@ -122,10 +122,10 @@ export default function TimelinePage() {
       </div>
 
       {/* Filter bar */}
-      <div className="no-scrollbar -mx-3 mb-7 flex gap-2 overflow-x-auto px-3 sm:mx-0 sm:mb-8 sm:flex-wrap sm:overflow-visible sm:px-0">
+      <div className="mb-7 grid grid-cols-2 gap-2 sm:mb-8 sm:flex sm:flex-wrap">
         <button
           onClick={() => setFilter("all")}
-          className={`shrink-0 rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
+          className={`rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
             filter === "all"
               ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
               : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
@@ -137,7 +137,7 @@ export default function TimelinePage() {
           <button
             key={key}
             onClick={() => setFilter(key)}
-            className="shrink-0 rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all"
+            className="rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all"
             style={
               filter === key
                 ? { color: p.color, borderColor: p.color + "55", backgroundColor: p.color + "14" }
@@ -150,28 +150,28 @@ export default function TimelinePage() {
       </div>
 
       {/* Year navigator */}
-      <div className="no-scrollbar -mx-3 mb-8 overflow-x-auto px-3 sm:mx-0 sm:mb-10 sm:px-0">
-        <div className="flex min-w-max items-start pb-4 pt-1">
+      <div className="mb-8 sm:mb-10">
+        <div className="grid grid-cols-4 gap-2 min-[430px]:grid-cols-6 sm:flex sm:min-w-max sm:items-start sm:gap-0 sm:pb-4 sm:pt-1">
           {ALL_YEARS.map((year, i) => {
             const isActive = activeYears.has(year);
             return (
-              <div key={year} className="flex items-start">
+              <div key={year} className="flex items-start justify-center sm:justify-start">
                 {i > 0 && (
-                  <div className="mt-[4px] h-px w-7 shrink-0 bg-white/10" />
+                  <div className="mt-[4px] hidden h-px w-7 shrink-0 bg-white/10 sm:block" />
                 )}
                 <button
                   onClick={() => document.getElementById(`year-${year}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                  className="group flex flex-col items-center gap-2.5 px-0.5"
+                  className="group flex w-full flex-col items-center gap-1.5 rounded-lg border border-white/8 bg-white/[0.025] px-2 py-2 sm:w-auto sm:border-0 sm:bg-transparent sm:px-0.5 sm:py-0 sm:gap-2.5"
                 >
                   <div
-                    className="h-[9px] w-[9px] rounded-full transition-all duration-300 group-hover:scale-125"
+                    className="hidden h-[9px] w-[9px] rounded-full transition-all duration-300 group-hover:scale-125 sm:block"
                     style={{
                       backgroundColor: isActive ? "#d9ae64" : "rgba(255,255,255,0.12)",
                       boxShadow: isActive ? "0 0 7px rgba(217,174,100,0.5)" : "none",
                     }}
                   />
                   <span
-                    className="font-mono text-[9px] leading-none transition-colors duration-300"
+                    className="font-mono text-[10px] leading-none transition-colors duration-300 sm:text-[9px]"
                     style={{ color: isActive ? "rgba(217,174,100,0.55)" : "rgba(255,255,255,0.18)" }}
                   >
                     {year}

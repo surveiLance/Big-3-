@@ -385,8 +385,6 @@ export default function H2HPage() {
     return Array.from(map.entries());
   }, [filtered]);
 
-  const uniqueYears = useMemo(() => [...new Set(filtered.map((m) => m.year))], [filtered]);
-
   return (
     <div className="flex flex-col">
       <div className="fixed inset-0 -z-10 overflow-hidden bg-[#030404]">
@@ -413,10 +411,10 @@ export default function H2HPage() {
           </div>
         </FadeUp>
 
-        <div className="no-scrollbar -mx-3 flex gap-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0">
+        <div className="grid gap-3 sm:grid-cols-3">
           {matchups.map((matchup, i) => (
             <FadeUp key={matchup.label} delay={i * 0.1}>
-              <article className="w-[78vw] rounded-xl border border-white/15 bg-black/45 p-4 backdrop-blur-md min-[460px]:w-[340px] sm:w-auto sm:p-5">
+              <article className="rounded-xl border border-white/15 bg-black/45 p-4 backdrop-blur-md sm:p-5">
                 <div className="text-xs font-black uppercase tracking-wide text-white/52">{matchup.label}</div>
                 <div className="mt-4 text-4xl font-black sm:mt-5 sm:text-5xl">{matchup.record}</div>
                 <div className="mt-2 text-sm font-black uppercase" style={{ color: matchup.left.color }}>
@@ -452,12 +450,12 @@ export default function H2HPage() {
         </div>
 
         {/* Rivalry filter */}
-        <div className="no-scrollbar -mx-3 mb-2 flex gap-2 overflow-x-auto px-3 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+        <div className="mb-2 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
           {RIVALRY_FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => applyFilter(f.value, tournament)}
-              className={`shrink-0 rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
+              className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-wide transition-all sm:px-4 sm:text-[11px] ${
                 rivalry === f.value
                   ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
                   : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
@@ -469,12 +467,12 @@ export default function H2HPage() {
         </div>
 
         {/* Tournament filter */}
-        <div className="no-scrollbar -mx-3 mb-7 flex gap-2 overflow-x-auto px-3 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+        <div className="mb-7 grid grid-cols-2 gap-2 min-[430px]:grid-cols-3 sm:flex sm:flex-wrap">
           {TOURNAMENT_FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => applyFilter(rivalry, f.value)}
-              className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-wide transition-all ${
+              className={`rounded-full border px-3 py-1.5 text-[9px] font-black uppercase tracking-wide transition-all sm:text-[10px] ${
                 tournament === f.value
                   ? "border-white/30 bg-white/[0.08] text-white/85"
                   : "border-white/8 bg-white/[0.02] text-white/32 hover:text-white/55"
@@ -529,41 +527,8 @@ export default function H2HPage() {
               </div>
             </div>
 
-            {/* ── Right: year scrubber (mobile) + slider + card + arrows ── */}
+            {/* ── Right: slider + card + arrows ── */}
             <div className="flex flex-col gap-4">
-
-              {/* Year scrubber — mobile only */}
-              <div className="no-scrollbar -mx-3 overflow-x-auto px-3 lg:hidden">
-                <div className="flex min-w-max items-start pb-2">
-                  {uniqueYears.map((year, i) => (
-                    <div key={year} className="flex items-start">
-                      {i > 0 && <div className="mt-[3px] h-px w-5 shrink-0 bg-white/10" />}
-                      <button
-                        onClick={() => {
-                          const first = filtered.find((m) => m.year === year);
-                          if (first) setSelectedId(first.id);
-                        }}
-                        className="flex flex-col items-center gap-1.5 px-0.5"
-                      >
-                        <div
-                          className="h-2 w-2 rounded-full transition-all"
-                          style={{
-                            backgroundColor: current?.year === year ? "#d9ae64" : "rgba(255,255,255,0.14)",
-                            boxShadow: current?.year === year ? "0 0 5px rgba(217,174,100,0.5)" : "none",
-                          }}
-                        />
-                        <span
-                          className="font-mono text-[8px] leading-none"
-                          style={{ color: current?.year === year ? "rgba(217,174,100,0.7)" : "rgba(255,255,255,0.2)" }}
-                        >
-                          {year}
-                        </span>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               {/* Slider */}
               <div className="px-1">
                 <Slider
