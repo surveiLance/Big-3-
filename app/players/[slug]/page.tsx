@@ -186,19 +186,19 @@ export default async function PlayerPage({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_110%_100%_at_50%_50%,transparent_55%,rgba(0,0,0,0.65)_100%)]" />
       </div>
 
-      <div className="mt-6 flex-1 sm:mt-8">
+      <div className="mt-4 flex-1 sm:mt-8">
         {/* Nav */}
-        <div className="mb-8 flex items-center justify-between sm:mb-10">
+        <div className="mb-6 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-center sm:justify-between">
           <Link href="/" className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-white/55 transition hover:text-white">
             <ArrowLeft className="h-4 w-4" />
             Dashboard
           </Link>
-          <div className="flex items-center gap-2">
-            <Link href={`/players/${prevPlayer.slug}`} className="flex items-center gap-1.5 rounded border border-white/12 bg-white/[0.04] px-3 py-2 text-xs font-black uppercase tracking-wide text-white/55 transition hover:border-white/22 hover:text-white">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+            <Link href={`/players/${prevPlayer.slug}`} className="flex items-center justify-center gap-1.5 rounded-full border border-white/12 bg-white/[0.04] px-3 py-2 text-xs font-black uppercase tracking-wide text-white/55 transition hover:border-white/22 hover:text-white">
               <ChevronLeft className="h-3.5 w-3.5" />
               {prevPlayer.last}
             </Link>
-            <Link href={`/players/${nextPlayer.slug}`} className="flex items-center gap-1.5 rounded border border-white/12 bg-white/[0.04] px-3 py-2 text-xs font-black uppercase tracking-wide text-white/55 transition hover:border-white/22 hover:text-white">
+            <Link href={`/players/${nextPlayer.slug}`} className="flex items-center justify-center gap-1.5 rounded-full border border-white/12 bg-white/[0.04] px-3 py-2 text-xs font-black uppercase tracking-wide text-white/55 transition hover:border-white/22 hover:text-white">
               {nextPlayer.last}
               <ChevronRight className="h-3.5 w-3.5" />
             </Link>
@@ -206,19 +206,17 @@ export default async function PlayerPage({
         </div>
 
         {/* Hero: name + stats + image */}
-        <section className="relative z-10 grid flex-1 gap-8 md:grid-cols-[1.1fr_0.9fr]">
-          <div className="flex flex-col">
+        <section className="relative z-10 flex flex-col gap-5 md:grid md:grid-cols-[1.1fr_0.9fr] md:gap-8">
+          <div className="order-2 flex flex-col md:order-1">
             <div className="mb-3 text-sm font-black uppercase tracking-[0.3em]" style={{ color: player.color }}>
               {player.nickname}
             </div>
-            <h1 className="text-4xl font-black uppercase italic leading-none sm:text-7xl lg:text-8xl">
+            <h1 className="text-3xl font-black uppercase italic leading-none sm:text-5xl md:text-7xl lg:text-8xl">
               {player.name}
             </h1>
-            <div className="mt-3 flex gap-4 text-[11px] font-bold uppercase tracking-wide text-white/38">
+            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-bold uppercase tracking-wide text-white/38">
               <span>{player.nationality}</span>
-              <span>·</span>
               <span>Pro {player.turnedPro}</span>
-              <span>·</span>
               <span>{player.retired}</span>
             </div>
             <p className="mt-5 max-w-xl text-sm leading-7 text-white/55 sm:mt-6 sm:text-base sm:leading-8">
@@ -226,11 +224,11 @@ export default async function PlayerPage({
             </p>
 
             {/* Key stats */}
-            <div className="mt-8 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            <div className="mt-7 grid grid-cols-2 gap-2.5 sm:mt-8 sm:grid-cols-3">
               {player.stats.map((stat) => (
-                <div key={stat.label} className="rounded border border-white/10 bg-white/[0.03] px-4 py-3.5 backdrop-blur-sm">
-                  <div className="text-2xl font-black sm:text-3xl" style={{ color: player.color }}>{stat.value}</div>
-                  <div className="mt-1 text-[10px] font-bold uppercase tracking-wide text-white/42">{stat.label}</div>
+                <div key={stat.label} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-3 backdrop-blur-sm sm:px-4 sm:py-3.5">
+                  <div className="text-xl font-black sm:text-3xl" style={{ color: player.color }}>{stat.value}</div>
+                  <div className="mt-1 text-[9px] font-bold uppercase tracking-wide text-white/42 sm:text-[10px]">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -241,7 +239,7 @@ export default async function PlayerPage({
             )}
 
             {/* Grand Slam breakdown */}
-            <div className="mt-5 rounded border border-white/12 bg-black/45 p-5 backdrop-blur-md sm:mt-6">
+            <div className="mt-5 rounded-xl border border-white/12 bg-black/45 p-4 backdrop-blur-md sm:mt-6 sm:p-5">
               <h2 className="mb-5 text-[11px] font-black uppercase tracking-[0.3em] text-white/45">Grand Slam Breakdown</h2>
               <div className="space-y-4">
                 {player.slams.map((slam) => (
@@ -260,7 +258,7 @@ export default async function PlayerPage({
           </div>
 
           {/* Player image */}
-          <div className="relative min-h-[360px] sm:min-h-[520px]">
+          <div className="relative order-1 min-h-[300px] sm:min-h-[520px] md:order-2">
             <div className="absolute inset-x-[-5%] bottom-0 top-[8%] blur-3xl" style={{ background: `radial-gradient(ellipse 70% 80% at 50% 68%, ${player.softColor}, transparent 68%)` }} />
             <div className="absolute inset-x-[10%] bottom-0 h-[18%] blur-2xl" style={{ background: `radial-gradient(ellipse 80% 100% at 50% 100%, ${player.softColor.replace("0.45", "0.35")}, transparent 70%)` }} />
             <Image src={player.avatar} alt={player.name} fill priority sizes="(min-width: 768px) 520px, 90vw" className="object-contain object-bottom drop-shadow-[0_0_48px_rgba(0,0,0,0.9)]" />
@@ -269,11 +267,11 @@ export default async function PlayerPage({
 
         {/* Surface performance */}
         <FadeUp>
-          <section className="mt-6">
+          <section className="mt-8 sm:mt-6">
             <h2 className="mb-4 text-[11px] font-black uppercase tracking-[0.3em] text-white/45">Surface Performance</h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {player.surfaces.map((s) => (
-                <div key={s.name} className="rounded border border-white/12 bg-black/40 p-5 backdrop-blur-md">
+              <div key={s.name} className="rounded-xl border border-white/12 bg-black/40 p-4 backdrop-blur-md sm:p-5">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="text-xs font-black uppercase tracking-widest text-white/50">{s.name}</div>
                     <div className="text-[10px] font-bold text-white/30">{s.record}</div>
@@ -291,7 +289,7 @@ export default async function PlayerPage({
 
         {/* Signature records + H2H */}
         <FadeUp delay={0.1}>
-          <section className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
+          <section className="mt-5 grid gap-4 lg:grid-cols-[1fr_auto]">
             {/* Signature records */}
             <div>
               <h2 className="mb-4 text-[11px] font-black uppercase tracking-[0.3em] text-white/45">Signature Records</h2>
@@ -307,7 +305,7 @@ export default async function PlayerPage({
             </div>
 
             {/* H2H snapshot */}
-            <div className="min-w-[220px]">
+            <div className="min-w-0 lg:min-w-[220px]">
               <h2 className="mb-4 text-[11px] font-black uppercase tracking-[0.3em] text-white/45">Head to Head</h2>
               <div className="space-y-3">
                 {player.h2h.map((r) => (

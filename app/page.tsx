@@ -112,7 +112,7 @@ export default function Home() {
 
       {/* ── BIG 3 IN NUMBERS ── */}
       <FadeUp>
-        <section className="mt-16 sm:mt-20">
+        <section className="mt-12 sm:mt-20">
           <div className="mb-6">
             <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">By The Numbers</p>
             <h2 className="mt-1.5 text-2xl font-black uppercase italic sm:text-3xl">The Big 3</h2>
@@ -199,25 +199,25 @@ export default function Home() {
       {/* ── GRAND SLAM ERA ── */}
       <FadeUp>
         <section className="mt-8">
-          <div className="mb-5 flex items-end justify-between">
+          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">Grand Slam Era</p>
               <h2 className="mt-1.5 text-2xl font-black uppercase italic sm:text-3xl">
                 66 <span className="text-white/22">of 81</span>
               </h2>
             </div>
-            <p className="text-right text-[11px] leading-5 text-white/35">
+            <p className="text-[11px] leading-5 text-white/35 sm:text-right">
               81% of all Slams<br />
               <span className="text-white/20">Wimbledon 2003 – US Open 2023</span>
             </p>
           </div>
 
           {/* 4 stadium image cards */}
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2.5 min-[430px]:grid-cols-2 sm:grid-cols-4">
             {slamCards.map((slam) => {
               const leader = leaderIdx(slam.counts);
               return (
-                <div key={slam.name} className="group relative h-52 overflow-hidden rounded-xl sm:h-60">
+                <div key={slam.name} className="group relative h-48 overflow-hidden rounded-xl min-[430px]:h-52 sm:h-60">
                   {/* Stadium photo */}
                   <Image
                     src={slam.img}
@@ -281,9 +281,9 @@ export default function Home() {
           </div>
 
           {/* Combined totals row */}
-          <div className="mt-3 flex items-center justify-between rounded-xl border border-white/8 bg-black/30 px-4 py-3 backdrop-blur-md">
+          <div className="mt-3 flex flex-col gap-3 rounded-xl border border-white/8 bg-black/30 px-4 py-3 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
             <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Combined</span>
-            <div className="flex items-center gap-5">
+            <div className="grid grid-cols-3 gap-3 sm:flex sm:items-center sm:gap-5">
               {PLAYERS.map(({ key, name, color }) => {
                 const total = slamCards.reduce((sum, s) => sum + s.counts[PLAYERS.findIndex(p => p.key === key)], 0);
                 return (
@@ -299,7 +299,7 @@ export default function Home() {
       </FadeUp>
 
       {/* Source */}
-      <p className="mt-2 text-right text-[10px] text-white/18 tracking-wide">
+      <p className="mt-2 text-left text-[10px] tracking-wide text-white/18 sm:text-right">
         Stats source: ATP Tour and official tournament records, updated June 2026.
       </p>
 
@@ -341,7 +341,7 @@ export default function Home() {
 
       {/* ── CTA ── */}
       <FadeUp delay={0.05}>
-        <section className="mt-14 border-t border-white/8 pb-20 pt-12 sm:mt-16">
+        <section className="mt-12 border-t border-white/8 pb-20 pt-10 sm:mt-16 sm:pt-12">
           <div className="mb-8 text-center">
             <p className="text-[9px] font-black uppercase tracking-[0.45em] text-white/30">Go deeper</p>
             <h2 className="mt-2 text-3xl font-black uppercase italic sm:text-4xl">Explore The Era</h2>

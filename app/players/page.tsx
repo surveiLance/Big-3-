@@ -81,7 +81,7 @@ export default function PlayersPage() {
           <FadeUp key={player.slug} delay={i * 0.15}>
           <Link
             href={`/players/${player.slug}`}
-            className="group relative flex min-h-[75vh] flex-col overflow-hidden rounded-xl border border-white/10 sm:min-h-[560px]"
+            className="group relative flex min-h-[520px] flex-col overflow-hidden rounded-xl border border-white/10 min-[430px]:min-h-[590px] sm:min-h-[560px]"
             style={{ background: player.cardBg }}
           >
             {/* Body glow */}
@@ -101,7 +101,7 @@ export default function PlayersPage() {
             />
 
             {/* Player image — takes up most of the card */}
-            <div className="absolute inset-x-0 bottom-[120px] top-0 transition-transform duration-700 group-hover:scale-[1.03]">
+            <div className="absolute inset-x-0 bottom-[132px] top-0 transition-transform duration-700 group-hover:scale-[1.03] sm:bottom-[120px]">
               <Image
                 src={player.avatar}
                 alt={`${player.first} ${player.last}`}
@@ -116,7 +116,7 @@ export default function PlayersPage() {
             <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/95 via-black/60 to-transparent" />
 
             {/* Bottom content */}
-            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
               {/* Nickname */}
               <div className="mb-2 flex items-center gap-2">
                 <div
@@ -141,38 +141,38 @@ export default function PlayersPage() {
               </h2>
 
               {/* Mini stats */}
-              <div className="mt-3 flex gap-4">
+              <div className="mt-3 grid grid-cols-3 gap-2 sm:flex sm:gap-4">
                 <div>
                   <div
-                    className="text-xl font-black"
+                    className="text-lg font-black sm:text-xl"
                     style={{ color: player.color }}
                   >
                     {player.slams}
                   </div>
-                  <div className="text-[9px] font-bold uppercase tracking-wide text-white/35">
+                  <div className="text-[8px] font-bold uppercase tracking-wide text-white/35 sm:text-[9px]">
                     Grand Slams
                   </div>
                 </div>
-                <div className="w-px bg-white/10" />
+                <div className="hidden w-px bg-white/10 sm:block" />
                 <div>
                   <div
-                    className="text-xl font-black"
+                    className="text-lg font-black sm:text-xl"
                     style={{ color: player.color }}
                   >
                     {player.titles}
                   </div>
-                  <div className="text-[9px] font-bold uppercase tracking-wide text-white/35">
+                  <div className="text-[8px] font-bold uppercase tracking-wide text-white/35 sm:text-[9px]">
                     ATP Titles
                   </div>
                 </div>
-                <div className="w-px bg-white/10" />
+                <div className="hidden w-px bg-white/10 sm:block" />
                 <div>
                   <div
-                    className="text-xl font-black text-white/70"
+                    className="text-lg font-black text-white/70 sm:text-xl"
                   >
                     {player.surface}
                   </div>
-                  <div className="text-[9px] font-bold uppercase tracking-wide text-white/35">
+                  <div className="text-[8px] font-bold uppercase tracking-wide text-white/35 sm:text-[9px]">
                     Best Surface
                   </div>
                 </div>

@@ -395,14 +395,14 @@ export default function H2HPage() {
       </div>
 
       {/* ── Header + Summary Cards ── */}
-      <section className="grid gap-7 py-8 sm:py-10 lg:grid-cols-[0.78fr_1.22fr]">
+      <section className="grid gap-6 py-6 sm:py-10 lg:grid-cols-[0.78fr_1.22fr]">
         <FadeUp>
           <div>
             <div className="mb-4 flex items-center gap-3 text-[#d6b276]">
               <Trophy className="h-6 w-6" />
               <span className="text-xs font-black uppercase tracking-[0.32em]">Rivalry Map</span>
             </div>
-            <h1 className="text-4xl font-black uppercase italic leading-none sm:text-7xl">
+            <h1 className="text-[2.65rem] font-black uppercase italic leading-none sm:text-7xl">
               Head To
               <br />
               Head.
@@ -413,10 +413,10 @@ export default function H2HPage() {
           </div>
         </FadeUp>
 
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="no-scrollbar -mx-3 flex gap-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0">
           {matchups.map((matchup, i) => (
             <FadeUp key={matchup.label} delay={i * 0.1}>
-              <article className="rounded border border-white/15 bg-black/45 p-5 backdrop-blur-md">
+              <article className="w-[78vw] rounded-xl border border-white/15 bg-black/45 p-4 backdrop-blur-md min-[460px]:w-[340px] sm:w-auto sm:p-5">
                 <div className="text-xs font-black uppercase tracking-wide text-white/52">{matchup.label}</div>
                 <div className="mt-4 text-4xl font-black sm:mt-5 sm:text-5xl">{matchup.record}</div>
                 <div className="mt-2 text-sm font-black uppercase" style={{ color: matchup.left.color }}>
@@ -452,12 +452,12 @@ export default function H2HPage() {
         </div>
 
         {/* Rivalry filter */}
-        <div className="mb-2 flex flex-wrap gap-2">
+        <div className="no-scrollbar -mx-3 mb-2 flex gap-2 overflow-x-auto px-3 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           {RIVALRY_FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => applyFilter(f.value, tournament)}
-              className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
+              className={`shrink-0 rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
                 rivalry === f.value
                   ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
                   : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
@@ -469,12 +469,12 @@ export default function H2HPage() {
         </div>
 
         {/* Tournament filter */}
-        <div className="mb-7 flex flex-wrap gap-2">
+        <div className="no-scrollbar -mx-3 mb-7 flex gap-2 overflow-x-auto px-3 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           {TOURNAMENT_FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => applyFilter(rivalry, f.value)}
-              className={`rounded border px-3 py-1.5 text-[10px] font-black uppercase tracking-wide transition-all ${
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-wide transition-all ${
                 tournament === f.value
                   ? "border-white/30 bg-white/[0.08] text-white/85"
                   : "border-white/8 bg-white/[0.02] text-white/32 hover:text-white/55"
@@ -533,7 +533,7 @@ export default function H2HPage() {
             <div className="flex flex-col gap-4">
 
               {/* Year scrubber — mobile only */}
-              <div className="overflow-x-auto lg:hidden">
+              <div className="no-scrollbar -mx-3 overflow-x-auto px-3 lg:hidden">
                 <div className="flex min-w-max items-start pb-2">
                   {uniqueYears.map((year, i) => (
                     <div key={year} className="flex items-start">
@@ -586,11 +586,11 @@ export default function H2HPage() {
               </div>
 
               {/* Card + prev/next arrows */}
-              <div className="flex items-center gap-3 sm:gap-5">
+              <div className="grid grid-cols-[1fr_1fr] gap-3 sm:flex sm:items-center sm:gap-5">
                 <button
                   onClick={() => navigate(-1)}
                   disabled={filtered.length <= 1}
-                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20"
+                  className="order-2 grid h-11 w-full shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20 sm:order-none sm:h-10 sm:w-10"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -598,16 +598,16 @@ export default function H2HPage() {
                 {current && (() => {
                   const cat = matchCategory(current.event);
                   return (
-                    <div className="relative flex-1 overflow-hidden rounded-xl border border-white/12 bg-black/58 backdrop-blur-xl">
+                    <div className="relative col-span-2 flex-1 overflow-hidden rounded-xl border border-white/12 bg-black/58 backdrop-blur-xl sm:col-span-1">
                       <div
                         className="pointer-events-none absolute inset-0"
                         style={{ background: `radial-gradient(ellipse 80% 55% at 50% -5%, ${SURFACE_GLOW[current.surface]}, transparent 60%)` }}
                       />
                       <div className="absolute inset-x-0 top-0 h-[2px] opacity-60" style={{ backgroundColor: players[current.winner].color }} />
 
-                      <div className="relative flex flex-col p-5 sm:p-7">
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-2.5">
+                      <div className="relative flex flex-col p-4 sm:p-7">
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                          <div className="flex flex-wrap items-center gap-2.5">
                             <span className="text-[9px] font-black uppercase tracking-[0.35em]" style={{ color: cat.color }}>{cat.label}</span>
                             <span className="text-white/15">·</span>
                             <span className="text-[9px] font-bold uppercase tracking-wide text-white/30">{current.round}</span>
@@ -622,20 +622,20 @@ export default function H2HPage() {
                           <div className="mt-0.5 text-[11px] font-bold uppercase tracking-wide text-white/28">{current.event}</div>
                         </div>
 
-                        <div className="mt-4 text-3xl font-black uppercase italic leading-none sm:text-5xl">
+                        <div className="mt-4 text-[2rem] font-black uppercase italic leading-none sm:text-5xl">
                           <span style={{ color: players[current.p1].color }}>{players[current.p1].short}</span>
                           <span className="text-white/18"> vs </span>
                           <span style={{ color: players[current.p2].color }}>{players[current.p2].short}</span>
                         </div>
 
-                        <div className="mt-3 flex items-baseline gap-3">
+                        <div className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3">
                           <span className="text-base font-black text-white/58 sm:text-lg">{current.score}</span>
                           <span className="text-[10px] font-black uppercase tracking-wide" style={{ color: players[current.winner].color }}>
                             {players[current.winner].short} wins
                           </span>
                         </div>
 
-                        <div className="mt-4 grid grid-cols-3 gap-2">
+                        <div className="mt-4 grid grid-cols-1 gap-2 min-[430px]:grid-cols-3">
                           <div className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2.5 text-center">
                             <div className="text-[8px] font-bold uppercase tracking-wide text-white/25">Surface</div>
                             <div className="mt-0.5 text-[10px] font-black uppercase">{current.surface}</div>
@@ -662,7 +662,7 @@ export default function H2HPage() {
                 <button
                   onClick={() => navigate(1)}
                   disabled={filtered.length <= 1}
-                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20"
+                  className="order-3 grid h-11 w-full shrink-0 place-items-center rounded-full border border-white/12 bg-white/[0.04] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-20 sm:order-none sm:h-10 sm:w-10"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>

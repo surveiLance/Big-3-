@@ -107,11 +107,11 @@ export default function TimelinePage() {
       </div>
 
       {/* Page header */}
-      <div className="mb-8 pt-1 sm:mb-10">
+      <div className="mb-6 pt-5 sm:mb-10 sm:pt-1">
         <div className="text-[10px] font-black uppercase tracking-[0.45em] text-[#d9ae64]/60">
           2003 — 2024
         </div>
-        <h1 className="mt-2 text-4xl font-black uppercase italic leading-none sm:text-6xl lg:text-7xl">
+        <h1 className="mt-2 text-[2.65rem] font-black uppercase italic leading-none sm:text-6xl lg:text-7xl">
           Career
           <br />
           Timeline
@@ -122,10 +122,10 @@ export default function TimelinePage() {
       </div>
 
       {/* Filter bar */}
-      <div className="mb-8 flex flex-wrap gap-2">
+      <div className="no-scrollbar -mx-3 mb-7 flex gap-2 overflow-x-auto px-3 sm:mx-0 sm:mb-8 sm:flex-wrap sm:overflow-visible sm:px-0">
         <button
           onClick={() => setFilter("all")}
-          className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
+          className={`shrink-0 rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
             filter === "all"
               ? "border-[#d9ae64]/50 bg-[#d9ae64]/10 text-[#e4bd73]"
               : "border-white/10 bg-white/[0.03] text-white/45 hover:text-white/70"
@@ -137,7 +137,7 @@ export default function TimelinePage() {
           <button
             key={key}
             onClick={() => setFilter(key)}
-            className="rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all"
+            className="shrink-0 rounded-full border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all"
             style={
               filter === key
                 ? { color: p.color, borderColor: p.color + "55", backgroundColor: p.color + "14" }
@@ -150,7 +150,7 @@ export default function TimelinePage() {
       </div>
 
       {/* Year navigator */}
-      <div className="mb-10 overflow-x-auto">
+      <div className="no-scrollbar -mx-3 mb-8 overflow-x-auto px-3 sm:mx-0 sm:mb-10 sm:px-0">
         <div className="flex min-w-max items-start pb-4 pt-1">
           {ALL_YEARS.map((year, i) => {
             const isActive = activeYears.has(year);
@@ -188,10 +188,10 @@ export default function TimelinePage() {
         {/* Vertical spine */}
         <div className="absolute bottom-0 left-[5px] top-0 w-px bg-white/8" />
 
-        <div className="space-y-10">
+        <div className="space-y-9 sm:space-y-10">
           {grouped.map(([year, events]) => (
             <div key={year} id={`year-${year}`} style={{ scrollMarginTop: "90px" }}>
-              <div className="relative pl-9 sm:pl-12">
+              <div className="relative pl-7 sm:pl-12">
                 {/* Spine dot */}
                 <div className="absolute left-0 top-[6px] h-[11px] w-[11px] rounded-full border border-white/25 bg-[#030404]" />
 
@@ -199,7 +199,7 @@ export default function TimelinePage() {
                 <div className="mb-4 flex items-center gap-4">
                   <span className="text-2xl font-black italic text-white/90 sm:text-3xl">{year}</span>
                   <div className="h-px flex-1 bg-white/6" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.38em] text-white/18">
+                  <span className="text-[9px] font-black uppercase tracking-[0.22em] text-white/18 sm:text-[10px] sm:tracking-[0.38em]">
                     {events.length} {events.length === 1 ? "event" : "events"}
                   </span>
                 </div>
@@ -223,9 +223,9 @@ export default function TimelinePage() {
                           style={{ background: `radial-gradient(ellipse 60% 90% at 95% 50%, ${p.color}09, transparent 70%)` }}
                         />
 
-                        <div className="relative flex items-start gap-0">
+                        <div className="relative flex flex-col items-stretch gap-0 sm:flex-row sm:items-start">
                           {/* Left meta strip */}
-                          <div className="flex w-[90px] shrink-0 flex-col gap-2 border-r border-white/6 bg-white/[0.018] p-4 sm:w-[110px]">
+                          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-white/6 bg-white/[0.018] px-4 py-3 sm:w-[110px] sm:flex-col sm:items-start sm:justify-start sm:border-b-0 sm:border-r sm:p-4">
                             <span
                               className="text-[10px] font-black uppercase tracking-[0.2em]"
                               style={{ color: p.color }}
@@ -238,7 +238,7 @@ export default function TimelinePage() {
                           </div>
 
                           {/* Main content */}
-                          <div className="flex flex-1 items-start justify-between gap-4 p-4 sm:p-5">
+                          <div className="flex flex-1 items-start justify-between gap-3 p-4 sm:gap-4 sm:p-5">
                             <div className="flex-1">
                               <div className="text-sm font-black uppercase tracking-wide text-white sm:text-[15px]">
                                 {event.title}
@@ -251,7 +251,7 @@ export default function TimelinePage() {
                             {/* Slam number highlight */}
                             {event.highlight && isBig && (
                               <div
-                                className="shrink-0 text-right font-black italic leading-none opacity-[0.18]"
+                                className="hidden shrink-0 text-right font-black italic leading-none opacity-[0.18] min-[430px]:block"
                                 style={{
                                   color: p.color,
                                   fontSize: event.highlight.length <= 3 ? "3rem" : "1.75rem",
@@ -274,7 +274,7 @@ export default function TimelinePage() {
         </div>
 
         {/* End marker */}
-        <div className="relative mt-12 pl-9 sm:pl-12">
+        <div className="relative mt-12 pl-7 sm:pl-12">
           <div className="absolute left-0 top-[3px] h-[11px] w-[11px] rounded-full border border-white/15 bg-[#030404]" />
           <span className="text-[10px] font-black uppercase tracking-[0.35em] text-white/20">End of an Era</span>
         </div>

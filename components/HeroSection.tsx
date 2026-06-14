@@ -65,7 +65,8 @@ export function HeroSection() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setActiveIdx(null);
+    const frame = requestAnimationFrame(() => setActiveIdx(null));
+    return () => cancelAnimationFrame(frame);
   }, [pathname]);
 
   const active = activeIdx !== null ? players[activeIdx] : null;
@@ -88,21 +89,21 @@ export function HeroSection() {
       </div>
 
       {/* Title */}
-      <div className="relative z-10 py-6 text-center sm:py-8 lg:py-10">
-        <p className="text-[9px] font-black uppercase tracking-[0.55em] text-white/25">
+      <div className="relative z-10 py-7 text-center sm:py-8 lg:py-10">
+        <p className="text-[8px] font-black uppercase tracking-[0.36em] text-white/25 sm:text-[9px] sm:tracking-[0.55em]">
           The Greatest Era in Tennis
         </p>
-        <h1 className="mt-2 text-[clamp(2.4rem,7.5vw,6rem)] font-black uppercase italic leading-none">
+        <h1 className="mt-2 text-[clamp(2.45rem,15vw,4.5rem)] font-black uppercase italic leading-none sm:text-[clamp(2.4rem,7.5vw,6rem)]">
           Big 3.{" "}
           <span className="text-white/22">One Era.</span>
         </h1>
       </div>
 
       {/* Three-column player area */}
-      <div className="relative flex min-h-[300px] flex-1 sm:min-h-[400px]">
+      <div className="relative flex flex-col gap-3 sm:min-h-[420px] sm:flex-1 sm:flex-row sm:gap-0">
         {/* Column dividers */}
-        <div className="pointer-events-none absolute inset-y-0 left-1/3 z-10 w-px bg-white/8" />
-        <div className="pointer-events-none absolute inset-y-0 right-1/3 z-10 w-px bg-white/8" />
+        <div className="pointer-events-none absolute inset-y-0 left-1/3 z-10 hidden w-px bg-white/8 sm:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-1/3 z-10 hidden w-px bg-white/8 sm:block" />
 
         {players.map((player, idx) => {
           const isActive = idx === activeIdx;
@@ -112,7 +113,7 @@ export function HeroSection() {
             <button
               key={player.slug}
               onClick={() => setActiveIdx(isActive ? null : idx)}
-              className="group relative flex flex-1 flex-col overflow-hidden outline-none transition-opacity duration-500"
+              className="group relative flex min-h-[315px] flex-1 flex-col overflow-hidden rounded-xl border border-white/10 outline-none transition-opacity duration-500 sm:min-h-0 sm:rounded-none sm:border-0"
               style={{ opacity: isOther ? 0.28 : 1 }}
             >
               {/* Top accent line */}
@@ -144,7 +145,7 @@ export function HeroSection() {
                   alt={`${player.first} ${player.last}`}
                   fill
                   priority
-                  sizes="(min-width: 1024px) 33vw, 33vw"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
                   className="object-contain object-bottom drop-shadow-[0_0_32px_rgba(0,0,0,0.9)] transition-transform duration-700 group-hover:scale-[1.04]"
                 />
                 {/* Bottom fade */}
@@ -177,22 +178,23 @@ export function HeroSection() {
                 {/* Stats — slide open on active */}
                 <div
                   className="overflow-hidden transition-all duration-500"
-                  style={{ maxHeight: isActive ? "320px" : "0px", opacity: isActive ? 1 : 0 }}
+                  style={{ maxHeight: isActive ? "360px" : "0px", opacity: isActive ? 1 : 0 }}
                 >
-                  <div className="mt-3 grid grid-cols-2 gap-1.5">
+                  {/* Mobile: horizontal rows. SM+: 2×2 grid */}
+                  <div className="mt-2 space-y-1 sm:mt-3 sm:grid sm:grid-cols-2 sm:gap-1.5 sm:space-y-0">
                     {player.stats.map((stat) => (
                       <div
                         key={stat.label}
-                        className="rounded border border-white/8 bg-white/[0.04] px-2.5 py-2"
+                        className="flex items-center justify-between rounded border border-white/8 bg-white/[0.04] px-2 py-1.5 sm:flex-col sm:items-start sm:px-2.5 sm:py-2"
                       >
+                        <div className="text-[7px] font-bold uppercase tracking-wide text-white/35 sm:text-[8px]">
+                          {stat.label}
+                        </div>
                         <div
-                          className="text-lg font-black leading-tight sm:text-xl"
+                          className="text-sm font-black leading-tight sm:mt-0.5 sm:text-lg"
                           style={{ color: player.color }}
                         >
                           {stat.value}
-                        </div>
-                        <div className="text-[8px] font-bold uppercase tracking-wide text-white/35">
-                          {stat.label}
                         </div>
                       </div>
                     ))}
@@ -200,17 +202,18 @@ export function HeroSection() {
                   <Link
                     href={`/players/${player.slug}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="mt-3 flex w-full items-center justify-center gap-2 rounded py-2.5 text-[11px] font-black uppercase tracking-wide text-black transition-opacity hover:opacity-85"
+                    className="mt-2 flex w-full items-center justify-center gap-1.5 rounded py-2 text-[10px] font-black uppercase tracking-wide text-black transition-opacity hover:opacity-85 sm:mt-3 sm:gap-2 sm:py-2.5 sm:text-[11px]"
                     style={{ backgroundColor: player.color }}
                   >
-                    Full Profile
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">Full Profile</span>
+                    <span className="sm:hidden">Profile</span>
+                    <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                   </Link>
                 </div>
 
                 {/* Idle hint */}
                 {!isActive && (
-                  <div className="mt-0.5 text-[8px] font-bold uppercase tracking-wider text-white/16 transition-colors duration-200 group-hover:text-white/32">
+                  <div className="mt-0.5 text-[8px] font-bold uppercase tracking-wider text-white/22 transition-colors duration-200 group-hover:text-white/32">
                     Tap to expand
                   </div>
                 )}
