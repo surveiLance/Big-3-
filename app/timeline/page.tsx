@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
 
 const PLAYER_META = {
-  nadal: { name: "Rafael Nadal", short: "Nadal", color: "#ff6a21", bg: "rgba(255,106,33,0.10)", glow: "rgba(255,106,33,0.18)" },
-  djokovic: { name: "Novak Djokovic", short: "Djokovic", color: "#238ef8", bg: "rgba(35,142,248,0.10)", glow: "rgba(35,142,248,0.18)" },
-  federer: { name: "Roger Federer", short: "Federer", color: "#6ac34a", bg: "rgba(106,195,74,0.10)", glow: "rgba(106,195,74,0.18)" },
+  nadal:    { name: "Rafael Nadal",  short: "Nadal",    color: "#ff6a21", glow: "rgba(255,106,33,0.18)"  },
+  djokovic: { name: "Novak Djokovic", short: "Djokovic", color: "#238ef8", glow: "rgba(35,142,248,0.18)" },
+  federer:  { name: "Roger Federer", short: "Federer",  color: "#6ac34a", glow: "rgba(106,195,74,0.18)"  },
 } as const;
 
 type Player = keyof typeof PLAYER_META;
@@ -18,57 +16,57 @@ interface Milestone {
   title: string;
   detail: string;
   tag: string;
-  img?: string; // e.g. "/assets/timeline/2008-nadal.jpg" — add when ready
+  highlight?: string;
 }
 
 const milestones: Milestone[] = [
-  { year: 2003, player: "federer", title: "First Wimbledon Title", detail: "At 21, Federer wins his debut Wimbledon without dropping a set — the start of an unprecedented grass-court dynasty.", tag: "Grand Slam" },
+  { year: 2003, player: "federer", title: "First Wimbledon Title", detail: "At 21, Federer wins his debut Wimbledon without dropping a set — the start of an unprecedented grass-court dynasty.", tag: "Grand Slam", highlight: "1st" },
   { year: 2003, player: "federer", title: "Year-End World No. 1", detail: "Claims the top ranking for the first time, beginning a run he would hold for a record 237 consecutive weeks.", tag: "Milestone" },
-  { year: 2004, player: "federer", title: "Australian Open", detail: "Wins in Melbourne, holding three of the four Slams in his sights and cementing himself as the dominant force in tennis.", tag: "Grand Slam" },
+  { year: 2004, player: "federer", title: "Australian Open", detail: "Wins in Melbourne, holding three of the four Slams in his sights and cementing himself as the dominant force in tennis.", tag: "Grand Slam", highlight: "2nd" },
   { year: 2004, player: "nadal", title: "First Win Over World No. 1", detail: "A 17-year-old Nadal shocks Federer in Miami — the first shot fired in what becomes tennis's greatest rivalry.", tag: "Debut" },
-  { year: 2005, player: "nadal", title: "First Roland Garros", detail: "Wins the French Open at 19, dropping just one set all tournament. An era of clay dominance begins.", tag: "Grand Slam" },
+  { year: 2005, player: "nadal", title: "First Roland Garros", detail: "Wins the French Open at 19, dropping just one set all tournament. An era of clay dominance begins.", tag: "Grand Slam", highlight: "1st" },
   { year: 2005, player: "federer", title: "Three Slams in a Year", detail: "Australian Open, Wimbledon, and US Open — one of the most dominant single-season performances in Open Era history.", tag: "Milestone" },
-  { year: 2006, player: "nadal", title: "Roland Garros Defense", detail: "Dominant title defense on clay, asserting himself as the undisputed king of the surface.", tag: "Grand Slam" },
+  { year: 2006, player: "nadal", title: "Roland Garros Defense", detail: "Dominant title defense on clay, asserting himself as the undisputed king of the surface.", tag: "Grand Slam", highlight: "2nd" },
   { year: 2006, player: "djokovic", title: "Top 20 Breakthrough", detail: "The young Serbian breaks into the top 20, signaling a future contender has arrived on tour.", tag: "Debut" },
   { year: 2007, player: "federer", title: "Five Consecutive Wimbledons", detail: "Equals Björn Borg's record of five straight Wimbledon titles — widely regarded as the pinnacle of his grass dominance.", tag: "Record" },
   { year: 2007, player: "djokovic", title: "First Grand Slam Final", detail: "Djokovic reaches the US Open final, losing to Federer but announcing himself as a future Slam contender.", tag: "Milestone" },
-  { year: 2008, player: "nadal", title: "Wimbledon — The Greatest Match Ever", detail: "Ending Federer's reign in near-darkness after 4h 48m, Nadal wins what many call the greatest tennis match ever played.", tag: "Grand Slam" },
+  { year: 2008, player: "nadal", title: "Wimbledon — The Greatest Match Ever", detail: "Ending Federer's reign in near-darkness after 4h 48m, Nadal wins what many call the greatest tennis match ever played.", tag: "Grand Slam", highlight: "3rd" },
   { year: 2008, player: "nadal", title: "Olympic Gold — Beijing", detail: "Wins singles gold in Beijing, completing one leg of the Career Golden Slam.", tag: "Olympic" },
-  { year: 2008, player: "djokovic", title: "First Grand Slam — Australian Open", detail: "Beats Federer in the SF and Tsonga in the final to claim his first Major title at just 20 years old.", tag: "Grand Slam" },
-  { year: 2009, player: "federer", title: "Roland Garros — Career Grand Slam", detail: "Defeating Robin Söderling — who had just beaten Nadal — Federer completes the Career Grand Slam and wins his 14th Major.", tag: "Grand Slam" },
-  { year: 2009, player: "nadal", title: "Australian Open", detail: "Wins his first hard-court Slam. An emotional Federer breaks down during the runner-up speech in one of tennis's most human moments.", tag: "Grand Slam" },
+  { year: 2008, player: "djokovic", title: "First Grand Slam — Australian Open", detail: "Beats Federer in the SF and Tsonga in the final to claim his first Major title at just 20 years old.", tag: "Grand Slam", highlight: "1st" },
+  { year: 2009, player: "federer", title: "Roland Garros — Career Grand Slam", detail: "Defeating Robin Söderling — who had just beaten Nadal — Federer completes the Career Grand Slam and wins his 14th Major.", tag: "Grand Slam", highlight: "14th" },
+  { year: 2009, player: "nadal", title: "Australian Open", detail: "Wins his first hard-court Slam. An emotional Federer breaks down during the runner-up speech in one of tennis's most human moments.", tag: "Grand Slam", highlight: "4th" },
   { year: 2010, player: "nadal", title: "Career Grand Slam Complete", detail: "A US Open title makes Nadal only the seventh man in history to complete the Career Grand Slam.", tag: "Record" },
   { year: 2011, player: "djokovic", title: "Historic Season — 43-Match Win Streak", detail: "Three Slams, a 43-0 start to the year, and victories over both rivals multiple times. The greatest single season in Open Era history.", tag: "Record" },
-  { year: 2011, player: "nadal", title: "Roland Garros (6th Title)", detail: "A sixth French Open, defeating Federer who had just ended Djokovic's legendary win streak in the semifinal.", tag: "Grand Slam" },
-  { year: 2012, player: "djokovic", title: "Australian Open — The Iron Man Final", detail: "A 5-hour 53-minute war against Nadal — the longest Grand Slam final in history — goes to Djokovic in five brutal sets.", tag: "Grand Slam" },
+  { year: 2011, player: "nadal", title: "Roland Garros (6th Title)", detail: "A sixth French Open, defeating Federer who had just ended Djokovic's legendary win streak in the semifinal.", tag: "Grand Slam", highlight: "6th" },
+  { year: 2012, player: "djokovic", title: "Australian Open — The Iron Man Final", detail: "A 5-hour 53-minute war against Nadal — the longest Grand Slam final in history — goes to Djokovic in five brutal sets.", tag: "Grand Slam", highlight: "5th" },
   { year: 2012, player: "federer", title: "Wimbledon — Record 7th Title", detail: "At 30, Federer wins his 7th Wimbledon and 17th Slam, briefly reclaiming the World No. 1 ranking.", tag: "Record" },
-  { year: 2013, player: "nadal", title: "Roland Garros & US Open — The Comeback", detail: "Returning from a career-threatening knee injury, Nadal wins two Slams and reclaims World No. 1 in one of sport's great comebacks.", tag: "Grand Slam" },
-  { year: 2014, player: "nadal", title: "Roland Garros (9th Title)", detail: "A ninth French Open cements his status as the greatest clay court player the sport has ever seen.", tag: "Grand Slam" },
-  { year: 2014, player: "djokovic", title: "Wimbledon Title", detail: "Defeats Federer in a five-set Centre Court final for his second Wimbledon championship.", tag: "Grand Slam" },
-  { year: 2015, player: "djokovic", title: "Three Slams — Dominance Peak", detail: "Australian Open, Wimbledon, and US Open in a single year — the peak of two years of near-total dominance over the tour.", tag: "Grand Slam" },
+  { year: 2013, player: "nadal", title: "Roland Garros & US Open — The Comeback", detail: "Returning from a career-threatening knee injury, Nadal wins two Slams and reclaims World No. 1 in one of sport's great comebacks.", tag: "Grand Slam", highlight: "7–8th" },
+  { year: 2014, player: "nadal", title: "Roland Garros (9th Title)", detail: "A ninth French Open cements his status as the greatest clay court player the sport has ever seen.", tag: "Grand Slam", highlight: "9th" },
+  { year: 2014, player: "djokovic", title: "Wimbledon Title", detail: "Defeats Federer in a five-set Centre Court final for his second Wimbledon championship.", tag: "Grand Slam", highlight: "7th" },
+  { year: 2015, player: "djokovic", title: "Three Slams — Dominance Peak", detail: "Australian Open, Wimbledon, and US Open in a single year — the peak of two years of near-total dominance over the tour.", tag: "Grand Slam", highlight: "8–10th" },
   { year: 2016, player: "djokovic", title: "Roland Garros — Career Grand Slam & 'Djokovic Slam'", detail: "Completes the Career Grand Slam and holds all four Slam trophies simultaneously — the first man to do so since Rod Laver.", tag: "Record" },
-  { year: 2017, player: "federer", title: "Australian Open & Wimbledon — The Vintage Return", detail: "After six months off with a knee injury, Federer returns at 35 to win two more Slams with breathtaking artistry.", tag: "Grand Slam" },
+  { year: 2017, player: "federer", title: "Australian Open & Wimbledon — The Vintage Return", detail: "After six months off with a knee injury, Federer returns at 35 to win two more Slams with breathtaking artistry.", tag: "Grand Slam", highlight: "18–19th" },
   { year: 2017, player: "nadal", title: "La Decima & US Open", detail: "A record 10th French Open (La Decima) and a US Open title. Nadal reclaims World No. 1 in a stunning resurgence.", tag: "Record" },
-  { year: 2018, player: "federer", title: "Australian Open — 20th Grand Slam", detail: "Wins in Melbourne for his 20th Major — a record that seemed untouchable, set at 36 years of age.", tag: "Record" },
-  { year: 2018, player: "djokovic", title: "Wimbledon & US Open Comeback", detail: "Returning from elbow surgery, Djokovic wins two Slams in the second half of the season in one of tennis's great recoveries.", tag: "Grand Slam" },
-  { year: 2019, player: "djokovic", title: "Wimbledon — The Heartbreaker", detail: "Saves two match points at 8-7 in the 5th to defeat Federer in the longest Wimbledon final ever played. An unforgettable night.", tag: "Grand Slam" },
-  { year: 2019, player: "nadal", title: "Roland Garros (12th) & US Open", detail: "A 12th French Open and US Open double — his 19th Slam, closing in on Federer's then-record.", tag: "Grand Slam" },
-  { year: 2020, player: "nadal", title: "Roland Garros — 20th Slam Equals Federer's Record", detail: "A dominant 13th French Open in straight sets over Djokovic — his 20th Major, matching Federer at the top of the all-time list.", tag: "Record" },
-  { year: 2021, player: "djokovic", title: "Three Slams — Matches The Record at 20", detail: "Wins three Slams to match the then-record of 20 held by both Federer and Nadal, within touching distance of the summit.", tag: "Grand Slam" },
-  { year: 2022, player: "nadal", title: "Australian Open & Roland Garros — 22 Slams, New Record", detail: "Wins the Australian Open from two sets down in the final, then a 14th French Open — 22 Slams and a new all-time record.", tag: "Record" },
+  { year: 2018, player: "federer", title: "Australian Open — 20th Grand Slam", detail: "Wins in Melbourne for his 20th Major — a record that seemed untouchable, set at 36 years of age.", tag: "Record", highlight: "20th" },
+  { year: 2018, player: "djokovic", title: "Wimbledon & US Open Comeback", detail: "Returning from elbow surgery, Djokovic wins two Slams in the second half of the season in one of tennis's great recoveries.", tag: "Grand Slam", highlight: "13–14th" },
+  { year: 2019, player: "djokovic", title: "Wimbledon — The Heartbreaker", detail: "Saves two match points at 8-7 in the 5th to defeat Federer in the longest Wimbledon final ever played. An unforgettable night.", tag: "Grand Slam", highlight: "16th" },
+  { year: 2019, player: "nadal", title: "Roland Garros (12th) & US Open", detail: "A 12th French Open and US Open double — his 19th Slam, closing in on Federer's then-record.", tag: "Grand Slam", highlight: "18–19th" },
+  { year: 2020, player: "nadal", title: "Roland Garros — 20th Slam Equals Federer's Record", detail: "A dominant 13th French Open in straight sets over Djokovic — his 20th Major, matching Federer at the top of the all-time list.", tag: "Record", highlight: "20th" },
+  { year: 2021, player: "djokovic", title: "Three Slams — Matches The Record at 20", detail: "Wins three Slams to match the then-record of 20 held by both Federer and Nadal, within touching distance of the summit.", tag: "Grand Slam", highlight: "18–20th" },
+  { year: 2022, player: "nadal", title: "Australian Open & Roland Garros — 22 Slams, New Record", detail: "Wins the Australian Open from two sets down in the final, then a 14th French Open — 22 Slams and a new all-time record.", tag: "Record", highlight: "22nd" },
   { year: 2022, player: "federer", title: "Farewell", detail: "Roger Federer announces his retirement from professional tennis. He bows out at the Laver Cup, with Nadal in tears by his side — a fitting end to a shared era.", tag: "Farewell" },
-  { year: 2023, player: "djokovic", title: "US Open — 24th Slam, All-Time Record", detail: "Wins the US Open for his 24th Grand Slam title, standing alone as the most decorated Slam champion in the history of the sport.", tag: "Record" },
+  { year: 2023, player: "djokovic", title: "US Open — 24th Slam, All-Time Record", detail: "Wins the US Open for his 24th Grand Slam title, standing alone as the most decorated Slam champion in the history of the sport.", tag: "Record", highlight: "24th" },
   { year: 2024, player: "djokovic", title: "Olympic Gold — Career Golden Slam Complete", detail: "Wins singles gold in Paris on clay at 37 years old, completing the Career Golden Slam — the final piece of an unmatched résumé.", tag: "Olympic" },
   { year: 2024, player: "nadal", title: "Farewell", detail: "Rafael Nadal retires from professional tennis at 38. His 14 Roland Garros titles and relentless spirit will never be forgotten.", tag: "Farewell" },
 ];
 
-const TAG_STYLE: Record<string, string> = {
-  "Grand Slam": "text-[#d9ae64]/80",
-  "Record": "text-red-400/70",
-  "Olympic": "text-blue-300/70",
-  "Farewell": "text-white/35",
-  "Milestone": "text-white/35",
-  "Debut": "text-white/35",
+const TAG_STYLE: Record<string, { text: string; bg: string }> = {
+  "Grand Slam": { text: "text-[#d9ae64]",    bg: "bg-[#d9ae64]/10" },
+  "Record":     { text: "text-red-400",       bg: "bg-red-400/8"    },
+  "Olympic":    { text: "text-blue-300",      bg: "bg-blue-300/8"   },
+  "Farewell":   { text: "text-white/50",      bg: "bg-white/[0.04]" },
+  "Milestone":  { text: "text-white/40",      bg: "bg-white/[0.04]" },
+  "Debut":      { text: "text-emerald-400/70", bg: "bg-emerald-400/6" },
 };
 
 const ALL_YEARS = [...new Set(milestones.map((m) => m.year))].sort((a, b) => a - b);
@@ -124,7 +122,7 @@ export default function TimelinePage() {
       </div>
 
       {/* Filter bar */}
-      <div className="mb-10 flex flex-wrap gap-2">
+      <div className="mb-8 flex flex-wrap gap-2">
         <button
           onClick={() => setFilter("all")}
           className={`rounded border px-4 py-2 text-[11px] font-black uppercase tracking-wide transition-all ${
@@ -153,7 +151,7 @@ export default function TimelinePage() {
 
       {/* Year navigator */}
       <div className="mb-10 overflow-x-auto">
-        <div className="flex min-w-max items-start pb-6 pt-1">
+        <div className="flex min-w-max items-start pb-4 pt-1">
           {ALL_YEARS.map((year, i) => {
             const isActive = activeYears.has(year);
             return (
@@ -186,107 +184,93 @@ export default function TimelinePage() {
       </div>
 
       {/* Timeline */}
-      <div className="relative pb-20">
+      <div className="relative pb-24">
         {/* Vertical spine */}
         <div className="absolute bottom-0 left-[5px] top-0 w-px bg-white/8" />
 
-        <div className="space-y-12">
-          {grouped.map(([year, events]) => {
-            const primaryPlayer = PLAYER_META[events[0].player];
-            const featuredImg = events.find((e) => e.img)?.img ?? null;
+        <div className="space-y-10">
+          {grouped.map(([year, events]) => (
+            <div key={year} id={`year-${year}`} style={{ scrollMarginTop: "90px" }}>
+              <div className="relative pl-9 sm:pl-12">
+                {/* Spine dot */}
+                <div className="absolute left-0 top-[6px] h-[11px] w-[11px] rounded-full border border-white/25 bg-[#030404]" />
 
-            return (
-              <div key={year} id={`year-${year}`} style={{ scrollMarginTop: "90px" }} className="lg:grid lg:grid-cols-[1fr_300px] lg:gap-10">
-                {/* ── Left: spine + events ── */}
-                <div className="relative pl-9 sm:pl-12">
-                  {/* Spine dot */}
-                  <div className="absolute left-0 top-[3px] h-[11px] w-[11px] rounded-full border border-white/25 bg-[#030404]" />
+                {/* Year label */}
+                <div className="mb-4 flex items-center gap-4">
+                  <span className="text-2xl font-black italic text-white/90 sm:text-3xl">{year}</span>
+                  <div className="h-px flex-1 bg-white/6" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.38em] text-white/18">
+                    {events.length} {events.length === 1 ? "event" : "events"}
+                  </span>
+                </div>
 
-                  {/* Year label */}
-                  <div className="mb-4 flex items-center gap-4">
-                    <span className="text-2xl font-black italic text-white/90 sm:text-3xl">{year}</span>
-                    <div className="h-px max-w-[60px] flex-1 bg-white/8" />
-                  </div>
+                {/* Events */}
+                <div className="space-y-3">
+                  {events.map((event, i) => {
+                    const p = PLAYER_META[event.player];
+                    const tagStyle = TAG_STYLE[event.tag] ?? { text: "text-white/30", bg: "bg-white/[0.03]" };
+                    const isBig = event.tag === "Record" || event.tag === "Grand Slam";
 
-                  {/* Events */}
-                  <div className="space-y-3">
-                    {events.map((event, i) => {
-                      const p = PLAYER_META[event.player];
-                      return (
+                    return (
+                      <div
+                        key={i}
+                        className="group relative overflow-hidden rounded-xl border border-white/8 transition-colors duration-200 hover:border-white/14"
+                        style={{ borderLeftColor: p.color + "60", borderLeftWidth: "2px" }}
+                      >
+                        {/* Subtle player color wash */}
                         <div
-                          key={i}
-                          className="group relative rounded-r border border-white/8 bg-white/[0.025] p-4 transition-all hover:bg-white/[0.04] sm:p-5"
-                          style={{ borderLeftColor: p.color + "70", borderLeftWidth: "2px" }}
-                        >
-                          <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                          className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                          style={{ background: `radial-gradient(ellipse 60% 90% at 95% 50%, ${p.color}09, transparent 70%)` }}
+                        />
+
+                        <div className="relative flex items-start gap-0">
+                          {/* Left meta strip */}
+                          <div className="flex w-[90px] shrink-0 flex-col gap-2 border-r border-white/6 bg-white/[0.018] p-4 sm:w-[110px]">
                             <span
                               className="text-[10px] font-black uppercase tracking-[0.2em]"
                               style={{ color: p.color }}
                             >
                               {p.short}
                             </span>
-                            <span className="text-white/15">·</span>
-                            <span className={`text-[10px] font-bold uppercase tracking-wide ${TAG_STYLE[event.tag] ?? "text-white/30"}`}>
+                            <span className={`inline-block rounded px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wide ${tagStyle.text} ${tagStyle.bg}`}>
                               {event.tag}
                             </span>
                           </div>
-                          <div className="text-sm font-black uppercase tracking-wide text-white sm:text-[15px]">
-                            {event.title}
-                          </div>
-                          <p className="mt-1.5 text-[13px] leading-[1.65] text-white/42">
-                            {event.detail}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
 
-                {/* ── Right: one image slot per event (desktop only) ── */}
-                <motion.div
-                  className="hidden lg:flex lg:flex-col lg:gap-3 lg:pt-[42px]"
-                  initial={{ opacity: 0, x: 28 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, ease: [0, 0, 0.2, 1] }}
-                >
-                  {events.map((event, ei) => {
-                    const p = PLAYER_META[event.player];
-                    return (
-                      <div
-                        key={ei}
-                        className="relative w-full overflow-hidden rounded-xl border"
-                        style={{
-                          aspectRatio: events.length === 1 ? "3/4" : "16/9",
-                          borderColor: p.color + "28",
-                          backgroundColor: p.color + "06",
-                        }}
-                      >
-                        {event.img ? (
-                          <Image src={event.img} alt={event.title} fill className="object-cover" />
-                        ) : (
-                          <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center">
-                            <div
-                              className="text-5xl font-black italic opacity-[0.07]"
-                              style={{ color: p.color }}
-                            >
-                              {year}
+                          {/* Main content */}
+                          <div className="flex flex-1 items-start justify-between gap-4 p-4 sm:p-5">
+                            <div className="flex-1">
+                              <div className="text-sm font-black uppercase tracking-wide text-white sm:text-[15px]">
+                                {event.title}
+                              </div>
+                              <p className="mt-1.5 text-[13px] leading-[1.65] text-white/42">
+                                {event.detail}
+                              </p>
                             </div>
-                            <div
-                              className="text-[9px] font-black uppercase tracking-[0.35em] opacity-25"
-                              style={{ color: p.color }}
-                            >
-                              {p.short}
-                            </div>
+
+                            {/* Slam number highlight */}
+                            {event.highlight && isBig && (
+                              <div
+                                className="shrink-0 text-right font-black italic leading-none opacity-[0.18]"
+                                style={{
+                                  color: p.color,
+                                  fontSize: event.highlight.length <= 3 ? "3rem" : "1.75rem",
+                                  lineHeight: 1,
+                                  alignSelf: "center",
+                                }}
+                              >
+                                {event.highlight}
+                              </div>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </div>
                     );
                   })}
-                </motion.div>
+                </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         {/* End marker */}
