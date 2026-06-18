@@ -64,6 +64,13 @@ const statCards = [
   },
 ];
 
+const eraTotals = [
+  { label: "Grand Slam Titles", value: "66", detail: "Combined major titles", color: "#d9ae64" },
+  { label: "ATP Titles", value: "296", detail: "Tour-level trophies", color: "#ffffff" },
+  { label: "Weeks at No. 1", value: "947", detail: "Total weeks on top", color: "#238ef8" },
+  { label: "Masters 1000", value: "104", detail: "Elite tournament wins", color: "#6ac34a" },
+];
+
 // ── Grand Slam breakdown ─────────────────────────────────────────────────────
 
 const slamCards = [
@@ -113,12 +120,89 @@ export default function Home() {
       {/* ── BIG 3 IN NUMBERS ── */}
       <FadeUp>
         <section className="mt-12 sm:mt-20">
-          <div className="mb-6">
+          <div className="mb-6 max-w-3xl">
             <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">By The Numbers</p>
-            <h2 className="mt-1.5 text-2xl font-black uppercase italic sm:text-3xl">The Big 3</h2>
+            <h2 className="mt-1.5 text-2xl font-black uppercase italic sm:text-3xl">An Era Measured</h2>
+            <p className="mt-3 max-w-xl text-[12px] leading-6 text-white/38">
+              Three careers compressed into the numbers that defined modern tennis.
+            </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mb-3 grid gap-3 lg:grid-cols-[1.05fr_1.35fr]">
+            <div className="relative overflow-hidden rounded-xl border border-[#d9ae64]/20 bg-[#d9ae64]/[0.05] p-5 backdrop-blur-md sm:p-6">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-[#ff6a21] via-[#238ef8] to-[#6ac34a]" />
+              <p className="text-[9px] font-black uppercase tracking-[0.45em] text-[#d9ae64]/65">
+                Combined Grand Slam Titles
+              </p>
+              <div className="mt-3 flex items-end gap-4">
+                <span className="text-7xl font-black italic leading-none tracking-normal text-white sm:text-8xl">
+                  66
+                </span>
+                <div className="pb-2">
+                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-white/70">
+                    Won from 2003 to 2023
+                  </p>
+                  <p className="mt-1 text-[11px] leading-5 text-white/35">
+                    Djokovic 24, Nadal 22, Federer 20.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-5 grid grid-cols-3 overflow-hidden rounded-lg border border-white/10">
+                {PLAYERS.map((player, index) => {
+                  const slamTotal = [22, 24, 20][index];
+                  return (
+                    <div key={player.key} className="border-r border-white/10 p-3 last:border-r-0">
+                      <div className="text-[8px] font-black uppercase tracking-widest text-white/30">
+                        {player.name}
+                      </div>
+                      <div
+                        className="mt-1 text-2xl font-black leading-none tabular-nums"
+                        style={{ color: player.color }}
+                      >
+                        {slamTotal}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="grid gap-3 min-[520px]:grid-cols-2">
+              {eraTotals.slice(1).map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-xl border border-white/10 bg-black/45 p-5 backdrop-blur-md"
+                >
+                  <div className="text-[9px] font-black uppercase tracking-[0.32em] text-white/30">
+                    {item.label}
+                  </div>
+                  <div
+                    className="mt-3 text-4xl font-black italic leading-none tabular-nums"
+                    style={{ color: item.color }}
+                  >
+                    {item.value}
+                  </div>
+                  <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-white/28">
+                    {item.detail}
+                  </p>
+                </div>
+              ))}
+
+              <div className="flex items-center gap-3 rounded-xl border border-emerald-500/12 bg-emerald-500/[0.04] p-5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/12">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Still Active</div>
+                  <p className="mt-0.5 text-[11px] leading-5 text-white/35">
+                    Djokovic stats as of June 2026. Federer and Nadal totals are final.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
             {statCards.map((card) => {
               const sorted = [...card.values].sort((a, b) => b.num - a.num);
               return (
@@ -179,19 +263,6 @@ export default function Home() {
                 </div>
               );
             })}
-
-            {/* Active Djokovic note */}
-            <div className="flex items-center gap-3 rounded-xl border border-emerald-500/12 bg-emerald-500/[0.04] p-5 sm:col-span-2 lg:col-span-1">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/12">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-              </div>
-              <div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Still Active</div>
-                <p className="mt-0.5 text-[11px] leading-5 text-white/35">
-                  Djokovic stats as of June 2026. Federer (ret. 2022) and Nadal (ret. 2024) numbers are final.
-                </p>
-              </div>
-            </div>
           </div>
         </section>
       </FadeUp>
