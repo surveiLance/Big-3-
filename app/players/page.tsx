@@ -119,7 +119,7 @@ export default function PlayersPage() {
             <div className="pointer-events-none absolute inset-x-0 bottom-[232px] h-28 bg-gradient-to-t from-[#050403]/95 via-[#050403]/55 to-transparent sm:bottom-[244px]" />
 
             {/* Bottom content */}
-            <div className="relative z-10 border-t border-white/8 bg-[#050403]/88 p-4 backdrop-blur-md sm:p-6">
+            <div className="relative z-10 border-t border-white/10 bg-[#050403]/92 p-4 pt-5 shadow-[0_-28px_70px_rgba(0,0,0,0.48)] backdrop-blur-md sm:p-6 sm:pt-7">
               {/* Nickname */}
               <div className="mb-2 flex items-center gap-2">
                 <div
