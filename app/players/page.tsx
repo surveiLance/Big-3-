@@ -84,7 +84,7 @@ export default function PlayersPage() {
           <FadeUp key={player.slug} delay={i * 0.15}>
           <Link
             href={`/players/${player.slug}`}
-            className="group relative flex min-h-[520px] flex-col overflow-hidden rounded-xl border border-white/10 min-[430px]:min-h-[590px] sm:min-h-[560px]"
+            className="group relative flex min-h-[560px] flex-col overflow-hidden rounded-xl border border-white/10 min-[430px]:min-h-[610px] sm:min-h-[560px]"
             style={{ background: player.cardBg }}
           >
             {/* Body glow */}
@@ -103,8 +103,8 @@ export default function PlayersPage() {
               }}
             />
 
-            {/* Player image — takes up most of the card */}
-            <div className="absolute inset-x-0 bottom-[132px] top-0 transition-transform duration-700 group-hover:scale-[1.03] sm:bottom-[120px]">
+            {/* Player image */}
+            <div className="relative min-h-[315px] flex-1 transition-transform duration-700 group-hover:scale-[1.03] sm:min-h-[300px]">
               <Image
                 src={player.avatar}
                 alt={`${player.first} ${player.last}`}
@@ -115,11 +115,11 @@ export default function PlayersPage() {
               />
             </div>
 
-            {/* Bottom gradient overlay */}
-            <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/95 via-black/60 to-transparent" />
+            {/* Gradient bridge between image and copy */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-[232px] h-28 bg-gradient-to-t from-[#050403]/95 via-[#050403]/55 to-transparent sm:bottom-[244px]" />
 
             {/* Bottom content */}
-            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+            <div className="relative z-10 border-t border-white/8 bg-[#050403]/88 p-4 backdrop-blur-md sm:p-6">
               {/* Nickname */}
               <div className="mb-2 flex items-center gap-2">
                 <div
