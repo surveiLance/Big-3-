@@ -150,13 +150,16 @@ export function HeroSection() {
                   className="object-contain object-bottom drop-shadow-[0_0_32px_rgba(0,0,0,0.9)] transition-transform duration-700 group-hover:scale-[1.04]"
                 />
                 {/* Bottom fade */}
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#100d0a]/28 to-transparent" />
               </div>
 
               {/* Bottom info panel */}
               <div
-                className="relative z-10 border-t bg-black/55 px-3 pb-4 pt-3.5 backdrop-blur-sm sm:px-4 sm:pb-5 sm:pt-4"
-                style={{ borderColor: isActive ? `${player.color}28` : "rgba(255,255,255,0.07)" }}
+                className="relative z-10 border-t px-3 pb-4 pt-3.5 backdrop-blur-sm sm:px-4 sm:pb-5 sm:pt-4"
+                style={{
+                  borderColor: isActive ? `${player.color}28` : "rgba(255,255,255,0.07)",
+                  background: `linear-gradient(180deg, rgba(16,13,10,0.22), ${player.softColor.replace("0.5", "0.11")})`,
+                }}
               >
                 {/* Active badge */}
                 {player.active && (
