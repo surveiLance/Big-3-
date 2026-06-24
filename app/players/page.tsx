@@ -73,8 +73,8 @@ export default function PlayersPage() {
   return (
     <div className="flex flex-col">
       {/* Fixed background */}
-      <div className="fixed inset-0 -z-10 bg-[#030404]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(255,106,33,0.14),transparent_30%),radial-gradient(circle_at_50%_20%,rgba(35,142,248,0.16),transparent_35%),radial-gradient(circle_at_82%_30%,rgba(106,195,74,0.14),transparent_30%),linear-gradient(180deg,#050606_0%,#030404_100%)]" />
+      <div className="fixed inset-0 -z-10 bg-[#100d0a]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(255,106,33,0.18),transparent_30%),radial-gradient(circle_at_50%_20%,rgba(35,142,248,0.18),transparent_35%),radial-gradient(circle_at_82%_30%,rgba(106,195,74,0.17),transparent_30%),linear-gradient(180deg,#120f0c_0%,#0d0b09_100%)]" />
         <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:56px_56px]" />
       </div>
 
@@ -181,7 +181,7 @@ export default function PlayersPage() {
                 </div>
               </div>
 
-              <p className="mt-3 text-[11px] leading-5 text-white/42 sm:text-xs sm:leading-5">
+              <p className="mt-3 text-[11px] leading-5 text-white/62 sm:text-xs sm:leading-5">
                 {player.description}
               </p>
 

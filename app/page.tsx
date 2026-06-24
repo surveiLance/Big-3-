@@ -128,7 +128,7 @@ export default function Home() {
           <div className="mb-6 max-w-3xl">
             <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">By The Numbers</p>
             <h2 className="mt-1.5 text-2xl font-black uppercase italic sm:text-3xl">An Era Measured</h2>
-            <p className="mt-3 max-w-xl text-[12px] leading-6 text-white/38">
+            <p className="mt-3 max-w-xl text-[12px] leading-6 text-white/58">
               Three careers compressed into the numbers that defined modern tennis.
             </p>
           </div>
@@ -176,7 +176,7 @@ export default function Home() {
               {eraTotals.slice(1).map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-xl border border-white/10 bg-black/45 p-5 backdrop-blur-md"
+                  className="rounded-xl border border-white/12 bg-[#15110d]/70 p-5 backdrop-blur-md"
                 >
                   <div className="text-[9px] font-black uppercase tracking-[0.32em] text-white/30">
                     {item.label}
@@ -199,7 +199,7 @@ export default function Home() {
                 </div>
                 <div>
                   <div className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Still Active</div>
-                  <p className="mt-0.5 text-[11px] leading-5 text-white/35">
+                  <p className="mt-0.5 text-[11px] leading-5 text-white/55">
                     Djokovic stats as of June 2026. Federer and Nadal totals are final.
                   </p>
                 </div>
@@ -213,7 +213,7 @@ export default function Home() {
               return (
                 <div
                   key={card.label}
-                  className="rounded-xl border border-white/10 bg-black/45 p-5 backdrop-blur-md"
+                  className="rounded-xl border border-white/12 bg-[#15110d]/70 p-5 backdrop-blur-md"
                 >
                   <div className="mb-4 text-[9px] font-black uppercase tracking-[0.35em] text-white/30">
                     {card.label}
@@ -265,7 +265,7 @@ export default function Home() {
                       );
                     })}
                   </div>
-                  <p className="mt-4 border-t border-white/8 pt-3 text-[11px] leading-5 text-white/36">
+                  <p className="mt-4 border-t border-white/10 pt-3 text-[11px] leading-5 text-white/58">
                     {card.comparison}
                   </p>
                 </div>
@@ -285,7 +285,7 @@ export default function Home() {
                 66 <span className="text-white/22">of 81</span>
               </h2>
             </div>
-            <p className="text-[11px] leading-5 text-white/35 sm:text-right">
+            <p className="text-[11px] leading-5 text-white/55 sm:text-right">
               81% of all Slams<br />
               <span className="text-white/20">Wimbledon 2003 – US Open 2023</span>
             </p>
@@ -412,7 +412,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="mb-3 text-[10px] font-bold text-white/25">{p.record} W–L on {p.surface}</div>
-              <p className="text-[11px] leading-5 text-white/42">{p.detail}</p>
+              <p className="text-[11px] leading-5 text-white/58">{p.detail}</p>
             </div>
           </FadeUp>
         ))}
@@ -435,7 +435,7 @@ export default function Home() {
               <h3 className="mt-2 text-xl font-black uppercase italic leading-tight">
                 150 Matches.<br />3 Rivalries.
               </h3>
-              <p className="mt-2 text-sm leading-6 text-white/40">
+              <p className="mt-2 text-sm leading-6 text-white/58">
                 Browse every encounter between the Big Three, filtered by rivalry, surface, and tournament.
               </p>
               <div className="mt-5 flex items-center gap-2 text-[11px] font-black uppercase tracking-wide text-[#d6b276]">
@@ -453,7 +453,7 @@ export default function Home() {
               <h3 className="mt-2 text-xl font-black uppercase italic leading-tight">
                 Two Decades.<br />One Timeline.
               </h3>
-              <p className="mt-2 text-sm leading-6 text-white/40">
+              <p className="mt-2 text-sm leading-6 text-white/58">
                 Track how the Big Three dominated Grand Slams year by year from 2003 to 2024.
               </p>
               <div className="mt-5 flex items-center gap-2 text-[11px] font-black uppercase tracking-wide text-[#d6b276]">

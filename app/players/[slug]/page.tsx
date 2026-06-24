@@ -180,7 +180,7 @@ export default async function PlayerPage({
 
   return (
     <div className="flex flex-col pb-8">
-      <div className="fixed inset-0 -z-10 overflow-hidden bg-[#030404]">
+      <div className="fixed inset-0 -z-10 overflow-hidden bg-[#100d0a]">
         <div className="absolute inset-0" style={{ background: player.profileBg }} />
         <div className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:48px_48px]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_110%_100%_at_50%_50%,transparent_55%,rgba(0,0,0,0.65)_100%)]" />
@@ -219,7 +219,7 @@ export default async function PlayerPage({
               <span>Pro {player.turnedPro}</span>
               <span>{player.retired}</span>
             </div>
-            <p className="mt-5 max-w-xl text-sm leading-7 text-white/55 sm:mt-6 sm:text-base sm:leading-8">
+            <p className="mt-5 max-w-xl text-sm leading-7 text-white/68 sm:mt-6 sm:text-base sm:leading-8">
               {player.description}
             </p>
 
@@ -298,7 +298,7 @@ export default async function PlayerPage({
                   <div key={h.label} className="rounded border border-[#d9ae64]/18 bg-[#d9ae64]/[0.04] p-4 backdrop-blur-md">
                     <div className="text-3xl font-black text-[#e4bd73]">{h.value}</div>
                     <div className="mt-1 text-xs font-black uppercase tracking-wide text-white/70">{h.label}</div>
-                    <div className="mt-2 text-[11px] leading-5 text-white/38">{h.note}</div>
+                    <div className="mt-2 text-[11px] leading-5 text-white/58">{h.note}</div>
                   </div>
                 ))}
               </div>
