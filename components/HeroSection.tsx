@@ -74,15 +74,16 @@ export function HeroSection() {
   return (
     <>
       {/* Fixed background */}
-      <div className="fixed inset-0 -z-10 bg-[#100d0a]">
-        <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:64px_64px]" />
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_900px_at_50%_140px,rgba(217,174,100,0.1),transparent_68%)]" />
+        <div className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(255,255,255,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.14)_1px,transparent_1px)] [background-size:64px_64px]" />
         {players.map((p, i) => (
           <div
             key={p.slug}
             className="absolute inset-0 transition-opacity duration-700"
             style={{
               opacity: activeIdx === i ? 1 : 0,
-              background: `radial-gradient(ellipse 70% 50% at 50% 0%, ${p.softColor.replace("0.5", "0.28")}, transparent 65%)`,
+              background: `radial-gradient(ellipse 70% 50% at 50% 0%, ${p.softColor.replace("0.5", "0.22")}, transparent 65%)`,
             }}
           />
         ))}
