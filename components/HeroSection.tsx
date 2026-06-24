@@ -74,7 +74,7 @@ export function HeroSection() {
   return (
     <>
       {/* Fixed background */}
-      <div className="fixed inset-0 -z-10 bg-[#030404]">
+      <div className="fixed inset-0 -z-10 bg-[#100d0a]">
         <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:64px_64px]" />
         {players.map((p, i) => (
           <div

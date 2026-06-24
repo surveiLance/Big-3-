@@ -24,6 +24,7 @@ const PLAYERS = [
 const statCards = [
   {
     label: "Grand Slam Titles",
+    comparison: "From Wimbledon 2003 to US Open 2023, they won 66 of 81 majors. The rest of the tour split 15.",
     values: [
       { player: "Nadal",    color: "#ff6a21", display: "22",    num: 22,   max: 24   },
       { player: "Djokovic", color: "#238ef8", display: "24",    num: 24,   max: 24   },
@@ -32,6 +33,7 @@ const statCards = [
   },
   {
     label: "ATP Titles",
+    comparison: "296 tour titles means nearly 300 weeks ended with one of three names on the trophy.",
     values: [
       { player: "Nadal",    color: "#ff6a21", display: "92",    num: 92,   max: 103  },
       { player: "Djokovic", color: "#238ef8", display: "101",   num: 101,  max: 103  },
@@ -40,6 +42,7 @@ const statCards = [
   },
   {
     label: "Weeks at No. 1",
+    comparison: "947 combined weeks at No. 1 is more than 18 years with the ranking summit locked down.",
     values: [
       { player: "Nadal",    color: "#ff6a21", display: "209",   num: 209,  max: 428  },
       { player: "Djokovic", color: "#238ef8", display: "428",   num: 428,  max: 428  },
@@ -48,6 +51,7 @@ const statCards = [
   },
   {
     label: "Career Win %",
+    comparison: "All three stayed above 82%, the kind of rate most elite players only touch during peak runs.",
     values: [
       { player: "Nadal",    color: "#ff6a21", display: "82.6%", num: 82.6, max: 83.2 },
       { player: "Djokovic", color: "#238ef8", display: "83.2%", num: 83.2, max: 83.2 },
@@ -56,6 +60,7 @@ const statCards = [
   },
   {
     label: "Masters 1000 Titles",
+    comparison: "104 Masters 1000 trophies turned the tour's biggest non-major stops into their second stage.",
     values: [
       { player: "Nadal",    color: "#ff6a21", display: "36",    num: 36,   max: 40   },
       { player: "Djokovic", color: "#238ef8", display: "40",    num: 40,   max: 40   },
@@ -260,6 +265,9 @@ export default function Home() {
                       );
                     })}
                   </div>
+                  <p className="mt-4 border-t border-white/8 pt-3 text-[11px] leading-5 text-white/36">
+                    {card.comparison}
+                  </p>
                 </div>
               );
             })}

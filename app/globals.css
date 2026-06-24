@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050505;
+  --background: #100d0a;
   --foreground: #ffffff;
 }
 
@@ -13,7 +13,7 @@
 }
 
 body {
-  background: #070604;
+  background: #100d0a;
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

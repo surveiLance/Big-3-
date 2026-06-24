@@ -21,6 +21,7 @@ const players = [
       linear-gradient(180deg, #0d0402 0%, #080301 50%, #040200 100%)
     `,
     stat: "22 Grand Slams",
+    description: "The clay-court standard no one else has approached, with a Roland Garros record that bends the sport around one venue.",
     slams: "22",
     titles: "92",
     active: false,
@@ -40,6 +41,7 @@ const players = [
       linear-gradient(180deg, #02060f 0%, #020408 50%, #020306 100%)
     `,
     stat: "24 Grand Slams",
+    description: "The all-surface problem solver: record weeks at No. 1, record Masters titles, and the deepest resume in the sport.",
     slams: "24",
     titles: "101",
     active: true,
@@ -59,6 +61,7 @@ const players = [
       linear-gradient(180deg, #040d02 0%, #030802 50%, #020502 100%)
     `,
     stat: "103 ATP Titles",
+    description: "The template for modern attacking tennis, pairing the Open Era title record with a decade of grass-court control.",
     slams: "20",
     titles: "103",
     active: false,
@@ -177,6 +180,10 @@ export default function PlayersPage() {
                   </div>
                 </div>
               </div>
+
+              <p className="mt-3 text-[11px] leading-5 text-white/42 sm:text-xs sm:leading-5">
+                {player.description}
+              </p>
 
               {/* CTA */}
               <div

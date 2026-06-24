@@ -29,7 +29,7 @@ const players = [
     `,
     avatar: rafaelNadal,
     description:
-      "Unmatched intensity and relentless grit defined Nadal's career. His 14 Roland Garros titles stand as the greatest single-event achievement in tennis history — a fighter who never stopped competing.",
+      "Nadal turned clay into the sport's highest mountain. Fourteen Roland Garros titles and a 90.5% clay win rate made him the one player the rest of the tour could plan for and still rarely solve.",
     stats: [
       { label: "Grand Slam Titles", value: "22" },
       { label: "ATP Titles", value: "92" },
@@ -79,7 +79,7 @@ const players = [
     `,
     avatar: novakDjokovic,
     description:
-      "The most decorated Grand Slam champion in history. Djokovic's iron will and complete technical mastery allowed him to dominate every surface and every era he competed in.",
+      "Djokovic built the most complete resume in men's tennis: 24 majors, 428 weeks at No. 1, 40 Masters 1000 titles, and enough all-surface consistency to outlast every generation around him.",
     stats: [
       { label: "Grand Slam Titles", value: "24" },
       { label: "ATP Titles", value: "101" },
@@ -129,7 +129,7 @@ const players = [
     `,
     avatar: rogerFederer,
     description:
-      "Tennis's greatest artist. Federer's effortless elegance and shot-making redefined the sport for two decades. His 103 ATP titles are the most in the Open Era.",
+      "Federer set the modern standard before the chase caught fire. His 103 ATP titles, 310 weeks at No. 1, and grass-court peak made attacking tennis feel both ruthless and effortless.",
     stats: [
       { label: "Grand Slam Titles", value: "20" },
       { label: "ATP Titles", value: "103" },

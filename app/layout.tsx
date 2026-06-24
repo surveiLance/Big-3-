@@ -32,7 +32,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#070604] text-white">
+      <body className="min-h-full flex flex-col bg-[#100d0a] text-white">
         <BackgroundSnippets />
         <SplashScreen />
         <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1536px] flex-col overflow-x-clip px-3 py-3 sm:px-9 sm:py-6">
