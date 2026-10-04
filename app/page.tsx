@@ -19,62 +19,29 @@ const PLAYERS = [
   { key: "federer",  name: "Federer",  color: "#6ac34a" },
 ] as const;
 
-// ── Stat comparison cards ────────────────────────────────────────────────────
-
-const statCards = [
+const playerStories = [
   {
-    label: "Grand Slam Titles",
-    comparison: "From Wimbledon 2003 to US Open 2023, they won 66 of 81 majors. The rest of the tour split 15.",
-    values: [
-      { player: "Nadal",    color: "#ff6a21", display: "22",    num: 22,   max: 24   },
-      { player: "Djokovic", color: "#238ef8", display: "24",    num: 24,   max: 24   },
-      { player: "Federer",  color: "#6ac34a", display: "20",    num: 20,   max: 24   },
-    ],
+    player: "Rafael Nadal",
+    title: "Make every point physical.",
+    body: "Relentless movement, violent topspin, and an appetite for the fight turned clay into personal territory.",
+    color: "#ff6a21",
+    href: "/players/rafael-nadal",
   },
   {
-    label: "ATP Titles",
-    comparison: "296 tour titles means nearly 300 weeks ended with one of three names on the trophy.",
-    values: [
-      { player: "Nadal",    color: "#ff6a21", display: "92",    num: 92,   max: 103  },
-      { player: "Djokovic", color: "#238ef8", display: "101",   num: 101,  max: 103  },
-      { player: "Federer",  color: "#6ac34a", display: "103",   num: 103,  max: 103  },
-    ],
+    player: "Novak Djokovic",
+    title: "Turn defense into control.",
+    body: "Elastic movement and precise returning made even the strongest attack feel temporary.",
+    color: "#238ef8",
+    href: "/players/novak-djokovic",
   },
   {
-    label: "Weeks at No. 1",
-    comparison: "947 combined weeks at No. 1 is more than 18 years with the ranking summit locked down.",
-    values: [
-      { player: "Nadal",    color: "#ff6a21", display: "209",   num: 209,  max: 428  },
-      { player: "Djokovic", color: "#238ef8", display: "428",   num: 428,  max: 428  },
-      { player: "Federer",  color: "#6ac34a", display: "310",   num: 310,  max: 428  },
-    ],
+    player: "Roger Federer",
+    title: "Take time away.",
+    body: "Early contact, fluid movement, and constant invention made the fastest tennis look effortless.",
+    color: "#6ac34a",
+    href: "/players/roger-federer",
   },
-  {
-    label: "Career Win %",
-    comparison: "All three stayed above 82%, the kind of rate most elite players only touch during peak runs.",
-    values: [
-      { player: "Nadal",    color: "#ff6a21", display: "82.6%", num: 82.6, max: 83.2 },
-      { player: "Djokovic", color: "#238ef8", display: "83.2%", num: 83.2, max: 83.2 },
-      { player: "Federer",  color: "#6ac34a", display: "82.0%", num: 82.0, max: 83.2 },
-    ],
-  },
-  {
-    label: "Masters 1000 Titles",
-    comparison: "104 Masters 1000 trophies turned the tour's biggest non-major stops into their second stage.",
-    values: [
-      { player: "Nadal",    color: "#ff6a21", display: "36",    num: 36,   max: 40   },
-      { player: "Djokovic", color: "#238ef8", display: "40",    num: 40,   max: 40   },
-      { player: "Federer",  color: "#6ac34a", display: "28",    num: 28,   max: 40   },
-    ],
-  },
-];
-
-const eraTotals = [
-  { label: "Grand Slam Titles", value: "66", detail: "Combined major titles", color: "#d9ae64" },
-  { label: "ATP Titles", value: "296", detail: "Tour-level trophies", color: "#ffffff" },
-  { label: "Weeks at No. 1", value: "947", detail: "Total weeks on top", color: "#238ef8" },
-  { label: "Masters 1000", value: "104", detail: "Elite tournament wins", color: "#6ac34a" },
-];
+] as const;
 
 // ── Grand Slam breakdown ─────────────────────────────────────────────────────
 
@@ -122,155 +89,63 @@ export default function Home() {
       {/* ── HERO ── */}
       <HeroSection />
 
-      {/* ── BIG 3 IN NUMBERS ── */}
+      {/* ── THREE APPROACHES ── */}
       <FadeUp>
-        <section className="mt-12 sm:mt-20">
-          <div className="mb-6 max-w-3xl">
-            <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">By The Numbers</p>
-            <h2 className="mt-1.5 text-2xl font-black uppercase italic sm:text-3xl">An Era Measured</h2>
-            <p className="mt-3 max-w-xl text-[12px] leading-6 text-white/58">
-              Three careers compressed into the numbers that defined modern tennis.
-            </p>
-          </div>
-
-          <div className="mb-3 grid gap-3 lg:grid-cols-[1.05fr_1.35fr]">
-            <div className="relative overflow-hidden rounded-xl border border-[#d9ae64]/20 bg-[#d9ae64]/[0.05] p-5 backdrop-blur-md sm:p-6">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-[#ff6a21] via-[#238ef8] to-[#6ac34a]" />
-              <p className="text-[9px] font-black uppercase tracking-[0.45em] text-[#d9ae64]/65">
-                Combined Grand Slam Titles
+        <section className="mt-12 border-y border-white/10 py-12 sm:mt-20 sm:py-16">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.4fr] lg:gap-16">
+            <div className="lg:sticky lg:top-8 lg:self-start">
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-[#d9ae64]/65">
+                Beyond the scoreline
               </p>
-              <div className="mt-3 flex items-end gap-4">
-                <span className="text-7xl font-black italic leading-none tracking-normal text-white sm:text-8xl">
-                  66
-                </span>
-                <div className="pb-2">
-                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-white/70">
-                    Won from 2003 to 2023
-                  </p>
-                  <p className="mt-1 text-[11px] leading-5 text-white/35">
-                    Djokovic 24, Nadal 22, Federer 20.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-5 grid grid-cols-3 overflow-hidden rounded-lg border border-white/10">
-                {PLAYERS.map((player, index) => {
-                  const slamTotal = [22, 24, 20][index];
-                  return (
-                    <div key={player.key} className="border-r border-white/10 p-3 last:border-r-0">
-                      <div className="text-[8px] font-black uppercase tracking-widest text-white/30">
-                        {player.name}
-                      </div>
-                      <div
-                        className="mt-1 text-2xl font-black leading-none tabular-nums"
-                        style={{ color: player.color }}
-                      >
-                        {slamTotal}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <h2 className="mt-3 max-w-lg text-3xl font-black uppercase italic leading-tight sm:text-5xl">
+                Three ways to rule the same era.
+              </h2>
+              <p className="mt-5 max-w-md text-sm leading-7 text-white/55">
+                They did not dominate by playing alike. Each forced the sport to adapt to a completely different idea of winning.
+              </p>
+              <Link
+                href="/players"
+                className="mt-7 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-[#d9ae64]"
+              >
+                Meet the players
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
             </div>
 
-            <div className="grid gap-3 min-[520px]:grid-cols-2">
-              {eraTotals.slice(1).map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-xl border border-white/12 bg-[#15110d]/70 p-5 backdrop-blur-md"
+            <div className="border-t border-white/12">
+              {playerStories.map((story) => (
+                <Link
+                  key={story.player}
+                  href={story.href}
+                  className="group grid gap-3 border-b border-white/12 py-6 sm:grid-cols-[150px_1fr_auto] sm:items-center sm:gap-6 sm:py-8"
                 >
-                  <div className="text-[9px] font-black uppercase tracking-[0.32em] text-white/30">
-                    {item.label}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="h-8 w-1 transition-all duration-300 group-hover:h-11"
+                      style={{ backgroundColor: story.color }}
+                    />
+                    <span
+                      className="text-[10px] font-black uppercase tracking-[0.2em]"
+                      style={{ color: story.color }}
+                    >
+                      {story.player}
+                    </span>
                   </div>
-                  <div
-                    className="mt-3 text-4xl font-black italic leading-none tabular-nums"
-                    style={{ color: item.color }}
-                  >
-                    {item.value}
+                  <div>
+                    <h3 className="text-xl font-black uppercase italic text-white sm:text-2xl">
+                      {story.title}
+                    </h3>
+                    <p className="mt-2 max-w-xl text-xs leading-6 text-white/48 sm:text-sm">
+                      {story.body}
+                    </p>
                   </div>
-                  <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-white/28">
-                    {item.detail}
-                  </p>
-                </div>
+                  <ArrowRight
+                    className="hidden h-5 w-5 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white sm:block"
+                    aria-hidden="true"
+                  />
+                </Link>
               ))}
-
-              <div className="flex items-center gap-3 rounded-xl border border-emerald-500/12 bg-emerald-500/[0.04] p-5">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/12">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-                </div>
-                <div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Still Active</div>
-                  <p className="mt-0.5 text-[11px] leading-5 text-white/55">
-                    Djokovic stats as of June 2026. Federer and Nadal totals are final.
-                  </p>
-                </div>
-              </div>
             </div>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {statCards.map((card) => {
-              const sorted = [...card.values].sort((a, b) => b.num - a.num);
-              return (
-                <div
-                  key={card.label}
-                  className="rounded-xl border border-white/12 bg-[#15110d]/70 p-5 backdrop-blur-md"
-                >
-                  <div className="mb-4 text-[9px] font-black uppercase tracking-[0.35em] text-white/30">
-                    {card.label}
-                  </div>
-                  <div className="space-y-3">
-                    {sorted.map((v, rank) => {
-                      const isLeader = rank === 0;
-                      return (
-                        <div key={v.player}>
-                          <div className="mb-1.5 flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <div
-                                className="h-1.5 w-1.5 rounded-full"
-                                style={{ backgroundColor: v.color, opacity: isLeader ? 1 : 0.4 }}
-                              />
-                              <span
-                                className="text-[10px] font-black uppercase tracking-wide"
-                                style={{ color: isLeader ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.32)" }}
-                              >
-                                {v.player}
-                              </span>
-                              {isLeader && (
-                                <span className="rounded-sm bg-[#d9ae64]/12 px-1 py-px text-[7px] font-black uppercase tracking-widest text-[#d9ae64]/70">
-                                  leads
-                                </span>
-                              )}
-                            </div>
-                            <span
-                              className="font-black leading-none tabular-nums"
-                              style={{
-                                fontSize: isLeader ? "1.5rem" : "1.1rem",
-                                color: isLeader ? v.color : `${v.color}55`,
-                              }}
-                            >
-                              {v.display}
-                            </span>
-                          </div>
-                          <div className="h-[3px] overflow-hidden rounded-full bg-white/6">
-                            <div
-                              className="h-full rounded-full"
-                              style={{
-                                width: `${(v.num / v.max) * 100}%`,
-                                backgroundColor: v.color,
-                                opacity: isLeader ? 0.9 : 0.28,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <p className="mt-4 border-t border-white/10 pt-3 text-[11px] leading-5 text-white/58">
-                    {card.comparison}
-                  </p>
-                </div>
-              );
-            })}
           </div>
         </section>
       </FadeUp>
